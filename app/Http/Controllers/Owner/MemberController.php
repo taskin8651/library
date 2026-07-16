@@ -29,12 +29,41 @@ class MemberController extends Controller
         return view('owner.members.index', compact('members','library'));
     }
 
-    public function create()
+    /**
+     * Builds the seat_id => occupancy-map array used by the create/edit forms
+     * to grey out seats/shifts that are already booked, instead of a blanket
+     * "any active member on this seat" disable that ignored shifts entirely.
+     */
+    private function seatAvailability($library, $shifts, ?int $excludeMemberId = null)
+    {
+        $seats = Seat::where('library_id', $library->id)->where('is_active', true)
+            ->with(['members' => function ($q) {
+                $q->where('status', 'active')
+                  ->where(function ($q2) {
+                      $q2->whereNull('plan_end_date')->orWhereDate('plan_end_date', '>=', now()->toDateString());
+                  })
+                  ->with('user', 'shift');
+            }])
+            ->orderBy('row_label')->orderBy('seat_number')->get();
+
+        $availability = [];
+        foreach ($seats as $seat) {
+            $availability[$seat->id] = $seat->occupancyMap($shifts, $excludeMemberId, $seat->members);
+        }
+
+        return [$seats, $availability];
+    }
+
+    public function create(Request $request)
     {
         $library = $this->library();
-        $seats   = Seat::where('library_id',$library->id)->where('is_active',true)->get();
-        $shifts  = Shift::where('library_id',$library->id)->where('is_active',true)->get();
-        return view('owner.members.create', compact('seats','shifts','library'));
+        $shifts  = Shift::where('library_id',$library->id)->where('is_active',true)->orderBy('start_time')->get();
+        [$seats, $seatAvailability] = $this->seatAvailability($library, $shifts);
+
+        $prefillSeatId  = $request->query('seat_id');
+        $prefillShiftId = $request->query('shift_id');
+
+        return view('owner.members.create', compact('seats','shifts','library','seatAvailability','prefillSeatId','prefillShiftId'));
     }
 
     public function store(Request $request)
@@ -49,6 +78,14 @@ class MemberController extends Controller
             'plan_start_date' => 'required|date',
             'plan_end_date'   => 'required|date|after:plan_start_date',
         ]);
+
+        if ($request->seat_id) {
+            $seat  = Seat::where('library_id', $library->id)->findOrFail($request->seat_id);
+            $shift = $request->shift_id ? Shift::findOrFail($request->shift_id) : null;
+            if ($seat->isOccupiedForShift($shift)) {
+                return back()->withInput()->with('error', 'That seat is not available for the selected shift. Please pick a free seat or shift.');
+            }
+        }
 
         $user = User::create([
             'library_id' => $library->id,
@@ -88,10 +125,10 @@ class MemberController extends Controller
     {
         $library = $this->library();
         if ($member->library_id !== $library->id) abort(403);
-        $seats  = Seat::where('library_id',$library->id)->where('is_active',true)->get();
-        $shifts = Shift::where('library_id',$library->id)->where('is_active',true)->get();
+        $shifts = Shift::where('library_id',$library->id)->where('is_active',true)->orderBy('start_time')->get();
+        [$seats, $seatAvailability] = $this->seatAvailability($library, $shifts, $member->id);
         $member->load('user');
-        return view('owner.members.edit', compact('member','seats','shifts','library'));
+        return view('owner.members.edit', compact('member','seats','shifts','library','seatAvailability'));
     }
 
     public function update(Request $request, Member $member)
@@ -106,6 +143,14 @@ class MemberController extends Controller
             'shift_id'        => 'nullable|exists:shifts,id',
             'plan_end_date'   => 'required|date',
         ]);
+
+        if ($request->seat_id) {
+            $seat  = Seat::where('library_id', $library->id)->findOrFail($request->seat_id);
+            $shift = $request->shift_id ? Shift::findOrFail($request->shift_id) : null;
+            if ($seat->isOccupiedForShift($shift, $member->id)) {
+                return back()->withInput()->with('error', 'That seat is not available for the selected shift. Please pick a free seat or shift.');
+            }
+        }
 
         $member->user->update(['name' => $request->name, 'phone' => $request->phone]);
         $member->update([

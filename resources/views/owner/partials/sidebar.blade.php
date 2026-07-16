@@ -13,6 +13,7 @@
     <li><a href="/owner/attendance" class="nav-link {{ request()->is('owner/attendance') ? 'active' : '' }}"><i class="bi bi-calendar-check-fill"></i> Attendance</a></li>
     <li><a href="/owner/attendance/qr" class="nav-link {{ request()->is('owner/attendance/qr') ? 'active' : '' }}"><i class="bi bi-qr-code-scan"></i> QR Code</a></li>
     <li><a href="/owner/seats" class="nav-link {{ request()->is('owner/seats') ? 'active' : '' }}"><i class="bi bi-grid-3x3-gap-fill"></i> Seat Layout</a></li>
+    <li><a href="/owner/shifts" class="nav-link {{ request()->is('owner/shifts') ? 'active' : '' }}"><i class="bi bi-clock-fill"></i> Shifts</a></li>
 
     <li class="sidebar-section mt-2">Communication</li>
     <li><a href="/owner/announcements" class="nav-link {{ request()->is('owner/announcements*') ? 'active' : '' }}"><i class="bi bi-megaphone-fill"></i> Announcements</a></li>

@@ -6,6 +6,7 @@ use App\Models\Seat;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class SeatController extends Controller
 {
@@ -14,12 +15,66 @@ class SeatController extends Controller
     public function index()
     {
         $library = $this->library();
-        $seats = Seat::with('members.user')
-            ->where('library_id',$library->id)
+
+        $shifts = Shift::where('library_id', $library->id)
+            ->where('is_active', true)
+            ->orderBy('start_time')
+            ->get();
+
+        $seats = Seat::where('library_id', $library->id)
+            ->with(['members' => function ($q) {
+                $q->where('status', 'active')
+                  ->where(function ($q2) {
+                      $q2->whereNull('plan_end_date')->orWhereDate('plan_end_date', '>=', now()->toDateString());
+                  })
+                  ->with('user', 'shift');
+            }])
             ->orderBy('row_label')->orderBy('seat_number')->get();
 
         $rows = $seats->groupBy('row_label');
-        return view('owner.seats.index', compact('seats','rows','library'));
+
+        $seatData = [];
+        $stats = ['total' => $seats->count(), 'free' => 0, 'partial' => 0, 'full' => 0, 'blocked' => 0];
+
+        foreach ($seats as $seat) {
+            $map = $seat->occupancyMap($shifts, null, $seat->members);
+            $totalShifts = $shifts->count();
+            $bookedCount = ($map['blocked'] || $map['full_day_taken'])
+                ? $totalShifts
+                : collect($map['shifts'])->filter()->count();
+
+            $seatData[$seat->id] = array_merge($map, [
+                'id'           => $seat->id,
+                'seat_number'  => $seat->seat_number,
+                'row_label'    => $seat->row_label,
+                'type'         => $seat->type,
+                'is_active'    => $seat->is_active,
+                'status'       => $seat->status,
+                'booked_count' => $bookedCount,
+                'total_shifts' => $totalShifts,
+            ]);
+
+            if ($map['blocked']) {
+                $stats['blocked']++;
+            } elseif ($totalShifts === 0) {
+                $map['full_day_taken'] ? $stats['full']++ : $stats['free']++;
+            } elseif ($bookedCount === 0) {
+                $stats['free']++;
+            } elseif ($bookedCount >= $totalShifts) {
+                $stats['full']++;
+            } else {
+                $stats['partial']++;
+            }
+        }
+
+        $shiftList = $shifts->map(fn($s) => [
+            'id'    => $s->id,
+            'name'  => $s->name,
+            'time'  => Carbon::parse($s->start_time)->format('h:i A') . ' - ' . Carbon::parse($s->end_time)->format('h:i A'),
+            'price' => $s->price,
+        ]);
+
+        return view('owner.seats.index', compact('seats', 'rows', 'library', 'shifts', 'seatData', 'stats', 'shiftList'));
     }
 
     public function store(Request $request)

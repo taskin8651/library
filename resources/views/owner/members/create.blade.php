@@ -60,16 +60,15 @@
                 </div>
 
                 <h6 class="fw-bold mb-3 border-bottom pb-2">Seat & Shift Assignment</h6>
-                <div class="row g-3 mb-4">
+                <div class="row g-3 mb-2">
                     <div class="col-md-6">
                         <div class="form-floating">
                             <select id="f_seat" name="seat_id" class="form-select">
                                 <option value="">-- No Seat Assigned --</option>
                                 @foreach($seats as $seat)
-                                <option value="{{ $seat->id }}" {{ old('seat_id')==$seat->id?'selected':'' }}
-                                    {{ $seat->isOccupied()?'disabled':'' }}>
+                                <option value="{{ $seat->id }}" data-base-label="{{ $seat->seat_number }} ({{ $seat->type }})"
+                                    {{ old('seat_id', $prefillSeatId)==$seat->id?'selected':'' }}>
                                     {{ $seat->seat_number }} ({{ $seat->type }})
-                                    {{ $seat->isOccupied()?'[Occupied]':'' }}
                                 </option>
                                 @endforeach
                             </select>
@@ -79,9 +78,9 @@
                     <div class="col-md-6">
                         <div class="form-floating">
                             <select id="f_shift" name="shift_id" class="form-select">
-                                <option value="">-- No Shift --</option>
+                                <option value="">-- No Shift (Full Day) --</option>
                                 @foreach($shifts as $shift)
-                                <option value="{{ $shift->id }}" {{ old('shift_id')==$shift->id?'selected':'' }}>
+                                <option value="{{ $shift->id }}" {{ old('shift_id', $prefillShiftId)==$shift->id?'selected':'' }}>
                                     {{ $shift->name }} ({{ $shift->start_time }} - {{ $shift->end_time }}) - ₹{{ $shift->price }}/mo
                                 </option>
                                 @endforeach
@@ -90,6 +89,7 @@
                         </div>
                     </div>
                 </div>
+                <div id="seatAvailabilityHint" class="form-text mb-3"></div>
 
                 <h6 class="fw-bold mb-3 border-bottom pb-2">Plan Duration</h6>
                 <div class="row g-3 mb-4">
@@ -117,4 +117,46 @@
         </form>
     </div>
 </div>
+
+<script>
+(function () {
+    const SEAT_AVAIL = @json($seatAvailability);
+    const seatSelect = document.getElementById('f_seat');
+    const shiftSelect = document.getElementById('f_shift');
+    const hint = document.getElementById('seatAvailabilityHint');
+
+    function refresh() {
+        const shiftId = shiftSelect.value;
+        let selectedConflict = null;
+
+        Array.from(seatSelect.options).forEach(opt => {
+            if (!opt.value) return;
+            const info = SEAT_AVAIL[opt.value];
+            if (!info) return;
+
+            let note = null;
+            if (info.blocked) {
+                note = 'Unavailable (' + (info.blocked_reason || 'inactive') + ')';
+            } else if (info.full_day_taken) {
+                note = 'Booked full-day by ' + info.full_day_taken.name;
+            } else if (shiftId && info.shifts[shiftId]) {
+                note = 'Booked by ' + info.shifts[shiftId].name + ' for this shift';
+            } else if (!shiftId && Object.values(info.shifts).some(s => s)) {
+                note = 'Has shift bookings — pick a specific shift';
+            }
+
+            opt.disabled = !!note;
+            opt.textContent = opt.dataset.baseLabel + (note ? ' — ' + note : '');
+            if (opt.selected && note) selectedConflict = note;
+        });
+
+        hint.textContent = selectedConflict ? ('This seat is not available: ' + selectedConflict) : '';
+        hint.classList.toggle('text-danger', !!selectedConflict);
+    }
+
+    seatSelect.addEventListener('change', refresh);
+    shiftSelect.addEventListener('change', refresh);
+    refresh();
+})();
+</script>
 @endsection

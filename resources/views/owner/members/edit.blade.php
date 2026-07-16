@@ -32,7 +32,8 @@
                         <select id="f_seat" name="seat_id" class="form-select">
                             <option value="">-- No Seat --</option>
                             @foreach($seats as $seat)
-                            <option value="{{ $seat->id }}" {{ $member->seat_id == $seat->id ? 'selected' : '' }}>{{ $seat->seat_number }} ({{ $seat->type }})</option>
+                            <option value="{{ $seat->id }}" data-base-label="{{ $seat->seat_number }} ({{ $seat->type }})"
+                                {{ old('seat_id', $member->seat_id) == $seat->id ? 'selected' : '' }}>{{ $seat->seat_number }} ({{ $seat->type }})</option>
                             @endforeach
                         </select>
                         <label for="f_seat">Seat</label>
@@ -41,13 +42,16 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select id="f_shift" name="shift_id" class="form-select">
-                            <option value="">-- No Shift --</option>
+                            <option value="">-- No Shift (Full Day) --</option>
                             @foreach($shifts as $shift)
-                            <option value="{{ $shift->id }}" {{ $member->shift_id == $shift->id ? 'selected' : '' }}>{{ $shift->name }}</option>
+                            <option value="{{ $shift->id }}" {{ old('shift_id', $member->shift_id) == $shift->id ? 'selected' : '' }}>{{ $shift->name }} ({{ $shift->start_time }} - {{ $shift->end_time }})</option>
                             @endforeach
                         </select>
                         <label for="f_shift">Shift</label>
                     </div>
+                </div>
+                <div class="col-12">
+                    <div id="seatAvailabilityHint" class="form-text"></div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
@@ -80,4 +84,46 @@
     </form>
 </div>
 </div>
+
+<script>
+(function () {
+    const SEAT_AVAIL = @json($seatAvailability);
+    const seatSelect = document.getElementById('f_seat');
+    const shiftSelect = document.getElementById('f_shift');
+    const hint = document.getElementById('seatAvailabilityHint');
+
+    function refresh() {
+        const shiftId = shiftSelect.value;
+        let selectedConflict = null;
+
+        Array.from(seatSelect.options).forEach(opt => {
+            if (!opt.value) return;
+            const info = SEAT_AVAIL[opt.value];
+            if (!info) return;
+
+            let note = null;
+            if (info.blocked) {
+                note = 'Unavailable (' + (info.blocked_reason || 'inactive') + ')';
+            } else if (info.full_day_taken) {
+                note = 'Booked full-day by ' + info.full_day_taken.name;
+            } else if (shiftId && info.shifts[shiftId]) {
+                note = 'Booked by ' + info.shifts[shiftId].name + ' for this shift';
+            } else if (!shiftId && Object.values(info.shifts).some(s => s)) {
+                note = 'Has shift bookings — pick a specific shift';
+            }
+
+            opt.disabled = !!note;
+            opt.textContent = opt.dataset.baseLabel + (note ? ' — ' + note : '');
+            if (opt.selected && note) selectedConflict = note;
+        });
+
+        hint.textContent = selectedConflict ? ('This seat is not available: ' + selectedConflict) : '';
+        hint.classList.toggle('text-danger', !!selectedConflict);
+    }
+
+    seatSelect.addEventListener('change', refresh);
+    shiftSelect.addEventListener('change', refresh);
+    refresh();
+})();
+</script>
 @endsection

@@ -8,6 +8,7 @@ use App\Http\Controllers\Owner\MemberController;
 use App\Http\Controllers\Owner\FeeController;
 use App\Http\Controllers\Owner\AttendanceController;
 use App\Http\Controllers\Owner\SeatController;
+use App\Http\Controllers\Owner\ShiftController;
 use App\Http\Controllers\Owner\SubscriptionController;
 use App\Http\Controllers\Owner\AnnouncementController;
 use App\Http\Controllers\Owner\ReportController;
@@ -69,6 +70,13 @@ Route::prefix('owner')->middleware(['auth', 'role:owner,staff'])->group(function
     Route::delete('/seats/{seat}', [SeatController::class, 'destroy'])->name('owner.seats.destroy');
     Route::post('/seats/{seat}/toggle', [SeatController::class, 'toggle'])->name('owner.seats.toggle');
     Route::post('/seats/{seat}/status', [SeatController::class, 'setStatus'])->name('owner.seats.status');
+
+    // Shifts
+    Route::get('/shifts', [ShiftController::class, 'index'])->name('owner.shifts.index');
+    Route::post('/shifts', [ShiftController::class, 'store'])->name('owner.shifts.store');
+    Route::put('/shifts/{shift}', [ShiftController::class, 'update'])->name('owner.shifts.update');
+    Route::post('/shifts/{shift}/toggle', [ShiftController::class, 'toggle'])->name('owner.shifts.toggle');
+    Route::delete('/shifts/{shift}', [ShiftController::class, 'destroy'])->name('owner.shifts.destroy');
 
     // Subscription
     Route::get('/subscription/plans', [SubscriptionController::class, 'plans'])->name('owner.subscription.plans');
