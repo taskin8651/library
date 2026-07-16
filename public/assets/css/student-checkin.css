@@ -1,0 +1,240 @@
+* {
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(150deg, #0f1117 0%, #1a1d23 50%, #23262e 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes floatBlob {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(20px, -26px) scale(1.08);
+    }
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translateX(-1px);
+    }
+
+    20%,
+    80% {
+        transform: translateX(2px);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translateX(-4px);
+    }
+
+    40%,
+    60% {
+        transform: translateX(4px);
+    }
+}
+
+@keyframes resultIn {
+    from {
+        opacity: 0;
+        transform: scale(.9) translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes ping {
+    0% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, .5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 14px rgba(102, 126, 234, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+    }
+}
+
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+body::before {
+    width: 460px;
+    height: 460px;
+    top: -140px;
+    right: -120px;
+    background: radial-gradient(circle, rgba(102, 126, 234, .25), transparent 70%);
+    animation: floatBlob 10s ease-in-out infinite;
+}
+
+body::after {
+    width: 360px;
+    height: 360px;
+    bottom: -120px;
+    left: -100px;
+    background: radial-gradient(circle, rgba(20, 184, 166, .18), transparent 70%);
+    animation: floatBlob 12s ease-in-out infinite reverse;
+}
+
+.checkin-card {
+    background: #fff;
+    border-radius: 26px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp .55s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.logo-wrap {
+    animation: popIn .5s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.logo-ring {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    margin: 0 auto 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 26px;
+    box-shadow: 0 12px 28px rgba(102, 126, 234, .4);
+    animation: ping 2.4s infinite;
+}
+
+.uid-input {
+    font-size: 26px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 8px;
+    border: 3px solid #e9ecef;
+    border-radius: 16px;
+    padding: 16px;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+}
+
+.uid-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.15);
+    outline: none;
+}
+
+.uid-input.shake-error {
+    animation: shake .5s;
+    border-color: #ef4444;
+}
+
+.btn-checkin {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    background-size: 200% auto;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 13px;
+    font-size: 16px;
+    font-weight: 700;
+    width: 100%;
+    box-shadow: 0 12px 28px rgba(102, 126, 234, .35);
+    transition: all .25s ease;
+}
+
+.btn-checkin:hover {
+    background-position: right center;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(102, 126, 234, .45);
+}
+
+.btn-checkin:active {
+    transform: scale(.97);
+}
+
+.btn-checkin:disabled {
+    opacity: .75;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.result-box {
+    border-radius: 18px;
+    padding: 22px;
+    margin-top: 20px;
+    display: none;
+}
+
+.result-box.show {
+    display: block;
+    animation: resultIn .4s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.result-box.success {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 2px solid #6ee7b7;
+}
+
+.result-box.error {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border: 2px solid #fca5a5;
+}
+
+.result-icon-wrap {
+    font-size: 40px;
+    margin-bottom: 8px;
+    display: inline-block;
+}

@@ -1,0 +1,17 @@
+@media print {
+
+    .sidebar,
+    .topbar,
+    .trial-banner,
+    .d-flex.justify-content-end {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0 !important;
+    }
+
+    .page-content {
+        padding: 0 !important;
+    }
+}

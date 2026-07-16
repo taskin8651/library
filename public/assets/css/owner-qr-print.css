@@ -1,0 +1,13 @@
+@media print {
+
+    .sidebar,
+    .topbar,
+    .trial-banner,
+    .d-flex.gap-2.justify-content-center {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0 !important;
+    }
+}

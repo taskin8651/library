@@ -1,0 +1,22 @@
+.sub-status-card {
+    background: linear-gradient(120deg, #14161c 0%, #23263a 55%, #2b2140 130%);
+    border-radius: 20px;
+    padding: 24px 28px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+.sub-status-card::before {
+    content: '';
+    position: absolute; top: -50px; right: -30px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(102,126,234,.35), transparent 70%);
+    pointer-events: none;
+}
+.sub-status-card h5, .sub-status-card p { position: relative; z-index: 1; }
+.sub-status-card p.text-muted { color: rgba(255,255,255,.55) !important; }
+.sub-status-card small.text-muted { color: rgba(255,255,255,.5) !important; }
+.sub-status-card .mini-progress { background: rgba(255,255,255,.12); position: relative; z-index: 1; }
+
+.sub-plan-card { transition: all .3s cubic-bezier(.22,1,.36,1); }
+.sub-plan-current { border: 2px solid var(--accent-1); box-shadow: 0 12px 30px rgba(102,126,234,.15); }

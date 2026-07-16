@@ -1,0 +1,73 @@
+.seat-legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #4b5563; }
+.seat-legend-dot { width: 12px; height: 12px; border-radius: 4px; display: inline-block; }
+.seat-dot-available { background: #d1fae5; border: 1px solid #6ee7b7; }
+.seat-dot-occupied { background: #fee2e2; border: 1px solid #fca5a5; }
+.seat-dot-inactive { background: #e5e7eb; border: 1px solid #d1d5db; }
+.seat-dot-reserved { background: #ede9fe; border: 1px solid #c4b5fd; }
+.seat-dot-maintenance { background: #ffedd5; border: 1px solid #fdba74; }
+
+.seat-desk {
+    width: 64px; height: 64px;
+    border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s ease;
+    border: 1.5px solid transparent;
+}
+.seat-desk:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 10px 22px rgba(17,24,39,.14); z-index: 2; }
+.seat-desk:active { transform: translateY(-1px) scale(.98); }
+
+@keyframes seatTapPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(102,126,234,.45); }
+    100% { box-shadow: 0 0 0 14px rgba(102,126,234,0); }
+}
+.seat-desk.seat-tapped { animation: seatTapPulse .5s ease-out; }
+
+.seat-desk-top {
+    position: absolute; top: 0; left: 8px; right: 8px; height: 4px;
+    border-radius: 0 0 4px 4px;
+    opacity: .6;
+}
+
+.seat-available { background: #d1fae5; border-color: #6ee7b7; }
+.seat-available .seat-desk-top { background: #22c55e; }
+.seat-available .seat-desk-icon { color: #16a34a; }
+
+.seat-occupied { background: #fee2e2; border-color: #fca5a5; }
+.seat-occupied .seat-desk-top { background: #ef4444; }
+.seat-occupied .seat-desk-icon { color: #dc2626; }
+
+.seat-inactive { background: #f1f2f5; border-color: #e2e4ea; }
+.seat-inactive .seat-desk-top { background: #9ca3af; }
+.seat-inactive .seat-desk-icon { color: #9ca3af; }
+
+.seat-reserved { background: #ede9fe; border-color: #c4b5fd; }
+.seat-reserved .seat-desk-top { background: #7c3aed; }
+.seat-reserved .seat-desk-icon { color: #6d28d9; }
+
+.seat-maintenance { background: #ffedd5; border-color: #fdba74; }
+.seat-maintenance .seat-desk-top { background: #ea580c; }
+.seat-maintenance .seat-desk-icon { color: #c2410c; }
+
+.seat-desk-icon { font-size: 15px; margin-top: 4px; }
+.seat-desk-label { font-size: 11px; font-weight: 700; margin-top: 3px; color: #1a1d23; }
+.seat-type-chip {
+    position: absolute; bottom: -7px;
+    font-size: 8.5px; font-weight: 700; text-transform: uppercase;
+    background: #1a1d23; color: #fff; padding: 1px 6px; border-radius: 8px;
+    letter-spacing: .3px;
+}
+.seat-desk-menu {
+    position: absolute; top: -6px; right: -6px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: #6c757d;
+    opacity: 0;
+    transition: opacity .18s ease;
+}
+.seat-desk:hover .seat-desk-menu { opacity: 1; }
+
+.seat-row-group.seat-row-hidden { display: none; }
+.seat-desk.seat-hidden { display: none; }

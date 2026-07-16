@@ -1,0 +1,52 @@
+* { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+body {
+    background: linear-gradient(150deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh; padding: 50px 0; position: relative; overflow-x: hidden;
+}
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes floatBlob { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(20px,-24px) scale(1.06); } }
+@keyframes popIn { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: scale(1); } }
+
+body::before, body::after {
+    content: ''; position: fixed; border-radius: 50%; pointer-events: none;
+}
+body::before { width: 480px; height: 480px; top: -160px; right: -140px; background: radial-gradient(circle, rgba(102,126,234,.28), transparent 70%); animation: floatBlob 11s ease-in-out infinite; }
+body::after { width: 380px; height: 380px; bottom: -140px; left: -100px; background: radial-gradient(circle, rgba(20,184,166,.2), transparent 70%); animation: floatBlob 13s ease-in-out infinite reverse; }
+
+.register-card {
+    background: #fff; border-radius: 22px; padding: 44px; max-width: 580px; margin: auto;
+    box-shadow: 0 30px 80px rgba(0,0,0,.35);
+    position: relative; z-index: 1;
+    animation: fadeInUp .55s cubic-bezier(.22,1,.36,1) both;
+}
+.brand-icon-reg {
+    width: 52px; height: 52px; border-radius: 14px; margin: 0 auto 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px;
+    box-shadow: 0 10px 24px rgba(102,126,234,.35);
+    animation: popIn .5s cubic-bezier(.22,1,.36,1) both;
+}
+
+.plan-card {
+    border: 2px solid #e9ecef; border-radius: 14px; padding: 16px; cursor: pointer;
+    transition: all 0.22s cubic-bezier(.22,1,.36,1); position: relative; overflow: hidden;
+}
+.plan-card:hover { border-color: #a5b4fc; transform: translateY(-3px); box-shadow: 0 10px 24px rgba(102,126,234,.15); }
+.plan-card.selected { border-color: #667eea; background: linear-gradient(135deg, #f0f3ff, #f7f4ff); box-shadow: 0 10px 24px rgba(102,126,234,.2); }
+.plan-card.selected::after {
+    content: '\F26E'; font-family: 'bootstrap-icons'; position: absolute; top: 8px; right: 10px;
+    color: #667eea; font-size: 16px;
+}
+
+.form-control, .form-select { border-radius: 11px; padding: 11px 14px; border: 1.5px solid #e9ecef; transition: all .2s ease; }
+.form-control:focus, .form-select:focus { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,.14); }
+
+.btn-register {
+    background: linear-gradient(135deg, #667eea, #764ba2); background-size: 200% auto;
+    color: white; border: none; padding: 13px; border-radius: 11px; font-weight: 700; width: 100%;
+    box-shadow: 0 10px 24px rgba(102,126,234,.32); transition: all .25s ease;
+}
+.btn-register:hover { background-position: right center; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(102,126,234,.42); color: #fff; }
+.btn-register:active { transform: scale(.98); }
+
+.step-field { animation: fadeInUp .5s ease both; }

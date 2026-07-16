@@ -1,0 +1,174 @@
+<?php
+// ============================================================
+// DATABASE MIGRATIONS - LibraryCRM
+// Run: php artisan migrate --seed
+// ============================================================
+
+// FILE: database/migrations/2024_01_01_000001_create_plans_table.php
+/*
+Schema::create('plans', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');                        // Starter, Pro, Premium
+    $table->text('description')->nullable();
+    $table->decimal('price', 10, 2);               // Monthly price in INR
+    $table->integer('trial_days')->default(14);
+    $table->integer('max_branches')->default(1);   // -1 = unlimited
+    $table->boolean('staff_accounts')->default(false);
+    $table->boolean('white_label')->default(false);
+    $table->boolean('is_active')->default(true);
+    $table->timestamps();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000002_create_libraries_table.php
+/*
+Schema::create('libraries', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('slug')->unique();              // Used for subdomain: slug.yourdomain.com
+    $table->string('email')->unique();
+    $table->string('phone', 15);
+    $table->string('address')->nullable();
+    $table->string('city')->nullable();
+    $table->string('state')->nullable();
+    $table->string('logo')->nullable();
+    $table->string('stamp')->nullable();
+    $table->string('banner')->nullable();
+    $table->string('tagline')->nullable();
+    $table->string('theme_color', 7)->default('#0d6efd');
+    $table->foreignId('plan_id')->constrained('plans');
+    $table->enum('status', ['pending','active','suspended','expired'])->default('pending');
+    $table->timestamp('trial_ends_at')->nullable();
+    $table->timestamp('plan_expires_at')->nullable();
+    $table->timestamps();
+    $table->softDeletes();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000003_create_users_table.php
+/*
+Schema::create('users', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('library_id')->nullable()->constrained('libraries');
+    $table->string('name');
+    $table->string('email')->unique();
+    $table->string('phone', 15)->nullable();
+    $table->string('password');
+    $table->enum('role', ['superadmin','owner','staff','student'])->default('student');
+    $table->boolean('is_active')->default(true);
+    $table->rememberToken();
+    $table->timestamps();
+    $table->softDeletes();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000004_create_shifts_table.php
+/*
+Schema::create('shifts', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('library_id')->constrained('libraries')->onDelete('cascade');
+    $table->string('name');                        // Morning, Evening, Full Day
+    $table->time('start_time');
+    $table->time('end_time');
+    $table->decimal('price', 10, 2)->default(0);  // Shift monthly price
+    $table->boolean('is_active')->default(true);
+    $table->timestamps();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000005_create_seats_table.php
+/*
+Schema::create('seats', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('library_id')->constrained('libraries')->onDelete('cascade');
+    $table->string('seat_number');                 // A1, B2, C3 etc
+    $table->string('row_label')->nullable();       // A, B, C
+    $table->enum('type', ['regular','cabin','vip'])->default('regular');
+    $table->boolean('is_active')->default(true);
+    $table->timestamps();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000006_create_members_table.php
+/*
+Schema::create('members', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('library_id')->constrained('libraries')->onDelete('cascade');
+    $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+    $table->foreignId('seat_id')->nullable()->constrained('seats');
+    $table->foreignId('shift_id')->nullable()->constrained('shifts');
+    $table->string('uid')->unique();               // Auto-generated UID
+    $table->string('profile_photo')->nullable();
+    $table->date('dob')->nullable();
+    $table->string('address')->nullable();
+    $table->string('aadhar')->nullable();
+    $table->enum('status', ['active','inactive','expired'])->default('active');
+    $table->date('plan_start_date')->nullable();
+    $table->date('plan_end_date')->nullable();
+    $table->timestamps();
+    $table->softDeletes();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000007_create_fee_payments_table.php
+/*
+Schema::create('fee_payments', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('library_id')->constrained('libraries')->onDelete('cascade');
+    $table->foreignId('member_id')->constrained('members')->onDelete('cascade');
+    $table->decimal('amount', 10, 2);
+    $table->enum('payment_mode', ['cash','upi','bank','other'])->default('cash');
+    $table->string('upi_ref')->nullable();
+    $table->string('receipt_number')->unique();
+    $table->date('payment_date');
+    $table->date('valid_from');
+    $table->date('valid_till');
+    $table->string('collected_by')->nullable();
+    $table->text('notes')->nullable();
+    $table->timestamps();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000008_create_attendance_table.php
+/*
+Schema::create('attendance', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('library_id')->constrained('libraries')->onDelete('cascade');
+    $table->foreignId('member_id')->constrained('members')->onDelete('cascade');
+    $table->foreignId('seat_id')->nullable()->constrained('seats');
+    $table->timestamp('check_in')->nullable();
+    $table->timestamp('check_out')->nullable();
+    $table->date('date');
+    $table->timestamps();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000009_create_subscriptions_table.php
+/*
+Schema::create('subscriptions', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('library_id')->constrained('libraries')->onDelete('cascade');
+    $table->foreignId('plan_id')->constrained('plans');
+    $table->string('razorpay_order_id')->nullable();
+    $table->string('razorpay_payment_id')->nullable();
+    $table->string('razorpay_subscription_id')->nullable();
+    $table->decimal('amount', 10, 2);
+    $table->enum('status', ['pending','active','failed','cancelled'])->default('pending');
+    $table->timestamp('starts_at')->nullable();
+    $table->timestamp('expires_at')->nullable();
+    $table->timestamps();
+});
+*/
+
+// FILE: database/migrations/2024_01_01_000010_create_notifications_table.php
+/*
+Schema::create('library_notifications', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('library_id')->constrained('libraries')->onDelete('cascade');
+    $table->string('title');
+    $table->text('message');
+    $table->enum('type', ['info','warning','success','danger'])->default('info');
+    $table->boolean('is_read')->default(false);
+    $table->timestamps();
+});
+*/
