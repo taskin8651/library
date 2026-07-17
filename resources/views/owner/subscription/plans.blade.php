@@ -16,8 +16,8 @@
     $currentPlan = $plans->firstWhere('id', $library->plan_id);
     $onTrial = $library->isOnTrial();
     $daysLeft = $library->daysLeft();
-    $periodStart = $onTrial ? ($library->trial_ends_at?->copy()->subDays(14)) : $library->plan_expires_at?->copy()->subDays(30);
-    $totalDays = $onTrial ? 14 : 30;
+    $periodStart = $onTrial ? ($library->trial_ends_at?->copy()->subDays(3)) : $library->plan_expires_at?->copy()->subDays(30);
+    $totalDays = $onTrial ? 3 : 30;
     $usedDays = max(0, $totalDays - $daysLeft);
     $usagePct = $totalDays > 0 ? max(0, min(100, ($usedDays / $totalDays) * 100)) : 0;
 
@@ -105,8 +105,8 @@
             @if($isCurrent)
                 <button class="btn btn-outline-primary w-100" disabled>Current Plan</button>
             @else
-                <button class="btn btn-primary w-100" onclick="startPayment({{ $plan->id }}, '{{ $plan->name }}', {{ $plan->price * 100 }})">
-                    <i class="bi bi-arrow-repeat me-2"></i>{{ $onTrial ? 'Subscribe' : 'Renew / Switch' }} - ₹{{ number_format($plan->price) }}/mo
+                <button class="btn btn-primary w-100" onclick="startUpiPayment({{ $plan->id }})">
+                    <i class="bi bi-qr-code me-2"></i>{{ $onTrial ? 'Subscribe' : 'Renew / Switch' }} - ₹{{ number_format($plan->price) }}/mo
                 </button>
             @endif
         </div>
@@ -147,9 +147,48 @@
     </div>
 </div>
 
+<!-- UPI Payment Modal -->
+<div class="modal fade" id="upiPaymentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:20px;border:none;">
+      <div class="modal-header border-0 pb-0">
+        <h6 class="modal-title fw-bold" id="upiModalTitle">Pay via UPI</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-2 text-center">
+        <div id="upiQrBox" class="upi-qr-box"></div>
+        <div class="upi-amount" id="upiAmount"></div>
+
+        <div class="upi-id-row">
+            <code id="upiIdText"></code>
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="upiCopyBtn">
+                <i class="bi bi-clipboard me-1"></i>Copy
+            </button>
+        </div>
+
+        <p class="upi-steps text-start">
+            1. Scan the QR (or use the UPI ID) with any UPI app — GPay, PhonePe, Paytm, etc.<br>
+            2. After paying, enter the UPI transaction reference (UTR) below.<br>
+            3. We'll verify and activate your plan shortly after.
+        </p>
+
+        <form id="upiUtrForm" class="text-start mt-3">
+            <div class="mb-2">
+                <label class="form-label small fw-600">UPI Transaction Ref. (UTR) *</label>
+                <input type="text" id="upiUtrInput" class="form-control" placeholder="e.g. 123456789012" required maxlength="50">
+            </div>
+            <div id="upiFormMsg" class="small mb-2"></div>
+            <button type="submit" class="btn btn-primary w-100" id="upiSubmitBtn">
+                <i class="bi bi-check-circle me-1"></i>I've Paid — Submit for Verification
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="{{ asset('assets/js/owner-subscription-plans.js') }}"></script>
 @endpush

@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
-            $table->integer('trial_days')->default(14);
+            $table->integer('trial_days')->default(3);
             $table->integer('max_branches')->default(1);
             $table->boolean('staff_accounts')->default(false);
             $table->boolean('white_label')->default(false);

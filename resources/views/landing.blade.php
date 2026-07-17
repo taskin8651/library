@@ -6,7 +6,7 @@
 
     @php
         $seoTitle = 'LibraryCRM – Smart Library Management Software for India\'s Study Libraries';
-        $seoDesc  = 'LibraryCRM helps study library owners manage members, collect fees, track seats and run QR-based attendance — all from one dashboard. 14-day free trial, no credit card needed.';
+        $seoDesc  = 'LibraryCRM helps study library owners manage members, collect fees, track seats and run QR-based attendance — all from one dashboard. 3-day free trial, no credit card needed.';
         $seoUrl   = url('/');
         $seoImage = asset('images/og-image.png');
     @endphp
@@ -61,7 +61,7 @@
             "@type": "Offer",
             "price": "399",
             "priceCurrency": "INR",
-            "description": "Starter plan, 14-day free trial"
+            "description": "Starter plan, 3-day free trial"
         }
     }
     </script>
@@ -183,7 +183,7 @@
 
                 <div class="hero-trust">
                     <i class="bi bi-shield-check" style="color:#4ade80"></i>
-                    14-day free trial
+                    3-day free trial
                     <span class="dot"></span>
                     No credit card needed
                     <span class="dot"></span>
@@ -415,7 +415,7 @@
                     <div class="step-num">1</div>
                     <div>
                         <div class="fw-700 mb-1" style="color:#1a1d23">Register</div>
-                        <div style="color:#6b7280;font-size:14px">Create a free account with your library name, slug, and email. Your 14-day trial starts right away.</div>
+                        <div style="color:#6b7280;font-size:14px">Create a free account with your library name, slug, and email. Your 3-day trial starts right away.</div>
                     </div>
                 </div>
                 <div class="step-connector"></div>
@@ -603,7 +603,7 @@
         <div class="text-center mb-5 reveal">
             <div class="section-tag">Pricing</div>
             <h2 class="section-title mt-2">Simple, Transparent Pricing</h2>
-            <p class="section-sub mx-auto mt-3">14-day free trial — no credit card required</p>
+            <p class="section-sub mx-auto mt-3">3-day free trial — no credit card required</p>
         </div>
 
         <div class="row justify-content-center g-4 align-items-stretch">
@@ -708,7 +708,7 @@
 
                 <div class="faq-item">
                     <div class="faq-q">What do I get in the free trial? <span class="faq-icon"><i class="bi bi-plus"></i></span></div>
-                    <div class="faq-a">All features are free for 14 days. No credit card required. Choose a paid plan after the trial ends.</div>
+                    <div class="faq-a">All features are free for 3 days. No credit card required. Choose a paid plan after the trial ends.</div>
                 </div>
 
                 <div class="faq-item">
@@ -733,7 +733,7 @@
 
                 <div class="faq-item">
                     <div class="faq-q">How do I make payments? <span class="faq-icon"><i class="bi bi-plus"></i></span></div>
-                    <div class="faq-a">Everything is accepted through Razorpay — UPI, Credit/Debit Card, Net Banking. Secure checkout guaranteed.</div>
+                    <div class="faq-a">Payments are accepted via UPI — scan the QR code or pay directly to our UPI ID. Once you submit your transaction reference, we verify and activate your plan shortly after.</div>
                 </div>
 
             </div>
@@ -753,7 +753,7 @@
                 <i class="bi bi-rocket-takeoff" style="font-size:18px"></i>
                 Start Your Free Trial — Today
             </a>
-            <p class="cta-note mt-3">14 days free &nbsp;•&nbsp; No credit card &nbsp;•&nbsp; Cancel anytime</p>
+            <p class="cta-note mt-3">3 days free &nbsp;•&nbsp; No credit card &nbsp;•&nbsp; Cancel anytime</p>
         </div>
     </div>
 </section>

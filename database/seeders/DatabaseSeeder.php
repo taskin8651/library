@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Starter',
             'description' => 'Perfect for small study libraries',
             'price' => 399,
-            'trial_days' => 14,
+            'trial_days' => 3,
             'max_branches' => 1,
             'staff_accounts' => false,
             'white_label' => false,
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Pro',
             'description' => 'For growing libraries with multiple branches',
             'price' => 699,
-            'trial_days' => 14,
+            'trial_days' => 3,
             'max_branches' => 3,
             'staff_accounts' => true,
             'white_label' => false,
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Premium',
             'description' => 'Unlimited branches with white-label branding',
             'price' => 999,
-            'trial_days' => 14,
+            'trial_days' => 3,
             'max_branches' => -1,
             'staff_accounts' => true,
             'white_label' => true,
@@ -71,8 +71,8 @@ class DatabaseSeeder extends Seeder
             'theme_color' => '#0d6efd',
             'plan_id' => $starter->id,
             'status' => 'active',
-            'trial_ends_at' => Carbon::now()->addDays(14),
-            'plan_expires_at' => Carbon::now()->addDays(14),
+            'trial_ends_at' => Carbon::now()->addDays(3),
+            'plan_expires_at' => Carbon::now()->addDays(3),
         ]);
 
         // Create Owner user

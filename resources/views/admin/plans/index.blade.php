@@ -7,6 +7,7 @@
     <li class="sidebar-section mt-2">Management</li>
     <li><a href="/admin/libraries" class="nav-link"><i class="bi bi-building"></i> Libraries</a></li>
     <li><a href="/admin/plans" class="nav-link active"><i class="bi bi-star-fill"></i> Plans</a></li>
+    <li><a href="/admin/payments" class="nav-link"><i class="bi bi-cash-coin"></i> Payments</a></li>
 </ul>
 @endsection
 @section('content')

@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController as AdminDash;
+use App\Http\Controllers\Admin\PaymentController as AdminPayment;
 use App\Http\Controllers\Owner\DashboardController as OwnerDash;
 use App\Http\Controllers\Owner\MemberController;
 use App\Http\Controllers\Owner\FeeController;
@@ -41,6 +42,9 @@ Route::prefix('admin')->middleware(['auth', 'role:superadmin'])->group(function 
     Route::post('/libraries/{library}/suspend', [AdminDash::class, 'suspendLibrary'])->name('admin.libraries.suspend');
     Route::get('/plans', [AdminDash::class, 'plans'])->name('admin.plans');
     Route::put('/plans/{plan}', [AdminDash::class, 'updatePlan'])->name('admin.plans.update');
+    Route::get('/payments', [AdminPayment::class, 'index'])->name('admin.payments.index');
+    Route::post('/payments/{subscription}/approve', [AdminPayment::class, 'approve'])->name('admin.payments.approve');
+    Route::post('/payments/{subscription}/reject', [AdminPayment::class, 'reject'])->name('admin.payments.reject');
 });
 
 // ─── Library Owner Routes ─────────────────────────────────────
@@ -86,7 +90,7 @@ Route::prefix('owner')->middleware(['auth', 'role:owner,staff'])->group(function
     // Subscription
     Route::get('/subscription/plans', [SubscriptionController::class, 'plans'])->name('owner.subscription.plans');
     Route::post('/subscription/order', [SubscriptionController::class, 'createOrder'])->name('owner.subscription.order');
-    Route::post('/subscription/verify', [SubscriptionController::class, 'verifyPayment'])->name('owner.subscription.verify');
+    Route::post('/subscription/submit-utr', [SubscriptionController::class, 'submitUtr'])->name('owner.subscription.submit-utr');
 
     // Announcements
     Route::get('/announcements', [AnnouncementController::class, 'index'])->name('owner.announcements.index');

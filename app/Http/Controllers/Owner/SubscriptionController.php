@@ -6,17 +6,12 @@ use App\Models\Plan;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Razorpay\Api\Api;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Carbon\Carbon;
 
 class SubscriptionController extends Controller
 {
     private function library() { return Auth::user()->library; }
-
-    private function razorpay(): Api
-    {
-        return new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
-    }
 
     public function plans()
     {
@@ -25,83 +20,67 @@ class SubscriptionController extends Controller
         return view('owner.subscription.plans', compact('plans','library'));
     }
 
+    // Creates a pending subscription and returns a UPI QR code + payment
+    // link for the owner to pay manually (no payment gateway configured yet).
     public function createOrder(Request $request)
     {
         $request->validate(['plan_id' => 'required|exists:plans,id']);
         $library = $this->library();
         $plan    = Plan::findOrFail($request->plan_id);
 
-        $api = $this->razorpay();
-        $order = $api->order->create([
-            'amount'   => $plan->price * 100, // in paise
-            'currency' => 'INR',
-            'receipt'  => 'LIB-' . $library->id . '-' . time(),
-            'notes'    => [
-                'library_id' => $library->id,
-                'plan_id'    => $plan->id,
-                'plan_name'  => $plan->name,
-            ],
+        $subscription = Subscription::create([
+            'library_id'     => $library->id,
+            'plan_id'        => $plan->id,
+            'payment_method' => 'upi',
+            'amount'         => $plan->price,
+            'status'         => 'pending',
         ]);
 
-        // Create pending subscription
-        Subscription::create([
-            'library_id'        => $library->id,
-            'plan_id'           => $plan->id,
-            'razorpay_order_id' => $order->id,
-            'amount'            => $plan->price,
-            'status'            => 'pending',
+        $upiId   = config('services.upi.id');
+        $payee   = config('services.upi.name');
+        $note    = $library->name . ' - ' . $plan->name . ' Plan';
+        $upiLink = 'upi://pay?' . http_build_query([
+            'pa' => $upiId,
+            'pn' => $payee,
+            'am' => number_format($plan->price, 2, '.', ''),
+            'cu' => 'INR',
+            'tn' => $note,
+            'tr' => 'SUB' . $subscription->id,
         ]);
+
+        $qr = (string) QrCode::format('svg')->size(220)->generate($upiLink);
 
         return response()->json([
-            'order_id'   => $order->id,
-            'amount'     => $plan->price * 100,
-            'currency'   => 'INR',
-            'plan_name'  => $plan->name,
-            'rzp_key'    => config('services.razorpay.key'),
-            'library'    => $library->name,
-            'email'      => $library->email,
-            'phone'      => $library->phone,
+            'subscription_id' => $subscription->id,
+            'upi_id'           => $upiId,
+            'upi_link'         => $upiLink,
+            'upi_qr'           => $qr,
+            'amount'           => $plan->price,
+            'plan_name'        => $plan->name,
         ]);
     }
 
-    public function verifyPayment(Request $request)
+    // Owner submits their UPI transaction reference (UTR) after paying.
+    // The subscription stays "pending" until an admin verifies the payment
+    // actually landed and approves it from the admin panel.
+    public function submitUtr(Request $request)
     {
         $request->validate([
-            'razorpay_order_id'   => 'required',
-            'razorpay_payment_id' => 'required',
-            'razorpay_signature'  => 'required',
+            'subscription_id' => 'required|exists:subscriptions,id',
+            'utr'              => 'required|string|max:50',
         ]);
 
-        $api = $this->razorpay();
+        $library = $this->library();
+        $subscription = Subscription::where('id', $request->subscription_id)
+            ->where('library_id', $library->id)
+            ->where('status', 'pending')
+            ->firstOrFail();
 
-        try {
-            $api->utility->verifyPaymentSignature([
-                'razorpay_order_id'   => $request->razorpay_order_id,
-                'razorpay_payment_id' => $request->razorpay_payment_id,
-                'razorpay_signature'  => $request->razorpay_signature,
-            ]);
+        $subscription->update(['utr' => $request->utr]);
 
-            $subscription = Subscription::where('razorpay_order_id', $request->razorpay_order_id)->firstOrFail();
-            $library      = $this->library();
-
-            $expiresAt = Carbon::now()->addDays(30);
-            $subscription->update([
-                'razorpay_payment_id' => $request->razorpay_payment_id,
-                'status'     => 'active',
-                'starts_at'  => now(),
-                'expires_at' => $expiresAt,
-            ]);
-
-            $library->update([
-                'plan_id'         => $subscription->plan_id,
-                'status'          => 'active',
-                'plan_expires_at' => $expiresAt,
-            ]);
-
-            return redirect('/owner/dashboard')->with('success', 'Payment successful! Your plan is now active till ' . $expiresAt->format('d M Y'));
-
-        } catch (\Exception $e) {
-            return redirect('/owner/subscription/plans')->with('error', 'Payment verification failed. Please contact support.');
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment submitted! We will verify it and activate your plan shortly.',
+        ]);
     }
 }

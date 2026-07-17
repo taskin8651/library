@@ -17,7 +17,7 @@
         <div class="text-center mb-4">
             <div class="brand-icon-reg"><i class="bi bi-rocket-takeoff-fill"></i></div>
             <h4 class="fw-800">Start Your Free Trial</h4>
-            <p class="text-muted small">14 days free. No credit card required.</p>
+            <p class="text-muted small">3 days free. No credit card required.</p>
         </div>
 
         @if($errors->any())

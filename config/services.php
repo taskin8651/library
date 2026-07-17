@@ -8,4 +8,8 @@ return [
         'key'    => env('RAZORPAY_KEY', 'rzp_test_XXXXXXXXXXXXXXXX'),
         'secret' => env('RAZORPAY_SECRET', 'XXXXXXXXXXXXXXXXXXXXXXXX'),
     ],
+    'upi' => [
+        'id'   => env('UPI_ID', 'mdsayebalam10@okhdfcbank'),
+        'name' => env('UPI_PAYEE_NAME', 'LibraryCRM'),
+    ],
 ];
