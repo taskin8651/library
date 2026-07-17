@@ -6,11 +6,23 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     /* ── PAGE LOADER ──────────────────────────────────────── */
+    var pageLoader = document.getElementById('page-loader');
     window.addEventListener('load', function () {
         setTimeout(function () {
-            var loader = document.getElementById('page-loader');
-            if (loader) loader.classList.add('hidden');
+            if (pageLoader) pageLoader.classList.add('hidden');
         }, 800);
+    });
+
+    /* Restored from bfcache (Back/Forward button) — `load` won't fire again,
+       so give a quick reassuring flash instead of an instant, jarring cut. */
+    window.addEventListener('pageshow', function (e) {
+        if (!pageLoader) return;
+        if (e.persisted) {
+            pageLoader.classList.remove('hidden');
+            setTimeout(function () { pageLoader.classList.add('hidden'); }, 300);
+        } else {
+            pageLoader.classList.add('hidden');
+        }
     });
 
     /* ── NAVBAR SCROLL ────────────────────────────────────── */

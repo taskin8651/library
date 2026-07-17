@@ -84,6 +84,17 @@ document.addEventListener('click', function (e) {
 window.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(() => document.body.classList.add('page-fade-loaded'));
 });
+
+// Pressing Back/Forward can restore this exact page from the browser's
+// bfcache — including a `page-fade-out` class left over from the click that
+// navigated away, which would otherwise leave the restored page stuck fully
+// transparent. Reset the fade state whenever that happens.
+window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+        document.body.classList.remove('page-fade-out');
+        document.body.classList.add('page-fade-loaded');
+    }
+});
 document.addEventListener('click', function (e) {
     const a = e.target.closest('a[href]');
     if (!a) return;

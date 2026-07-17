@@ -9,8 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="{{ asset('assets/css/student-checkin.css') }}" rel="stylesheet">
+    @include('partials.page-loader-styles')
 </head>
 <body data-library-slug="{{ $library->slug }}">
+    @include('partials.page-loader')
     <div class="checkin-card">
         @if($library->logo)
             <div class="logo-wrap"><img src="{{ $library->logo_url }}" height="60" class="mb-3 rounded-3"></div>
@@ -44,5 +46,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/js/student-checkin.js') }}"></script>
+    <script src="{{ asset('assets/js/page-loader.js') }}"></script>
 </body>
 </html>

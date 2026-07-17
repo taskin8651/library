@@ -8,12 +8,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
+    @include('partials.page-loader-styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="{{ asset('assets/css/auth-login.css') }}" rel="stylesheet">
 </head>
 <body>
+    @include('partials.page-loader')
     <div class="split-wrap">
         <!-- Brand / marketing panel -->
         <div class="brand-panel">
@@ -90,5 +92,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/js/auth-login.js') }}"></script>
     <script src="{{ asset('assets/js/pwa-install.js') }}"></script>
+    <script src="{{ asset('assets/js/page-loader.js') }}"></script>
 </body>
 </html>

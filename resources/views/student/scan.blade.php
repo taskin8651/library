@@ -11,8 +11,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="{{ asset('assets/css/student-scan.css') }}" rel="stylesheet">
+    @include('partials.page-loader-styles')
 </head>
 <body data-library-slug="{{ $library->slug }}">
+    @include('partials.page-loader')
 
     <div class="scan-topbar">
         <a href="/student/dashboard" class="scan-back"><i class="bi bi-arrow-left"></i></a>
@@ -48,5 +50,6 @@
 
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script src="{{ asset('assets/js/student-scan.js') }}"></script>
+    <script src="{{ asset('assets/js/page-loader.js') }}"></script>
 </body>
 </html>
