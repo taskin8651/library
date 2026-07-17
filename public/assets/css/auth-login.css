@@ -98,3 +98,9 @@ body { min-height: 100vh; background: #0b0d14; overflow-x: hidden; }
 @media (max-width: 900px) {
     .brand-panel { display: none; }
 }
+
+@media (max-width: 480px) {
+    .form-panel { padding: 28px 16px; }
+    .login-card { padding: 30px 22px; border-radius: 18px; }
+    .brand-icon { width: 48px; height: 48px; font-size: 22px; }
+}

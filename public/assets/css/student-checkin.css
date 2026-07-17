@@ -238,3 +238,10 @@ body::after {
     margin-bottom: 8px;
     display: inline-block;
 }
+
+@media (max-width: 420px) {
+    body { padding: 14px; align-items: flex-start; padding-top: 48px; }
+    .checkin-card { padding: 32px 24px; border-radius: 20px; }
+    .uid-input { font-size: 22px; letter-spacing: 5px; padding: 14px; }
+    .logo-ring { width: 54px; height: 54px; font-size: 22px; }
+}
