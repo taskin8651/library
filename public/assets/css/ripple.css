@@ -1,0 +1,15 @@
+/* Shared tap/click ripple effect — used by ripple.js on any standalone page
+   (pages under layouts/app.blade.php already have their own copy of this
+   in app-layout.css; don't include both on the same page). */
+.ripple-host { position: relative; overflow: hidden; }
+.ripple-span {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,.5);
+    transform: scale(0);
+    animation: rippleGrow .6s ease-out;
+    pointer-events: none;
+}
+@keyframes rippleGrow {
+    to { transform: scale(1); opacity: 0; }
+}

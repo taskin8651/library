@@ -22,22 +22,22 @@
         <span class="badge bg-warning text-dark">{{ $awaitingVerification->count() }} pending</span>
     </div>
     <div class="table-responsive">
-        <table class="table table-hover mb-0">
+        <table class="table table-hover mb-0 rtable">
             <thead class="table-light">
                 <tr><th>Library</th><th>Plan</th><th>Amount</th><th>UTR / Ref No.</th><th>Submitted</th><th>Action</th></tr>
             </thead>
             <tbody>
                 @forelse($awaitingVerification as $sub)
                 <tr>
-                    <td>
+                    <td data-label="Library">
                         <div class="fw-500">{{ $sub->library->name }}</div>
                         <small class="text-muted">{{ $sub->library->email }} &middot; {{ $sub->library->phone }}</small>
                     </td>
-                    <td><span class="badge bg-light text-dark">{{ $sub->plan->name ?? '-' }}</span></td>
-                    <td class="fw-600">₹{{ number_format($sub->amount) }}</td>
-                    <td><code>{{ $sub->utr }}</code></td>
-                    <td>{{ $sub->updated_at->format('d M Y, h:i A') }}</td>
-                    <td>
+                    <td data-label="Plan"><span class="badge bg-light text-dark">{{ $sub->plan->name ?? '-' }}</span></td>
+                    <td data-label="Amount" class="fw-600">₹{{ number_format($sub->amount) }}</td>
+                    <td data-label="UTR"><code>{{ $sub->utr }}</code></td>
+                    <td data-label="Submitted">{{ $sub->updated_at->format('d M Y, h:i A') }}</td>
+                    <td data-label="Action">
                         <div class="d-flex gap-1">
                             <form method="POST" action="/admin/payments/{{ $sub->id }}/approve">
                                 @csrf
@@ -61,23 +61,23 @@
 <div class="table-card">
     <div class="card-header"><i class="bi bi-clock-history me-2"></i>Payment History</div>
     <div class="table-responsive">
-        <table class="table table-hover mb-0">
+        <table class="table table-hover mb-0 rtable">
             <thead class="table-light">
                 <tr><th>Library</th><th>Plan</th><th>Amount</th><th>Status</th><th>UTR</th><th>Date</th></tr>
             </thead>
             <tbody>
                 @forelse($history as $sub)
                 <tr>
-                    <td>{{ $sub->library->name ?? '-' }}</td>
-                    <td>{{ $sub->plan->name ?? '-' }}</td>
-                    <td class="fw-600">₹{{ number_format($sub->amount) }}</td>
-                    <td>
+                    <td data-label="Library">{{ $sub->library->name ?? '-' }}</td>
+                    <td data-label="Plan">{{ $sub->plan->name ?? '-' }}</td>
+                    <td data-label="Amount" class="fw-600">₹{{ number_format($sub->amount) }}</td>
+                    <td data-label="Status">
                         <span class="badge {{ $sub->status === 'active' ? 'badge-active' : 'badge-inactive' }}">
                             {{ ucfirst($sub->status) }}
                         </span>
                     </td>
-                    <td><code>{{ $sub->utr ?? '-' }}</code></td>
-                    <td>{{ $sub->updated_at->format('d M Y') }}</td>
+                    <td data-label="UTR"><code>{{ $sub->utr ?? '-' }}</code></td>
+                    <td data-label="Date">{{ $sub->updated_at->format('d M Y') }}</td>
                 </tr>
                 @empty
                 <tr><td colspan="6" class="text-center text-muted py-4">No processed payments yet</td></tr>

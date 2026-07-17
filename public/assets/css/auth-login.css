@@ -74,25 +74,61 @@ body { min-height: 100vh; background: #0b0d14; overflow-x: hidden; }
 
 .form-control { border-radius: 11px; padding: 12px 14px; border: 1.5px solid #e9ecef; transition: all .2s ease; }
 .form-control:focus { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.14); }
+.form-control.is-invalid { border-color: #ef4444; }
+.form-control.is-invalid:focus { box-shadow: 0 0 0 4px rgba(239,68,68,.14); }
 .input-icon-wrap { position: relative; }
-.input-icon-wrap i.field-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 14px; }
-.input-icon-wrap .form-control { padding-left: 38px; }
-.toggle-pass { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: none; color: #9ca3af; cursor: pointer; }
+.input-icon-wrap .field-icon {
+    position: absolute !important; left: 13px; top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: #6b7280; font-size: 15px; line-height: 1;
+    pointer-events: none; z-index: 2;
+}
+.input-icon-wrap > .form-control { padding-left: 40px !important; }
+.input-icon-wrap > .form-control.has-toggle { padding-right: 42px !important; }
+.toggle-pass {
+    position: absolute !important; right: 6px; top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+    border-radius: 8px; border: none; background: none; padding: 0;
+    cursor: pointer; z-index: 3;
+    transition: background .15s ease, color .15s ease;
+}
+.toggle-pass i { color: #6b7280; font-size: 16px; line-height: 1; }
+.toggle-pass:hover { background: #f4f6fb; }
+.toggle-pass:hover i { color: #667eea; }
 
 .btn-login {
     background: linear-gradient(135deg, #667eea, #764ba2);
     background-size: 200% auto;
     color: white; border: none; padding: 13px;
-    border-radius: 11px; font-weight: 700; width: 100%;
+    border-radius: 11px; font-weight: 700; width: 100%; min-height: 48px;
     box-shadow: 0 10px 24px rgba(102,126,234,.32);
     transition: all .25s ease;
 }
 .btn-login:hover { background-position: right center; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(102,126,234,.42); color: #fff; }
 .btn-login:active { transform: scale(.98); }
+.btn-login:disabled { opacity: .75; cursor: progress; transform: none; }
+
+/* Forgot-password helper popover (no server-side reset flow exists yet —
+   this just tells the student/owner who to contact instead of a dead link) */
+.forgot-link {
+    font-size: 12.5px; font-weight: 600; color: #667eea; text-decoration: none;
+    background: none; border: none; padding: 4px 2px;
+}
+.forgot-link:hover { text-decoration: underline; }
 
 .demo-box {
     background: #f7f8fc; border: 1px dashed #dce0ee; border-radius: 14px; padding: 14px 16px;
     animation: fadeIn .6s ease .3s both;
+}
+
+.modal-content { border-radius: 18px; border: none; box-shadow: 0 24px 60px rgba(17,24,39,.25); }
+.modal-header { border-bottom: 1px solid #f0f1f5; }
+.modal-body { font-size: 14px; color: #4b5563; line-height: 1.6; }
+
+/* Accessibility: visible keyboard focus ring everywhere interactive */
+a:focus-visible, button:focus-visible, .form-check-input:focus-visible {
+    outline: 2px solid #667eea; outline-offset: 2px; border-radius: 6px;
 }
 
 @media (max-width: 900px) {
@@ -103,4 +139,9 @@ body { min-height: 100vh; background: #0b0d14; overflow-x: hidden; }
     .form-panel { padding: 28px 16px; }
     .login-card { padding: 30px 22px; border-radius: 18px; }
     .brand-icon { width: 48px; height: 48px; font-size: 22px; }
+}
+
+@media (max-width: 360px) {
+    .login-card { padding: 26px 18px; }
+    .brand-icon { width: 44px; height: 44px; font-size: 20px; margin-bottom: 14px; }
 }

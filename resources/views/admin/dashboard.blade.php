@@ -53,27 +53,27 @@
                 <a href="/admin/libraries" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover mb-0 rtable">
                     <thead class="table-light">
                         <tr><th>Library</th><th>Plan</th><th>Status</th><th>Expires</th><th>Actions</th></tr>
                     </thead>
                     <tbody>
                         @forelse($recent_libraries as $lib)
                         <tr>
-                            <td>
+                            <td data-label="Library">
                                 <div class="fw-500">{{ $lib->name }}</div>
                                 <small class="text-muted">{{ $lib->email }}</small>
                             </td>
-                            <td><span class="badge bg-light text-dark">{{ $lib->plan->name }}</span></td>
-                            <td>
+                            <td data-label="Plan"><span class="badge bg-light text-dark">{{ $lib->plan->name }}</span></td>
+                            <td data-label="Status">
                                 @if($lib->status == 'active') <span class="badge badge-active">Active</span>
                                 @elseif($lib->status == 'pending') <span class="badge bg-warning text-dark">Pending</span>
                                 @elseif($lib->status == 'suspended') <span class="badge badge-inactive">Suspended</span>
                                 @else <span class="badge badge-expired">Expired</span>
                                 @endif
                             </td>
-                            <td>{{ $lib->plan_expires_at ? $lib->plan_expires_at->format('d M Y') : '-' }}</td>
-                            <td>
+                            <td data-label="Expires">{{ $lib->plan_expires_at ? $lib->plan_expires_at->format('d M Y') : '-' }}</td>
+                            <td data-label="Actions">
                                 <div class="d-flex gap-1">
                                     @if($lib->status != 'active')
                                     <form method="POST" action="/admin/libraries/{{ $lib->id }}/approve">

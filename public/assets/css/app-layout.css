@@ -6,6 +6,7 @@ body {
         radial-gradient(circle at 92% 92%, rgba(20,184,166,0.07) 0%, transparent 40%),
         #f4f6fb;
     color: var(--ink);
+    overflow-x: hidden;
 }
 
 /* Scrollbar */
@@ -96,6 +97,16 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.4px;
+}
+
+/* Drawer backdrop (mobile only — see .sidebar-backdrop.show below) */
+.sidebar-backdrop {
+    display: none;
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(10,10,16,.5);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity .25s ease;
 }
 
 /* ============ Main Content ============ */
@@ -430,7 +441,7 @@ body {
 .modal-footer { border-top: 1px solid #f0f1f5; padding: 16px 22px; }
 
 /* ============ Responsive card-mode tables ============ */
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
     table.rtable thead { display: none; }
     table.rtable, table.rtable tbody, table.rtable tr, table.rtable td { display: block; width: 100%; }
     table.rtable tr {
@@ -501,14 +512,140 @@ body {
 }
 .bn-item-fab:hover { color: #fff !important; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); }
 
-/* Mobile */
-@media (max-width: 768px) {
-    .sidebar { transform: translateX(-100%); }
-    .sidebar.show { transform: translateX(0); }
-    .main-content { margin-left: 0; }
-    .welcome-hero { padding: 22px 20px; }
-    .page-content { padding-bottom: 84px; }
-}
 @media (min-width: 769px) {
     .bottom-nav { display: none !important; }
+}
+
+/* ================================================================
+   MOBILE / TABLET — native-app-style layer.
+   767.98px matches Bootstrap's own "below md" convention (d-md-none
+   flips at exactly min-width:768px) — using a plain 768px here left a
+   dead zone at exactly 768px (e.g. iPad portrait) where the sidebar was
+   pushed off-screen by this query AND the hamburger was simultaneously
+   hidden by d-md-none, so there was no way to open the menu at all.
+   ================================================================ */
+@media (max-width: 767.98px) {
+    /* Drawer + backdrop */
+    .sidebar {
+        transform: translateX(-100%);
+        width: min(var(--sidebar-width), 84vw);
+        padding-top: env(safe-area-inset-top);
+        padding-left: env(safe-area-inset-left);
+        -webkit-overflow-scrolling: touch;
+    }
+    .sidebar.show { transform: translateX(0); box-shadow: 0 0 60px rgba(0,0,0,.35); }
+    .sidebar-backdrop.show { display: block; opacity: 1; }
+    body.drawer-open { overflow: hidden; }
+    .main-content { margin-left: 0; }
+
+    /* Sticky top header: respect the notch, roomier touch targets, glass
+       blur (already on .topbar), and hide-on-scroll-down for a native feel */
+    .topbar {
+        padding: 12px 16px;
+        padding-top: calc(12px + env(safe-area-inset-top));
+        gap: 10px;
+        box-shadow: 0 2px 16px rgba(17,24,39,.05);
+        transition: transform .28s cubic-bezier(.22,1,.36,1), box-shadow .3s ease;
+    }
+    .topbar.nav-hidden { transform: translateY(-100%); }
+    .topbar h5 { font-size: 16px; }
+    .btn-icon-soft { width: 44px; height: 44px; }
+    .user-chip { padding: 5px 12px 5px 5px; }
+    .user-avatar-sm { width: 34px; height: 34px; }
+
+    /* Animated hamburger -> X (mirrors the landing page's mobile nav) */
+    .nav-burger { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+    .nav-burger .burger-line {
+        display: block; width: 18px; height: 2px; border-radius: 2px;
+        background: #4b5563;
+        transition: transform .28s cubic-bezier(.22,1,.36,1), opacity .2s ease;
+    }
+    .nav-burger.open .burger-line:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-burger.open .burger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-burger.open .burger-line:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* Full-width layout with breathing room instead of desktop's dense grid */
+    .welcome-hero { padding: 22px 20px; border-radius: 18px; }
+    .page-content { padding: 16px 14px calc(90px + env(safe-area-inset-bottom)); }
+    .stat-card, .table-card, .card-stat { border-radius: 16px; }
+    .stat-card { padding: 18px; }
+    .table-card .card-header { padding: 14px 16px; border-radius: 16px 16px 0 0; }
+    .modal-body { padding: 18px; }
+    .modal-header { padding: 16px 18px; }
+    .modal-footer { padding: 14px 18px; }
+    .empty-state { padding: 40px 18px; }
+
+    /* Typography hierarchy: readable body text, no iOS auto-zoom on inputs */
+    body, .table td, .plan-feature, p { font-size: 15px; }
+    .form-control, .form-select, textarea.form-control {
+        font-size: 16px !important;
+        padding-top: 12px; padding-bottom: 12px;
+    }
+    .section-head h6 { font-size: 15.5px; }
+
+    /* 44px+ touch targets everywhere interactive */
+    .btn { min-height: 44px; padding-top: 10px; padding-bottom: 10px; }
+    .btn-sm { min-height: 40px; padding-left: 14px; padding-right: 14px; }
+    .sidebar .nav-link { min-height: 46px; padding-top: 12px; padding-bottom: 12px; }
+    .dropdown-item { min-height: 40px; display: flex; align-items: center; }
+    .pagination .page-link { min-width: 40px; min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+    .bn-item { min-height: 48px; padding: 8px 10px; }
+    .form-check-input { width: 20px; height: 20px; }
+
+    /* Prevent sideways scroll from any wide inline content */
+    .table-card, .stat-card, .card-stat, .modal-dialog { max-width: 100%; }
+    .table-responsive { -webkit-overflow-scrolling: touch; }
+
+    /* Search/filter toolbars living inside a .card-header (input + select +
+       button in a row) — stack full-width instead of squeezing sideways. */
+    .card-header { flex-direction: column; align-items: stretch !important; }
+    .card-header form.d-flex { flex-wrap: wrap; }
+    .card-header form.d-flex input,
+    .card-header form.d-flex select { flex: 1 1 140px; width: auto !important; }
+    .card-header form.d-flex button { flex: 0 0 auto; }
+
+    /* Smoother, lighter motion for a native feel; avoid "stuck hover" on tap */
+    .stat-card, .table-card, .card-stat, .quick-action, .btn-primary, .pagination .page-link {
+        transition-duration: .2s;
+    }
+}
+
+/* Devices that can't truly ":hover" (touchscreens) shouldn't get a lift
+   effect that stays "stuck" after a tap — this fires regardless of width,
+   so a touch laptop keeps the desktop look but a phone gets the fix. */
+@media (hover: none) {
+    .stat-card:hover, .table-card:hover, .card-stat:hover,
+    .quick-action:hover, .btn-primary:hover, .btn:hover,
+    .sidebar .nav-link:hover { transform: none; }
+}
+
+/* Progressively tighter phones */
+@media (max-width: 576px) {
+    .page-content { padding-left: 12px; padding-right: 12px; }
+    .stat-card h3 { font-size: 24px; }
+    .welcome-hero { padding: 20px 18px; }
+    .welcome-hero h4 { font-size: 18px; }
+    #toast-stack { left: 12px; right: 12px; width: auto; top: calc(12px + env(safe-area-inset-top)); }
+}
+@media (max-width: 480px) {
+    .page-content { padding-left: 10px; padding-right: 10px; }
+    .topbar { padding-left: 12px; padding-right: 12px; }
+    .stat-card { padding: 16px; }
+    .quick-action { padding: 12px 14px; }
+}
+@media (max-width: 414px) {
+    .stat-card .icon-box { width: 44px; height: 44px; font-size: 18px; }
+}
+@media (max-width: 390px) {
+    .welcome-hero { padding: 18px 16px; }
+}
+@media (max-width: 375px) {
+    .stat-card h3 { font-size: 22px; }
+}
+@media (max-width: 360px) {
+    .page-content { padding-left: 8px; padding-right: 8px; }
+}
+@media (max-width: 320px) {
+    .stat-card { padding: 14px; }
+    .topbar h5 { font-size: 15px; }
 }

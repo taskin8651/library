@@ -1,3 +1,52 @@
+// ---- Mobile drawer (sidebar) with backdrop, Escape-to-close, and
+//      click-outside-to-close — gives the hamburger menu a native app feel
+//      instead of just sliding a panel over the page. ----
+function toggleDrawer(forceClose) {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    const burger = document.getElementById('drawerBurger');
+    if (!sidebar) return;
+    const shouldOpen = forceClose === true ? false : !sidebar.classList.contains('show');
+    sidebar.classList.toggle('show', shouldOpen);
+    if (backdrop) backdrop.classList.toggle('show', shouldOpen);
+    if (burger) {
+        burger.classList.toggle('open', shouldOpen);
+        burger.setAttribute('aria-expanded', String(shouldOpen));
+    }
+    document.body.classList.toggle('drawer-open', shouldOpen);
+}
+(function () {
+    const backdrop = document.getElementById('sidebarBackdrop');
+    if (backdrop) backdrop.addEventListener('click', () => toggleDrawer(true));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') toggleDrawer(true);
+    });
+})();
+
+// ---- Topbar hide-on-scroll-down / show-on-scroll-up (mobile only, via
+//      the .topbar.nav-hidden class defined inside a max-width query) ----
+(function () {
+    const topbar = document.querySelector('.topbar');
+    if (!topbar) return;
+    let lastY = window.scrollY;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            const y = window.scrollY;
+            const drawerOpen = document.body.classList.contains('drawer-open');
+            if (!drawerOpen && y > lastY && y > 80) {
+                topbar.classList.add('nav-hidden');
+            } else {
+                topbar.classList.remove('nav-hidden');
+            }
+            lastY = y;
+            ticking = false;
+        });
+    }, { passive: true });
+})();
+
 // Auto-dismiss toasts with fade-out
 document.querySelectorAll('[data-autohide]').forEach(el => {
     setTimeout(() => {

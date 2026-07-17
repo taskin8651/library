@@ -83,21 +83,6 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-.reveal-left {
-    opacity: 0;
-    transform: translateX(-40px);
-    transition: opacity .75s cubic-bezier(.22,1,.36,1),
-                transform .75s cubic-bezier(.22,1,.36,1);
-}
-.reveal-right {
-    opacity: 0;
-    transform: translateX(40px);
-    transition: opacity .75s cubic-bezier(.22,1,.36,1),
-                transform .75s cubic-bezier(.22,1,.36,1);
-}
-.reveal-left.visible,
-.reveal-right.visible { opacity: 1; transform: translate(0); }
-
 .delay-1 { transition-delay: .08s !important; }
 .delay-2 { transition-delay: .16s !important; }
 .delay-3 { transition-delay: .24s !important; }
@@ -109,14 +94,12 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
    staggered delays read as "janky" on slow mobile GPUs/scroll. */
 @media (max-width: 768px) {
     .reveal { transform: translateY(16px); transition-duration: .5s; }
-    .reveal-left { transform: translateX(-18px); transition-duration: .5s; }
-    .reveal-right { transform: translateX(18px); transition-duration: .5s; }
     .delay-1, .delay-2, .delay-3, .delay-4, .delay-5, .delay-6 { transition-delay: .05s !important; }
 }
 
 /* Never trap content invisible for users/devices that disable motion. */
 @media (prefers-reduced-motion: reduce) {
-    .reveal, .reveal-left, .reveal-right {
+    .reveal {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
@@ -1200,24 +1183,87 @@ footer {
     border: none !important;
     padding: 8px 10px !important;
     border-radius: 8px !important;
+    box-shadow: none !important;
 }
 @media (max-width: 991px) {
     .features-section, .how-section, .pricing-section,
     .testi-section, .faq-section, .cta-section { padding: 72px 0; }
     .hero { padding-top: 100px; padding-bottom: 40px; }
-}
 
-@media (max-width: 768px) {
+    /* Sticky glass header (Bootstrap's own navbar-expand-lg breakpoint is
+       992px, so every mobile/tablet nav rule below lives in this query —
+       the old code had this split at 768px, which left the 768-991px
+       tablet band using unstyled default Bootstrap collapse markup). */
+    .navbar {
+        padding-top: calc(12px + env(safe-area-inset-top));
+        padding-bottom: 12px;
+        z-index: 2000;
+        transition: transform .28s cubic-bezier(.22,1,.36,1), background .3s ease;
+    }
+    .navbar.nav-hidden { transform: translateY(-100%); }
+
+    /* Animated hamburger -> X */
+    .nav-burger {
+        width: 40px; height: 40px;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 5px;
+    }
+    .nav-burger .burger-line {
+        display: block; width: 20px; height: 2px; border-radius: 2px;
+        background: #fff;
+        transition: transform .28s cubic-bezier(.22,1,.36,1), opacity .2s ease;
+    }
+    .nav-burger.open .burger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open .burger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-burger.open .burger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Backdrop behind the drawer */
+    .nav-backdrop {
+        position: fixed; inset: 0; z-index: 1998;
+        background: rgba(6,6,14,.55);
+        backdrop-filter: blur(2px);
+        opacity: 0; visibility: hidden;
+        transition: opacity .25s ease, visibility .25s ease;
+    }
+    .nav-backdrop.show { opacity: 1; visibility: visible; }
+
+    /* Drawer panel: fixed under the header, glassmorphism, slide + fade —
+       no Bootstrap height-collapse (that's what caused the jumpy open). */
     .navbar-collapse {
-        background: rgba(10,10,20,.96);
-        border-radius: 16px;
+        /* Always "displayed" (as a fixed, off-screen-by-opacity overlay) so
+           opacity/transform can transition smoothly both ways — if this were
+           left to Bootstrap's default collapse display:none, closing would
+           cut instantly instead of fading (display isn't animatable). */
+        display: block !important;
+        position: fixed;
+        top: calc(64px + env(safe-area-inset-top));
+        left: 12px; right: 12px;
+        z-index: 1999;
+        background: rgba(16,16,28,.85);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border-radius: 20px;
         padding: 20px;
-        margin-top: 10px;
-        border: 1px solid rgba(255,255,255,.08);
+        border: 1px solid rgba(255,255,255,.1);
+        box-shadow: 0 24px 60px rgba(0,0,0,.45);
+        max-height: calc(80vh - env(safe-area-inset-top));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        opacity: 0;
+        transform: translateY(-10px) scale(.98);
+        pointer-events: none;
+        transition: opacity .22s cubic-bezier(.22,1,.36,1), transform .22s cubic-bezier(.22,1,.36,1);
+    }
+    .navbar-collapse.show {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
     }
     .navbar-nav { gap: 4px; }
-    .nav-link { padding: 10px 14px !important; }
-    .hero { min-height: auto; padding-top: 96px; }
+    .nav-link { padding: 12px 14px !important; min-height: 44px; display: flex; align-items: center; border-radius: 12px; }
+    .nav-link:active { background: rgba(255,255,255,.08); }
+    body.nav-open { overflow: hidden; }
+    .hero { min-height: auto; padding-top: calc(96px + env(safe-area-inset-top)); }
     .hero h1 { letter-spacing: -1px; }
     .hero-sub { max-width: 100%; font-size: 15.5px; }
     .hero-card { margin-top: 40px; }
@@ -1231,11 +1277,16 @@ footer {
     .feature-card, .pricing-card, .testi-card { padding: 24px; }
     .section-sub { max-width: 100%; }
     .phone-mockup-wrap { width: 200px; }
-    .phone-mockup { width: 200px; padding: 12px; }
+    /* Stop the constant floating bob + 3D tilt on mobile — there's no hover
+       to ever settle it flat like on desktop, so it just looks like it's
+       stuck wobbling up and down. A calm, static mockup reads as premium. */
+    .phone-mockup, .phone-float-chip { animation: none; }
+    .phone-mockup { width: 200px; padding: 12px; transform: none; }
     .qr-icon-wrap { width: 64px; height: 64px; }
     .qr-icon-wrap i { font-size: 44px; }
     .phone-stat .ps-val { font-size: 16px; }
-    .how-section .col-lg-6.reveal-right { margin-top: 48px; }
+    .how-section .col-lg-6 + .col-lg-6,
+    #student-app .col-lg-6 + .col-lg-6 { margin-top: 48px; }
     .footer-brand, .footer-desc { text-align: left; }
     footer .col-6.offset-md-2 { margin-top: 28px; }
     .btn-cta { width: 100%; justify-content: center; }

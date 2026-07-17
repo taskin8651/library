@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     @php
-        $seoTitle = 'LibraryCRM – Smart Library Management Software for India\'s Study Libraries';
-        $seoDesc  = 'LibraryCRM helps study library owners manage members, collect fees, track seats and run QR-based attendance — all from one dashboard. 3-day free trial, no credit card needed.';
-        $seoUrl   = url('/');
-        $seoImage = asset('images/og-image.png');
+        $seoTitle = 'LiberPX – Smart Library Management Software & Digital Library ERP for India';
+        $seoDesc  = 'LiberPX is a smart library management system for study libraries and reading rooms — manage members, fees, seat booking and QR-based student attendance from one dashboard. 3-day free trial, no credit card needed.';
+        $seoUrl   = 'https://liberpx.in';
+        $seoImage = 'https://liberpx.in/images/og-image.png';
     @endphp
 
     <title>{{ $seoTitle }}</title>
     <meta name="description" content="{{ $seoDesc }}">
-    <meta name="keywords" content="library management software, study library software India, library CRM, library attendance QR code, library fee collection software, coaching library management, reading room management software, library seat booking software">
-    <meta name="author" content="LibraryCRM">
+    <meta name="keywords" content="LiberPX, library management software, digital library ERP, library management system, student attendance system, reading room management, library seat booking, library automation, library ERP India, smart library software">
+    <meta name="author" content="LiberPX">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#667eea">
     <link rel="canonical" href="{{ $seoUrl }}">
@@ -22,13 +22,13 @@
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ $seoUrl }}">
-    <meta property="og:site_name" content="LibraryCRM">
+    <meta property="og:site_name" content="LiberPX">
     <meta property="og:title" content="{{ $seoTitle }}">
     <meta property="og:description" content="{{ $seoDesc }}">
     <meta property="og:image" content="{{ $seoImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="LibraryCRM — Smart Library Management Software">
+    <meta property="og:image:alt" content="LiberPX — Smart Library Management Software">
     <meta property="og:locale" content="en_IN">
 
     <!-- Twitter Card -->
@@ -44,14 +44,14 @@
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="LibraryCRM">
+    <meta name="apple-mobile-web-app-title" content="LiberPX">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "LibraryCRM",
+        "name": "LiberPX",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web, Android, iOS",
         "description": {!! json_encode($seoDesc) !!},
@@ -69,9 +69,56 @@
     {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "LibraryCRM",
+        "name": "LiberPX",
         "url": {!! json_encode($seoUrl) !!},
-        "logo": {!! json_encode(asset('images/icon-512.png')) !!}
+        "logo": {!! json_encode('https://liberpx.in/images/icon-512.png') !!},
+        "sameAs": []
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "LiberPX",
+        "url": {!! json_encode($seoUrl) !!}
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What do I get in the free trial?",
+                "acceptedAnswer": { "@type": "Answer", "text": "All features are free for 3 days. No credit card required. Choose a paid plan after the trial ends." }
+            },
+            {
+                "@type": "Question",
+                "name": "Do students need to install an app?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Not at all! Students just scan the QR code. The check-in page opens right in their phone's browser — no app download needed." }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I add my own logo and branding?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes! On every plan you can add your logo, name, tagline, and receipt stamp. The Premium plan gets full white-label branding." }
+            },
+            {
+                "@type": "Question",
+                "name": "Is my data secure?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. Each library gets its own isolated data space, with daily backups. Student data stays private and is never shared." }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I manage multiple branches?",
+                "acceptedAnswer": { "@type": "Answer", "text": "The Pro plan supports 3 branches, and Premium supports unlimited branches. Each branch's data stays completely separate." }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I make payments?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Payments are accepted via UPI — scan the QR code or pay directly to our UPI ID. Once you submit your transaction reference, we verify and activate your plan shortly after." }
+            }
+        ]
     }
     </script>
 
@@ -87,7 +134,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Landing CSS -->
-    <link href="{{ asset('assets/css/landing.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/landing.css') }}?v={{ @filemtime(public_path('assets/css/landing.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/ripple.css') }}" rel="stylesheet">
 </head>
 <body>
 
@@ -97,7 +145,7 @@
 <div id="page-loader">
     <div>
         <div class="loader-ring"></div>
-        <div class="loader-text">LibraryCRM</div>
+        <div class="loader-text">LiberPX</div>
     </div>
 </div>
 
@@ -114,11 +162,13 @@
 
         <a class="navbar-brand" href="/">
             <span class="brand-icon"><i class="bi bi-book-fill text-white"></i></span>
-            LibraryCRM
+            LiberPX
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-            <i class="bi bi-list text-white fs-5"></i>
+        <button class="navbar-toggler nav-burger" type="button" id="navBurger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navMenu">
@@ -138,6 +188,7 @@
 
     </div>
 </nav>
+<div class="nav-backdrop" id="navBackdrop"></div>
 
 <!-- ============================================================
      HERO
@@ -199,7 +250,7 @@
                         <div class="dot bg-danger"></div>
                         <div class="dot bg-warning"></div>
                         <div class="dot bg-success"></div>
-                        <span>LibraryCRM Dashboard</span>
+                        <span>LiberPX Dashboard</span>
                     </div>
 
                     <div class="hero-card-body">
@@ -407,7 +458,7 @@
         <div class="row align-items-center g-5">
 
             <!-- Steps -->
-            <div class="col-lg-6 reveal-left">
+            <div class="col-lg-6 reveal">
                 <div class="section-tag">How It Works</div>
                 <h2 class="section-title mt-2 mb-4">Get Started<br>in 5 Minutes</h2>
 
@@ -448,7 +499,7 @@
             </div>
 
             <!-- Phone Mockup -->
-            <div class="col-lg-6 reveal-right">
+            <div class="col-lg-6 reveal">
                 <div class="phone-mockup-wrap">
                     <div class="phone-glow"></div>
 
@@ -512,10 +563,10 @@
 <section class="features-section" id="student-app">
     <div class="container">
         <div class="row align-items-center g-5">
-            <div class="col-lg-6 reveal-left">
+            <div class="col-lg-6 reveal">
                 <div class="section-tag">For Students</div>
                 <h2 class="section-title mt-2 mb-3">Your Attendance,<br>Right on Your Phone</h2>
-                <p class="section-sub mb-4">No paper registers, no queues. Students install LibraryCRM like an app on their phone and mark attendance in two taps.</p>
+                <p class="section-sub mb-4">No paper registers, no queues. Students install LiberPX like an app on their phone and mark attendance in two taps.</p>
 
                 <div class="step-item">
                     <div class="step-num">1</div>
@@ -558,7 +609,7 @@
                 </button>
             </div>
 
-            <div class="col-lg-6 reveal-right">
+            <div class="col-lg-6 reveal">
                 <div class="row g-3">
                     <div class="col-12 col-sm-6">
                         <div class="feature-card mini-feature-card h-100">
@@ -767,7 +818,7 @@
 
             <div class="col-md-4">
                 <div class="footer-brand">
-                    <i class="bi bi-book-fill me-2" style="color:#667eea"></i>LibraryCRM
+                    <i class="bi bi-book-fill me-2" style="color:#667eea"></i>LiberPX
                 </div>
                 <p class="footer-desc mt-2">Smart management software built for India's study libraries.</p>
             </div>
@@ -799,16 +850,15 @@
         <hr class="footer-divider">
 
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <p class="footer-copy mb-0">© {{ date('Y') }} LibraryCRM. All rights reserved.</p>
+            <p class="footer-copy mb-0">© {{ date('Y') }} LiberPX. All rights reserved.</p>
             <p class="footer-copy mb-0">Made with ❤️ for Bihar's Libraries</p>
         </div>
     </div>
 </footer>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Landing JS -->
-<script src="{{ asset('assets/js/landing.js') }}"></script>
+<!-- Landing JS (no Bootstrap JS needed — this page only uses Bootstrap's CSS grid/utilities) -->
+<script src="{{ asset('assets/js/landing.js') }}?v={{ @filemtime(public_path('assets/js/landing.js')) }}"></script>
+<script src="{{ asset('assets/js/ripple.js') }}"></script>
 <!-- PWA install (Student App) -->
 <script src="{{ asset('assets/js/pwa-install.js') }}"></script>
 

@@ -1,0 +1,82 @@
+/* ── Overview stat strip ─────────────────────────────────────── */
+.shift-stat-tile {
+    background: #fff; border-radius: 18px; padding: 16px 18px; height: 100%;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(17,24,39,.06);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.shift-stat-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.shift-stat-tile .sst-value { font-size: 26px; font-weight: 800; color: #12141a; line-height: 1; }
+.shift-stat-tile .sst-label { font-size: 12.5px; color: #6b7280; margin-top: 6px; font-weight: 600; }
+.shift-stat-tile.sst-active .sst-value { color: #16a34a; }
+.shift-stat-tile.sst-inactive .sst-value { color: #9ca3af; }
+.shift-stat-tile.sst-members .sst-value { color: #6d28d9; }
+
+/* ── Hint box (Add Shift panel) ──────────────────────────────── */
+.shift-hint-box {
+    background: linear-gradient(135deg, rgba(102,126,234,.08), rgba(118,75,162,.08));
+    border: 1px solid rgba(102,126,234,.18);
+    border-radius: 12px; padding: 12px 14px; font-size: 12.5px; color: #4b5563; line-height: 1.5;
+}
+.shift-hint-box a { color: var(--primary, #667eea); text-decoration: none; font-weight: 600; }
+.shift-hint-box a:hover { text-decoration: underline; }
+
+/* ── Toolbar (search + status filter + export) ──────────────── */
+.shift-toolbar-wrap {
+    position: sticky; top: 78px; z-index: 40;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+}
+.shift-toolbar { display: flex; gap: 10px; margin-top: 12px; }
+.shift-search-wrap { position: relative; flex: 1 1 220px; }
+.shift-search-wrap i {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    font-size: 12px; color: #9199a3; pointer-events: none;
+}
+.shift-search-wrap input { padding-left: 28px; }
+#shiftStatusFilter { flex: 0 0 150px; }
+
+/* ── Table cells ─────────────────────────────────────────────── */
+.shift-name-cell { display: flex; align-items: center; gap: 10px; }
+.shift-dot {
+    width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+    background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.18);
+}
+.shift-dot.is-inactive { background: #9ca3af; box-shadow: 0 0 0 3px rgba(156,163,175,.15); }
+
+.shift-time-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, var(--accent-1, #667eea), var(--accent-2, #764ba2));
+    color: #fff; font-size: 12px; font-weight: 700; padding: 7px 12px; border-radius: 10px;
+    white-space: nowrap;
+}
+
+.shift-member-chip {
+    display: inline-flex; align-items: center;
+    background: #f4f6fb; border: 1px solid rgba(17,24,39,.06);
+    color: #374151; font-size: 12.5px; font-weight: 600;
+    padding: 5px 10px; border-radius: 20px;
+}
+
+.shift-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.shift-actions .btn { width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.shift-action-form { margin: 0; }
+
+/* ── Mobile: card-mode table (extends the global .rtable rules) ─ */
+@media (max-width: 767.98px) {
+    .shift-toolbar-wrap { position: static; backdrop-filter: none; background: transparent; }
+    .shift-toolbar { flex-direction: column; }
+    #shiftStatusFilter { flex: 1 1 auto; }
+
+    #shiftsTable.rtable tr { padding: 14px; }
+    .shift-tr td[data-label="Shift"] { padding-bottom: 4px; }
+    .shift-tr .shift-name-cell { font-size: 15px; }
+    .shift-actions { justify-content: flex-end; }
+    .shift-actions .btn { width: 40px; height: 40px; }
+}
+
+@media (max-width: 480px) {
+    .shift-stat-tile { padding: 14px; }
+    .shift-stat-tile .sst-value { font-size: 22px; }
+}

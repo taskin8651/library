@@ -57,23 +57,30 @@
 </div>
 
 <div class="row g-3 mb-4">
-    <div class="col-lg-8">
+    <div class="col-12 col-lg-8">
         <div class="table-card p-4 h-100">
             <div class="section-head mb-2">
                 <h6><i class="bi bi-graph-up me-2"></i>Revenue Trend &mdash; Last 30 Days</h6>
             </div>
-            <canvas id="revenueTrendChart" height="90"></canvas>
+            <div class="chart-wrap">
+                <canvas id="revenueTrendChart"></canvas>
+            </div>
         </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-12 col-lg-4">
         <div class="table-card p-4 h-100">
             <div class="section-head mb-2">
                 <h6><i class="bi bi-pie-chart-fill me-2"></i>Payment Mode Split</h6>
             </div>
             @if($modeBreakdown->count() > 0)
-            <canvas id="modeChart" height="180"></canvas>
+            <div class="chart-wrap chart-wrap-donut">
+                <canvas id="modeChart"></canvas>
+            </div>
             @else
-            <p class="text-muted small mb-0">No payments recorded yet.</p>
+            <div class="empty-state py-4">
+                <div class="es-icon"><i class="bi bi-pie-chart"></i></div>
+                <p class="mb-0">No payments recorded yet.</p>
+            </div>
             @endif
         </div>
     </div>
@@ -88,12 +95,12 @@
 
 <div class="row g-3">
     <!-- Fee Report -->
-    <div class="col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-4">
         <div class="table-card p-4 h-100 report-export-card">
             <div class="icon-box mb-3" style="background:#dcfce7;color:#166534"><i class="bi bi-cash-stack"></i></div>
             <h6 class="fw-bold">Fee Payments Report</h6>
             <p class="text-muted small">Export all fee payments with receipt no., member, amount &amp; mode.</p>
-            <form method="GET" action="/owner/reports/fees/export">
+            <form method="GET" action="/owner/reports/fees/export" class="report-export-form">
                 <div class="row g-2 mb-3">
                     <div class="col-6">
                         <label class="form-label small fw-500">From</label>
@@ -104,18 +111,18 @@
                         <input type="date" name="date_to" class="form-control form-control-sm">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm w-100"><i class="bi bi-download me-2"></i>Download CSV</button>
+                <button type="submit" class="btn btn-success btn-sm w-100 report-export-btn"><i class="bi bi-download me-2"></i>Download CSV</button>
             </form>
         </div>
     </div>
 
     <!-- Attendance Report -->
-    <div class="col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-4">
         <div class="table-card p-4 h-100 report-export-card">
             <div class="icon-box mb-3" style="background:#fef3c7;color:#92400e"><i class="bi bi-calendar-check-fill"></i></div>
             <h6 class="fw-bold">Attendance Report</h6>
             <p class="text-muted small">Export check-in/check-out logs for any date range.</p>
-            <form method="GET" action="/owner/reports/attendance/export">
+            <form method="GET" action="/owner/reports/attendance/export" class="report-export-form">
                 <div class="row g-2 mb-3">
                     <div class="col-6">
                         <label class="form-label small fw-500">From</label>
@@ -126,22 +133,26 @@
                         <input type="date" name="date_to" class="form-control form-control-sm">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-warning btn-sm w-100 text-dark"><i class="bi bi-download me-2"></i>Download CSV</button>
+                <button type="submit" class="btn btn-warning btn-sm w-100 text-dark report-export-btn"><i class="bi bi-download me-2"></i>Download CSV</button>
             </form>
         </div>
     </div>
 
     <!-- Members Report -->
-    <div class="col-md-6 col-lg-4">
-        <div class="table-card p-4 h-100 report-export-card d-flex flex-column">
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="table-card p-4 h-100 report-export-card">
             <div class="icon-box mb-3" style="background:#ede9fe;color:#6d28d9"><i class="bi bi-people-fill"></i></div>
             <h6 class="fw-bold">Members List</h6>
             <p class="text-muted small">Export the full member directory with seat, shift &amp; plan dates.</p>
-            <a href="/owner/reports/members/export" class="btn btn-primary btn-sm w-100 mt-auto"><i class="bi bi-download me-2"></i>Download CSV</a>
+            <a href="/owner/reports/members/export" class="btn btn-primary btn-sm w-100 report-export-btn"><i class="bi bi-download me-2"></i>Download CSV</a>
         </div>
     </div>
 </div>
 @endsection
+
+@push('styles')
+<link href="{{ asset('assets/css/owner-reports.css') }}?v={{ @filemtime(public_path('assets/css/owner-reports.css')) }}" rel="stylesheet">
+@endpush
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -161,6 +172,8 @@ new Chart(document.getElementById('revenueTrendChart'), {
         }]
     },
     options: {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, ticks: { callback: v => '₹' + v } } }
     }
@@ -178,9 +191,12 @@ new Chart(document.getElementById('modeChart'), {
         }]
     },
     options: {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } } }
     }
 });
 @endif
 </script>
+<script src="{{ asset('assets/js/owner-reports.js') }}?v={{ @filemtime(public_path('assets/js/owner-reports.js')) }}"></script>
 @endpush

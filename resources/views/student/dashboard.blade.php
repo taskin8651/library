@@ -2,19 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#667eea">
     <title>My Dashboard - {{ $library->name }}</title>
+    <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="LibraryCRM">
+    <meta name="apple-mobile-web-app-title" content="LiberPX">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="{{ asset('assets/css/student-dashboard.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/student-dashboard.css') }}?v={{ @filemtime(public_path('assets/css/student-dashboard.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/ripple.css') }}" rel="stylesheet">
     @include('partials.page-loader-styles')
 </head>
 <body>
@@ -25,6 +27,7 @@
             <span class="fw-600">{{ $library->name }}</span>
         </div>
         <div class="d-flex align-items-center gap-2">
+            <span class="small opacity-75 d-none d-md-inline topbar-date">{{ now()->format('d M Y') }}</span>
             <button type="button" id="installAppBtn" data-pwa-install-btn class="btn btn-sm btn-install d-none">
                 <i class="bi bi-download"></i>
             </button>
@@ -54,9 +57,32 @@
             $ringSoft   = $days_left > 7 ? '#f0fdf4' : ($days_left > 3 ? '#fffbeb' : '#fef2f2');
             $circumference = 2 * M_PI * 56;
             $offset = $circumference - ($progressPct / 100) * $circumference;
+            $profilePhotoUrl = $member->profile_photo ? asset('storage/' . $member->profile_photo) : null;
         @endphp
 
         <p class="text-muted mb-3 reveal reveal-1">{{ $greeting }}, <strong>{{ explode(' ', auth()->user()->name)[0] }}</strong> 👋</p>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions-grid mb-4 reveal reveal-1">
+            <a href="/student/scan" class="qa-tile">
+                <span class="qa-tile-icon" style="background:#ede9fe;color:#6d28d9"><i class="bi bi-qr-code-scan"></i></span>
+                <span class="qa-tile-label">Scan / Check-in</span>
+            </a>
+            <a href="#attendance-section" class="qa-tile">
+                <span class="qa-tile-icon" style="background:#dbeafe;color:#1d4ed8"><i class="bi bi-clock-history"></i></span>
+                <span class="qa-tile-label">Attendance</span>
+            </a>
+            @if($announcements->count() > 0)
+            <a href="#announcements-section" class="qa-tile">
+                <span class="qa-tile-icon" style="background:#fef3c7;color:#92400e"><i class="bi bi-megaphone-fill"></i></span>
+                <span class="qa-tile-label">Notices</span>
+            </a>
+            @endif
+            <button type="button" class="qa-tile" onclick="copyUid(document.querySelector('.uid-chip'))">
+                <span class="qa-tile-icon" style="background:#dcfce7;color:#166534"><i class="bi bi-clipboard-fill"></i></span>
+                <span class="qa-tile-label">Copy UID</span>
+            </button>
+        </div>
 
         <!-- Announcements -->
         @if($announcements->count() > 0)
@@ -71,7 +97,7 @@
                 return $safe;
             };
         @endphp
-        <div class="mb-4 reveal reveal-1">
+        <div class="mb-4 reveal reveal-1" id="announcements-section">
             @foreach($announcements as $note)
             @php
                 $noteStyle = [
@@ -97,7 +123,11 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="avatar-ring">{{ substr(auth()->user()->name, 0, 1) }}</div>
+                        @if($profilePhotoUrl)
+                            <img src="{{ $profilePhotoUrl }}" alt="{{ auth()->user()->name }}" class="avatar-ring avatar-photo" loading="lazy">
+                        @else
+                            <div class="avatar-ring">{{ substr(auth()->user()->name, 0, 1) }}</div>
+                        @endif
                         <div>
                             <h5 class="fw-bold mb-0">{{ auth()->user()->name }}</h5>
                             <small class="text-muted">{{ $library->name }} Member</small>
@@ -118,7 +148,9 @@
                         <div class="col-auto">
                             <span class="badge info-chip text-dark px-3 py-2">
                                 <i class="bi bi-clock me-1"></i>{{ $member->shift?->name ?? 'No Shift' }}
-                                @if($member->shift) ({{ $member->shift->start_time }} - {{ $member->shift->end_time }}) @endif
+                                @if($member->shift)
+                                    ({{ \Carbon\Carbon::parse($member->shift->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($member->shift->end_time)->format('h:i A') }})
+                                @endif
                             </span>
                         </div>
                     </div>
@@ -156,7 +188,7 @@
             <div class="col-4">
                 <div class="card-stat text-center reveal reveal-2">
                     <div class="stat-icon" style="background:#dbeafe;color:#1d4ed8"><i class="bi bi-calendar3"></i></div>
-                    <div class="fw-bold fs-3 text-primary count-up" data-target="{{ $this_month }}">0</div>
+                    <div class="fw-bold stat-num text-primary count-up" data-target="{{ $this_month }}">0</div>
                     <div class="text-muted small">Days this month</div>
                 </div>
             </div>
@@ -168,7 +200,7 @@
                     @if($today_in)
                         <div class="badge-live"><span class="pulse-dot"></span>In Library</div>
                     @else
-                        <div class="fw-bold fs-4 text-muted">—</div>
+                        <div class="fw-bold stat-num text-muted">—</div>
                     @endif
                     <div class="text-muted small mt-1">Today</div>
                 </div>
@@ -176,42 +208,47 @@
             <div class="col-4">
                 <div class="card-stat text-center reveal reveal-4">
                     <div class="stat-icon" style="background:#dcfce7;color:#166534"><i class="bi bi-currency-rupee"></i></div>
-                    <div class="fw-bold fs-3 text-success">₹<span class="count-up" data-target="{{ (int) ($last_payment?->amount ?? 0) }}">0</span></div>
+                    <div class="fw-bold stat-num text-success">₹<span class="count-up" data-target="{{ (int) ($last_payment?->amount ?? 0) }}">0</span></div>
                     <div class="text-muted small">Last payment</div>
                 </div>
             </div>
         </div>
 
         <!-- Recent Attendance -->
-        <div class="card-stat reveal reveal-5">
+        <div class="card-stat reveal reveal-5" id="attendance-section">
             <h6 class="fw-bold mb-3"><i class="bi bi-clock-history me-2"></i>Recent Attendance</h6>
             @if($recent_attendance->count() > 0)
             <div class="table-responsive table-card-body">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover mb-0 rtable">
                     <thead class="table-light">
                         <tr><th>Date</th><th>Check In</th><th>Check Out</th><th>Duration</th></tr>
                     </thead>
                     <tbody>
                         @foreach($recent_attendance as $i => $a)
                         <tr class="reveal" style="animation-delay: {{ .45 + $i * .05 }}s">
-                            <td>{{ $a->date->format('d M') }}</td>
-                            <td>{{ $a->check_in?->format('h:i A') ?? '-' }}</td>
-                            <td>{!! $a->check_out?->format('h:i A') ?? '<span class="badge-live"><span class="pulse-dot"></span>In Library</span>' !!}</td>
-                            <td>{{ $a->duration() }}</td>
+                            <td data-label="Date">{{ $a->date->format('d M') }}</td>
+                            <td data-label="Check In">{{ $a->check_in?->format('h:i A') ?? '-' }}</td>
+                            <td data-label="Check Out">{!! $a->check_out?->format('h:i A') ?? '<span class="badge-live"><span class="pulse-dot"></span>In Library</span>' !!}</td>
+                            <td data-label="Duration">{{ $a->duration() }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
             @else
-            <p class="text-muted text-center py-3">No attendance records yet</p>
+            <div class="empty-state-local">
+                <div class="esl-icon"><i class="bi bi-calendar-x"></i></div>
+                <h6 class="mb-1">No attendance records yet</h6>
+                <p class="text-muted small mb-0">Scan the QR code at the library entrance to check in for the first time.</p>
+            </div>
             @endif
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/student-dashboard.js') }}"></script>
+    <script src="{{ asset('assets/js/student-dashboard.js') }}?v={{ @filemtime(public_path('assets/js/student-dashboard.js')) }}"></script>
     <script src="{{ asset('assets/js/pwa-install.js') }}"></script>
     <script src="{{ asset('assets/js/page-loader.js') }}"></script>
+    <script src="{{ asset('assets/js/ripple.js') }}"></script>
 </body>
 </html>

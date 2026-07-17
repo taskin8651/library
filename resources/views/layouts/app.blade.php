@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="{{ $library->theme_color ?? '#0d6efd' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'LibraryCRM') | {{ $library->name ?? 'LibraryCRM' }}</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>@yield('title', 'LiberPX') | {{ $library->name ?? 'LiberPX' }}</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +28,7 @@
             --shadow-lg: 0 20px 50px rgba(17,24,39,.14);
         }
     </style>
-    <link href="{{ asset('assets/css/app-layout.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/app-layout.css') }}?v={{ @filemtime(public_path('assets/css/app-layout.css')) }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body class="page-fade-init">
@@ -58,6 +60,9 @@
         @endif
     </div>
 
+    <!-- Drawer backdrop (mobile only) -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-brand d-flex align-items-center gap-3">
@@ -69,7 +74,7 @@
                 </div>
             @endif
             <div>
-                <h6>{{ $library->name ?? 'LibraryCRM' }}</h6>
+                <h6>{{ $library->name ?? 'LiberPX' }}</h6>
                 <small>{{ auth()->user()->role ?? '' }}</small>
             </div>
         </div>
@@ -90,10 +95,11 @@
         <!-- Topbar -->
         <div class="topbar">
             <div class="d-flex align-items-center gap-3">
-                <button class="btn-icon-soft d-md-none" onclick="document.getElementById('sidebar').classList.toggle('show')">
-                    <i class="bi bi-list fs-5"></i>
+                <button class="btn-icon-soft nav-burger d-md-none" id="drawerBurger" onclick="toggleDrawer()" aria-label="Toggle menu" aria-expanded="false" aria-controls="sidebar">
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
                 </button>
-                <h5>@yield('page-title', 'Dashboard')</h5>
             </div>
             <div class="d-flex align-items-center gap-3">
                 <span class="text-muted small d-none d-md-block">{{ now()->format('d M Y') }}</span>
@@ -133,7 +139,7 @@
         <a href="/owner/attendance/qr" class="bn-item {{ request()->is('owner/attendance*') ? 'active' : '' }}">
             <i class="bi bi-qr-code-scan"></i><span>QR</span>
         </a>
-        <button type="button" class="bn-item" onclick="document.getElementById('sidebar').classList.toggle('show')">
+        <button type="button" class="bn-item" onclick="toggleDrawer()">
             <i class="bi bi-list"></i><span>More</span>
         </button>
     </nav>
@@ -158,7 +164,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/app-layout.js') }}"></script>
+    <script src="{{ asset('assets/js/app-layout.js') }}?v={{ @filemtime(public_path('assets/js/app-layout.js')) }}"></script>
     @stack('scripts')
 </body>
 </html>

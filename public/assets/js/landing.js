@@ -25,13 +25,77 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    /* ── NAVBAR SCROLL ────────────────────────────────────── */
+    /* ── NAVBAR SCROLL (glass state + hide-on-scroll-down) ──── */
     var navbar = document.getElementById('navbar');
     if (navbar) {
+        var lastScrollY = window.scrollY;
+        var ticking = false;
         window.addEventListener('scroll', function () {
-            navbar.classList.toggle('scrolled', window.scrollY > 40);
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(function () {
+                var y = window.scrollY;
+                navbar.classList.toggle('scrolled', y > 40);
+                // Only auto-hide on the way down, past the header's own height,
+                // and never while the mobile menu is open.
+                var menuOpen = document.body.classList.contains('nav-open');
+                if (!menuOpen && y > lastScrollY && y > 120) {
+                    navbar.classList.add('nav-hidden');
+                } else {
+                    navbar.classList.remove('nav-hidden');
+                }
+                lastScrollY = y;
+                ticking = false;
+            });
         }, { passive: true });
     }
+
+    /* ── MOBILE MENU (hamburger <-> X, backdrop, ESC, outside-click,
+       auto-close-on-link-click, scroll-lock) — single controller, bound
+       once on DOMContentLoaded so there's no risk of duplicate listeners. */
+    (function () {
+        var burger = document.getElementById('navBurger');
+        var menu = document.getElementById('navMenu');
+        var backdrop = document.getElementById('navBackdrop');
+        if (!burger || !menu || !backdrop) return;
+
+        var isOpen = false;
+
+        function openMenu() {
+            if (isOpen) return;
+            isOpen = true;
+            menu.classList.add('show');
+            backdrop.classList.add('show');
+            burger.classList.add('open');
+            burger.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('nav-open');
+        }
+        function closeMenu() {
+            if (!isOpen) return;
+            isOpen = false;
+            menu.classList.remove('show');
+            backdrop.classList.remove('show');
+            burger.classList.remove('open');
+            burger.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('nav-open');
+        }
+
+        burger.addEventListener('click', function () {
+            isOpen ? closeMenu() : openMenu();
+        });
+        backdrop.addEventListener('click', closeMenu);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeMenu();
+        });
+        menu.querySelectorAll('a').forEach(function (a) {
+            a.addEventListener('click', closeMenu);
+        });
+        // If the viewport grows into the desktop layout while the drawer is
+        // open, reset state so it doesn't reappear mid-transition later.
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 992) closeMenu();
+        });
+    })();
 
     /* ── CURSOR GLOW (desktop only) ───────────────────────── */
     var glow = document.getElementById('cursor-glow');
@@ -89,17 +153,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* ── SMOOTH SCROLL ────────────────────────────────────── */
+    /* (Closing the mobile menu on click is handled by the menu controller
+       above, which binds to every link inside #navMenu — no need to
+       duplicate that here.) */
     document.querySelectorAll('a[href^="#"]').forEach(function (a) {
         a.addEventListener('click', function (e) {
             var target = document.querySelector(a.getAttribute('href'));
             if (target) {
                 e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                /* Close mobile navbar if open */
-                var navCollapse = document.getElementById('navMenu');
-                if (navCollapse && navCollapse.classList.contains('show')) {
-                    navCollapse.classList.remove('show');
-                }
             }
         });
     });

@@ -1,13 +1,20 @@
-// Highlight selected plan
-document.querySelectorAll('input[name="plan_id"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-        document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
-        radio.closest('.plan-card').classList.add('selected');
-    });
-});
-// Init
-document.querySelector('input[name="plan_id"]:checked')?.closest('.plan-card')?.classList.add('selected');
+function togglePasswordField(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    const isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+    icon.className = isPass ? 'bi bi-eye-slash' : 'bi bi-eye';
+}
 
-document.getElementById('registerForm').addEventListener('submit', function () {
-    document.getElementById('regBtnText').innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating your library...';
-});
+const registerForm = document.getElementById('registerForm');
+if (registerForm) {
+    registerForm.addEventListener('submit', function (e) {
+        const btn = document.getElementById('regBtn');
+        if (btn.disabled) {
+            e.preventDefault();
+            return;
+        }
+        btn.disabled = true;
+        document.getElementById('regBtnText').innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating your library...';
+    });
+}

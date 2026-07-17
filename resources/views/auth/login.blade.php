@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#667eea">
-    <title>Login - LibraryCRM</title>
+    <title>Login - LiberPX | Library Management Software</title>
+    <meta name="description" content="Sign in to your LiberPX library management dashboard to manage members, fees, seats and attendance.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="https://liberpx.in/login">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
@@ -12,7 +15,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="{{ asset('assets/css/auth-login.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/auth-login.css') }}?v={{ @filemtime(public_path('assets/css/auth-login.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/ripple.css') }}" rel="stylesheet">
 </head>
 <body>
     @include('partials.page-loader')
@@ -33,12 +37,17 @@
             <div class="login-card">
                 <div class="text-center mb-4">
                     <div class="brand-icon"><i class="bi bi-book-fill"></i></div>
-                    <h4 class="fw-800">LibraryCRM</h4>
+                    <h4 class="fw-800">LiberPX</h4>
                     <p class="text-muted small">Sign in to your account</p>
                 </div>
 
+                @if(session('success'))
+                    <div class="alert alert-success small d-flex align-items-center gap-2" style="border-radius:11px;">
+                        <i class="bi bi-check-circle"></i><span>{{ session('success') }}</span>
+                    </div>
+                @endif
                 @if($errors->any())
-                    <div class="alert alert-danger small d-flex align-items-center gap-2" style="border-radius:11px;">
+                    <div class="alert alert-danger small d-flex align-items-center gap-2" style="border-radius:11px;" role="alert">
                         <i class="bi bi-exclamation-circle"></i><span>{{ $errors->first() }}</span>
                     </div>
                 @endif
@@ -46,19 +55,21 @@
                 <form method="POST" action="/login" id="loginForm">
                     @csrf
                     <div class="field">
-                        <label class="form-label fw-500 small">Email Address</label>
+                        <label class="form-label fw-500 small" for="emailInput">Email Address</label>
                         <div class="input-icon-wrap">
                             <i class="bi bi-envelope field-icon"></i>
-                            <input type="email" name="email" class="form-control" value="{{ old('email') }}"
-                                placeholder="you@example.com" required autofocus>
+                            <input type="email" name="email" id="emailInput" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                                placeholder="you@example.com" required autofocus autocomplete="username">
                         </div>
                     </div>
                     <div class="field">
-                        <label class="form-label fw-500 small">Password</label>
+                        <label class="form-label fw-500 small" for="passwordInput">Password</label>
                         <div class="input-icon-wrap">
                             <i class="bi bi-lock field-icon"></i>
-                            <input type="password" name="password" id="passwordInput" class="form-control" placeholder="••••••••" required style="padding-right:38px;">
-                            <button type="button" class="toggle-pass" onclick="togglePass()"><i class="bi bi-eye" id="toggleIcon"></i></button>
+                            <input type="password" name="password" id="passwordInput" class="form-control has-toggle @error('password') is-invalid @enderror" placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" class="toggle-pass" onclick="togglePasswordField('passwordInput','toggleIcon')" aria-label="Show password">
+                                <i class="bi bi-eye" id="toggleIcon"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="mb-4 d-flex align-items-center justify-content-between">
@@ -66,6 +77,7 @@
                             <input class="form-check-input" type="checkbox" name="remember" id="remember">
                             <label class="form-check-label small" for="remember">Remember me</label>
                         </div>
+                        <button type="button" class="forgot-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot Password?</button>
                     </div>
                     <button type="submit" class="btn btn-login" id="loginBtn">
                         <span id="loginBtnText">Sign In</span>
@@ -80,18 +92,33 @@
                 </div>
 
                 <hr class="my-4">
-                <div class="demo-box">
-                    <p class="small text-muted mb-1 fw-600"><i class="bi bi-info-circle me-1"></i>Demo Credentials</p>
-                    <p class="small mb-1"><strong>Admin:</strong> admin@librarycrm.com / password</p>
-                    <p class="small mb-0"><strong>Owner:</strong> owner@demo.com / password</p>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password helper (no self-service reset flow yet) -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title fw-bold" id="forgotPasswordLabel"><i class="bi bi-key-fill me-2"></i>Reset Your Password</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Self-service password reset isn't available yet. Please contact your library owner or admin — they can reset your password from their dashboard.
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Got it</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/auth-login.js') }}"></script>
+    <script src="{{ asset('assets/js/auth-login.js') }}?v={{ @filemtime(public_path('assets/js/auth-login.js')) }}"></script>
     <script src="{{ asset('assets/js/pwa-install.js') }}"></script>
+    <script src="{{ asset('assets/js/ripple.js') }}"></script>
     <script src="{{ asset('assets/js/page-loader.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,38 @@
+/* Owner Reports & Export page */
+
+/* Chart canvases need an explicit-height, position:relative parent or
+   Chart.js's responsive resize logic can't compute a stable size — leaving
+   this to a bare `height="90"` attribute caused layout shift and, on some
+   browsers, runaway resize loops. */
+.chart-wrap { position: relative; height: 260px; width: 100%; }
+.chart-wrap-donut { height: 220px; }
+
+/* Export cards: consistent height + buttons aligned to the bottom
+   regardless of how many lines the description text wraps to. */
+.report-export-card {
+    display: flex;
+    flex-direction: column;
+    transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease;
+}
+.report-export-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.report-export-card .icon-box { transition: transform .3s cubic-bezier(.22,1,.36,1); }
+.report-export-card:hover .icon-box { transform: scale(1.08) rotate(-4deg); }
+.report-export-card p.text-muted { flex: 1 0 auto; }
+.report-export-card .report-export-form,
+.report-export-card > a.report-export-btn { margin-top: auto; }
+
+.report-export-btn { position: relative; }
+.report-export-btn:disabled,
+.report-export-btn.is-loading { opacity: .75; cursor: progress; pointer-events: none; }
+
+@media (max-width: 991px) {
+    .chart-wrap { height: 240px; }
+}
+@media (max-width: 767px) {
+    .chart-wrap { height: 220px; }
+    .chart-wrap-donut { height: 200px; }
+    .report-export-card { padding: 22px; }
+}
+@media (max-width: 480px) {
+    .chart-wrap { height: 200px; }
+}
