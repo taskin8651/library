@@ -32,7 +32,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* ── SCROLL REVEAL ────────────────────────────────────── */
     var revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-    if ('IntersectionObserver' in window && revealEls.length) {
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduceMotion || !('IntersectionObserver' in window) || !revealEls.length) {
+        /* Reduced-motion users / old browsers: just show everything immediately. */
+        revealEls.forEach(function (el) { el.classList.add('visible'); });
+    } else {
         var revealObserver = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
@@ -40,11 +45,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.12 });
+        }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
         revealEls.forEach(function (el) { revealObserver.observe(el); });
-    } else {
-        /* Fallback for old browsers */
-        revealEls.forEach(function (el) { el.classList.add('visible'); });
+
+        /* Safety net: on some mobile browsers (in-app WebViews, fast anchor
+           jumps, layout-not-settled-yet on load) the observer can miss an
+           element that's already on screen. Force-reveal anything still
+           hidden a couple of seconds after load so content never gets
+           permanently stuck invisible. */
+        window.addEventListener('load', function () {
+            setTimeout(function () {
+                revealEls.forEach(function (el) {
+                    if (!el.classList.contains('visible')) el.classList.add('visible');
+                });
+            }, 2500);
+        });
     }
 
     /* ── FAQ ACCORDION ────────────────────────────────────── */

@@ -105,6 +105,24 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
 .delay-5 { transition-delay: .40s !important; }
 .delay-6 { transition-delay: .48s !important; }
 
+/* Lighter, faster reveal on small screens — long travel distances and
+   staggered delays read as "janky" on slow mobile GPUs/scroll. */
+@media (max-width: 768px) {
+    .reveal { transform: translateY(16px); transition-duration: .5s; }
+    .reveal-left { transform: translateX(-18px); transition-duration: .5s; }
+    .reveal-right { transform: translateX(18px); transition-duration: .5s; }
+    .delay-1, .delay-2, .delay-3, .delay-4, .delay-5, .delay-6 { transition-delay: .05s !important; }
+}
+
+/* Never trap content invisible for users/devices that disable motion. */
+@media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-left, .reveal-right {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
 /* ── PAGE LOADER ─────────────────────────────────────────── */
 #page-loader {
     position: fixed;
@@ -662,6 +680,12 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
 .feat-title { font-size: 17px; font-weight: 700; color: #1a1d23; margin-bottom: 8px; }
 .feat-desc  { color: #6b7280; font-size: 14px; line-height: 1.65; }
 
+/* Compact variant used for the 2x2 "For Students" grid */
+.mini-feature-card { padding: 22px; }
+.mini-feature-card .feat-icon { width: 42px; height: 42px; font-size: 18px; margin-bottom: 12px; border-radius: 12px; }
+.mini-feature-card .feat-title { font-size: 14.5px; margin-bottom: 6px; }
+.mini-feature-card .feat-desc { font-size: 12.5px; line-height: 1.55; }
+
 /* ── HOW IT WORKS ────────────────────────────────────────── */
 .how-section { background: #fff; padding: 100px 0; }
 
@@ -1207,7 +1231,10 @@ footer {
     .feature-card, .pricing-card, .testi-card { padding: 24px; }
     .section-sub { max-width: 100%; }
     .phone-mockup-wrap { width: 200px; }
-    .phone-mockup { width: 200px; }
+    .phone-mockup { width: 200px; padding: 12px; }
+    .qr-icon-wrap { width: 64px; height: 64px; }
+    .qr-icon-wrap i { font-size: 44px; }
+    .phone-stat .ps-val { font-size: 16px; }
     .how-section .col-lg-6.reveal-right { margin-top: 48px; }
     .footer-brand, .footer-desc { text-align: left; }
     footer .col-6.offset-md-2 { margin-top: 28px; }
@@ -1228,7 +1255,15 @@ footer {
     .plan-price { font-size: 42px; }
     .step-item { gap: 14px; }
     .step-num { width: 44px; height: 44px; font-size: 17px; }
-    .phone-mockup-wrap, .phone-mockup { width: 170px; }
+    .phone-mockup-wrap, .phone-mockup { width: 300px; }
+    .phone-mockup { padding: 10px; }
+    .phone-notch { width: 56px; height: 18px; }
+    .qr-icon-wrap { width: 54px; height: 54px; border-radius: 10px; }
+    .qr-icon-wrap i { font-size: 36px; }
+    .phone-qr { padding: 10px; }
+    .phone-stat { padding: 9px; }
+    .phone-stat .ps-val { font-size: 14px; }
+    .check-badge { width: 28px; height: 28px; font-size: 14px; }
     .cta-title { letter-spacing: -1px; }
     .cta-sub { font-size: 15px; }
 }

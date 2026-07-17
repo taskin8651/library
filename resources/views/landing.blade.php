@@ -560,29 +560,29 @@
 
             <div class="col-lg-6 reveal-right">
                 <div class="row g-3">
-                    <div class="col-6">
-                        <div class="feature-card h-100">
+                    <div class="col-12 col-sm-6">
+                        <div class="feature-card mini-feature-card h-100">
                             <div class="feat-icon" style="background:#dbeafe;color:#1d4ed8"><i class="bi bi-phone-fill"></i></div>
                             <div class="feat-title">Install Like an App</div>
                             <p class="feat-desc">Add to your home screen — opens full-screen, no browser bars.</p>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="feature-card h-100">
+                    <div class="col-12 col-sm-6">
+                        <div class="feature-card mini-feature-card h-100">
                             <div class="feat-icon" style="background:#dcfce7;color:#166534"><i class="bi bi-shield-lock-fill"></i></div>
                             <div class="feat-title">Secure Login</div>
                             <p class="feat-desc">Only you can mark your own attendance — no UID typing needed.</p>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="feature-card h-100">
+                    <div class="col-12 col-sm-6">
+                        <div class="feature-card mini-feature-card h-100">
                             <div class="feat-icon" style="background:#fef3c7;color:#92400e"><i class="bi bi-qr-code-scan"></i></div>
                             <div class="feat-title">Camera QR Scan</div>
                             <p class="feat-desc">Point your camera at the entrance QR — check-in happens automatically.</p>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="feature-card h-100">
+                    <div class="col-12 col-sm-6">
+                        <div class="feature-card mini-feature-card h-100">
                             <div class="feat-icon" style="background:#ede9fe;color:#6d28d9"><i class="bi bi-graph-up"></i></div>
                             <div class="feat-title">Live History</div>
                             <p class="feat-desc">Every check-in/out and plan expiry, visible anytime.</p>
