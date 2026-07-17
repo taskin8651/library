@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Owner;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Member;
+use App\Services\AttendanceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -11,6 +12,8 @@ use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
+    public function __construct(private AttendanceService $attendanceService) {}
+
     private function library() { return Auth::user()->library; }
 
     public function index(Request $request)
@@ -57,27 +60,6 @@ class AttendanceController extends Controller
             return response()->json(['success' => false, 'message' => 'Member not found.']);
         }
 
-        if ($member->status !== 'active' || $member->isExpired()) {
-            return response()->json(['success' => false, 'message' => 'Your plan has expired. Please renew.']);
-        }
-
-        $today = Carbon::today();
-        $existing = Attendance::where('member_id',$member->id)->whereDate('date',$today)->whereNull('check_out')->first();
-
-        if ($existing) {
-            // Check out
-            $existing->update(['check_out' => now()]);
-            return response()->json(['success' => true, 'action' => 'checkout', 'message' => 'Checked out successfully!', 'member' => $member->user->name]);
-        } else {
-            // Check in
-            Attendance::create([
-                'library_id' => $library->id,
-                'member_id'  => $member->id,
-                'seat_id'    => $member->seat_id,
-                'check_in'   => now(),
-                'date'       => $today,
-            ]);
-            return response()->json(['success' => true, 'action' => 'checkin', 'message' => 'Checked in successfully!', 'member' => $member->user->name, 'seat' => $member->seat?->seat_number, 'days_left' => $member->daysLeft()]);
-        }
+        return response()->json($this->attendanceService->toggle($member));
     }
 }

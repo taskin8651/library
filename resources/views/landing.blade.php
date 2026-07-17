@@ -3,8 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LibraryCRM – Smart Library Management Software</title>
-    <meta name="description" content="Manage your study library effortlessly. Track students, collect fees, QR check-in, seat management - all in one place.">
+
+    @php
+        $seoTitle = 'LibraryCRM – Smart Library Management Software for India\'s Study Libraries';
+        $seoDesc  = 'LibraryCRM helps study library owners manage members, collect fees, track seats and run QR-based attendance — all from one dashboard. 14-day free trial, no credit card needed.';
+        $seoUrl   = url('/');
+        $seoImage = asset('images/og-image.png');
+    @endphp
+
+    <title>{{ $seoTitle }}</title>
+    <meta name="description" content="{{ $seoDesc }}">
+    <meta name="keywords" content="library management software, study library software India, library CRM, library attendance QR code, library fee collection software, coaching library management, reading room management software, library seat booking software">
+    <meta name="author" content="LibraryCRM">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#667eea">
+    <link rel="canonical" href="{{ $seoUrl }}">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ $seoUrl }}">
+    <meta property="og:site_name" content="LibraryCRM">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDesc }}">
+    <meta property="og:image" content="{{ $seoImage }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="LibraryCRM — Smart Library Management Software">
+    <meta property="og:locale" content="en_IN">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDesc }}">
+    <meta name="twitter:image" content="{{ $seoImage }}">
+
+    <!-- Favicons / App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LibraryCRM">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "LibraryCRM",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, Android, iOS",
+        "description": {!! json_encode($seoDesc) !!},
+        "url": {!! json_encode($seoUrl) !!},
+        "image": {!! json_encode($seoImage) !!},
+        "offers": {
+            "@type": "Offer",
+            "price": "399",
+            "priceCurrency": "INR",
+            "description": "Starter plan, 14-day free trial"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "LibraryCRM",
+        "url": {!! json_encode($seoUrl) !!},
+        "logo": {!! json_encode(asset('images/icon-512.png')) !!}
+    }
+    </script>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -101,6 +175,10 @@
                         <i class="bi bi-play-circle"></i>
                         View Demo
                     </a>
+                    <button type="button" id="installAppBtn" data-pwa-install-btn class="btn-hero-secondary d-none">
+                        <i class="bi bi-download"></i>
+                        Install Student App
+                    </button>
                 </div>
 
                 <div class="hero-trust">
@@ -429,6 +507,94 @@
 </section>
 
 <!-- ============================================================
+     STUDENT APP
+     ============================================================ -->
+<section class="features-section" id="student-app">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 reveal-left">
+                <div class="section-tag">For Students</div>
+                <h2 class="section-title mt-2 mb-3">Your Attendance,<br>Right on Your Phone</h2>
+                <p class="section-sub mb-4">No paper registers, no queues. Students install LibraryCRM like an app on their phone and mark attendance in two taps.</p>
+
+                <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div>
+                        <div class="fw-700 mb-1" style="color:#1a1d23">Install the App</div>
+                        <div style="color:#6b7280;font-size:14px">Tap "Install Student App" below (or "Add to Home Screen" from your browser menu) — no Play Store needed.</div>
+                    </div>
+                </div>
+                <div class="step-connector"></div>
+
+                <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div>
+                        <div class="fw-700 mb-1" style="color:#1a1d23">Log In</div>
+                        <div style="color:#6b7280;font-size:14px">Sign in with the ID and password your library owner gave you.</div>
+                    </div>
+                </div>
+                <div class="step-connector"></div>
+
+                <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div>
+                        <div class="fw-700 mb-1" style="color:#1a1d23">Scan &amp; Go</div>
+                        <div style="color:#6b7280;font-size:14px">Scan the QR code at your library's entrance with the in-app scanner to check in or out — instantly.</div>
+                    </div>
+                </div>
+                <div class="step-connector"></div>
+
+                <div class="step-item">
+                    <div class="step-num">4</div>
+                    <div>
+                        <div class="fw-700 mb-1" style="color:#1a1d23">Track Everything</div>
+                        <div style="color:#6b7280;font-size:14px">See your seat, shift, days left on your plan, and full attendance history — all on your phone.</div>
+                    </div>
+                </div>
+
+                <button type="button" id="installAppBtnSecondary" data-pwa-install-btn class="btn-hero-primary mt-4 d-none">
+                    <i class="bi bi-download"></i>
+                    Install Student App
+                </button>
+            </div>
+
+            <div class="col-lg-6 reveal-right">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="feature-card h-100">
+                            <div class="feat-icon" style="background:#dbeafe;color:#1d4ed8"><i class="bi bi-phone-fill"></i></div>
+                            <div class="feat-title">Install Like an App</div>
+                            <p class="feat-desc">Add to your home screen — opens full-screen, no browser bars.</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-card h-100">
+                            <div class="feat-icon" style="background:#dcfce7;color:#166534"><i class="bi bi-shield-lock-fill"></i></div>
+                            <div class="feat-title">Secure Login</div>
+                            <p class="feat-desc">Only you can mark your own attendance — no UID typing needed.</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-card h-100">
+                            <div class="feat-icon" style="background:#fef3c7;color:#92400e"><i class="bi bi-qr-code-scan"></i></div>
+                            <div class="feat-title">Camera QR Scan</div>
+                            <p class="feat-desc">Point your camera at the entrance QR — check-in happens automatically.</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-card h-100">
+                            <div class="feat-icon" style="background:#ede9fe;color:#6d28d9"><i class="bi bi-graph-up"></i></div>
+                            <div class="feat-title">Live History</div>
+                            <p class="feat-desc">Every check-in/out and plan expiry, visible anytime.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      PRICING
      ============================================================ -->
 <section class="pricing-section" id="pricing">
@@ -633,7 +799,7 @@
         <hr class="footer-divider">
 
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <p class="footer-copy mb-0">© 2024 LibraryCRM. All rights reserved.</p>
+            <p class="footer-copy mb-0">© {{ date('Y') }} LibraryCRM. All rights reserved.</p>
             <p class="footer-copy mb-0">Made with ❤️ for Bihar's Libraries</p>
         </div>
     </div>
@@ -643,6 +809,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Landing JS -->
 <script src="{{ asset('assets/js/landing.js') }}"></script>
+<!-- PWA install (Student App) -->
+<script src="{{ asset('assets/js/pwa-install.js') }}"></script>
 
 </body>
 </html>

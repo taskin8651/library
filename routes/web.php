@@ -13,9 +13,14 @@ use App\Http\Controllers\Owner\SubscriptionController;
 use App\Http\Controllers\Owner\AnnouncementController;
 use App\Http\Controllers\Owner\ReportController;
 use App\Http\Controllers\Student\DashboardController as StudentDash;
+use App\Http\Controllers\Student\ScanController;
 
 // ─── Public Routes ───────────────────────────────────────────
 Route::get('/', fn() => view('landing'))->name('home');
+
+// SEO
+Route::get('/robots.txt', fn() => response()->view('seo.robots')->header('Content-Type', 'text/plain'));
+Route::get('/sitemap.xml', fn() => response()->view('seo.sitemap')->header('Content-Type', 'application/xml'));
 
 // Auth
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -99,4 +104,6 @@ Route::prefix('owner')->middleware(['auth', 'role:owner,staff'])->group(function
 // ─── Student Routes ───────────────────────────────────────────
 Route::prefix('student')->middleware(['auth', 'role:student'])->group(function () {
     Route::get('/dashboard', [StudentDash::class, 'index'])->name('student.dashboard');
+    Route::get('/scan', [ScanController::class, 'page'])->name('student.scan');
+    Route::post('/scan/checkin', [ScanController::class, 'checkin'])->name('student.scan.checkin');
 });
