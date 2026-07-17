@@ -1,4 +1,4 @@
-const CACHE_NAME = 'librarycrm-shell-v1';
+const CACHE_NAME = 'liberpx-shell-v1';
 const SHELL_ASSETS = [
     '/manifest.json',
     '/images/icon-192.png',

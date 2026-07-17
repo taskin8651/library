@@ -7,4 +7,4 @@ Disallow: /checkin/
 Disallow: /login
 Disallow: /register
 
-Sitemap: {{ url('/sitemap.xml') }}
+Sitemap: https://liberpx.in/sitemap.xml

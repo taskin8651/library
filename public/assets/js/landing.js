@@ -1,5 +1,5 @@
 /* ============================================================
-   LibraryCRM - Landing Page JavaScript
+   LiberPX - Landing Page JavaScript
    File: public/assets/js/landing.js
    ============================================================ */
 
