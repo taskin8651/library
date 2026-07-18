@@ -16,7 +16,7 @@
         <td style="background:linear-gradient(135deg,#667eea,#764ba2);padding:26px 28px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td style="color:#ffffff;font-size:18px;font-weight:700;">LiberPX</td>
+                    <td style="color:#ffffff;font-size:18px;font-weight:700;">Softlix</td>
                     <td align="right" style="color:rgba(255,255,255,.85);font-size:12px;">{{ $library->name }}</td>
                 </tr>
             </table>
@@ -92,7 +92,7 @@
     <tr>
         <td style="padding:18px 28px;background:#f8f9fc;border-top:1px solid #eef0f6;">
             <div style="font-size:11.5px;color:#9ca3af;">
-                This is an automated alert from <strong>LiberPX</strong> for {{ $library->name }}. You're receiving this because you're an owner/administrator of this library account.
+                This is an automated alert from <strong>Softlix</strong> for {{ $library->name }}. You're receiving this because you're an owner/administrator of this library account.
             </div>
         </td>
     </tr>

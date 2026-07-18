@@ -1,6 +1,6 @@
 {
-    "name": "LiberPX - Student App",
-    "short_name": "LiberPX",
+    "name": "Softlix - Student App",
+    "short_name": "Softlix",
     "description": "Log in, scan the QR at your library, and track your attendance and plan — right from your phone.",
     "start_url": "/student/dashboard?source=pwa",
     "scope": "/",

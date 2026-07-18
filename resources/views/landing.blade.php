@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     @php
-        $seoTitle = 'LiberPX – Smart Library Management Software & Digital Library ERP for India';
-        $seoDesc  = 'LiberPX is a smart library management system for study libraries and reading rooms — manage members, fees, seat booking and QR-based student attendance from one dashboard. 3-day free trial, no credit card needed.';
-        $seoUrl   = 'https://liberpx.in';
-        $seoImage = 'https://liberpx.in/images/og-image.png';
+        $seoTitle = 'Softlix – Smart Library Management Software & Digital Library ERP for India';
+        $seoDesc  = 'Softlix is a smart library management system for study libraries and reading rooms — manage members, fees, seat booking and QR-based student attendance from one dashboard. 3-day free trial, no credit card needed.';
+        $seoUrl   = 'https://softlix.in';
+        $seoImage = 'https://softlix.in/images/og-image.png';
     @endphp
 
     <title>{{ $seoTitle }}</title>
     <meta name="description" content="{{ $seoDesc }}">
-    <meta name="keywords" content="LiberPX, library management software, digital library ERP, library management system, student attendance system, reading room management, library seat booking, library automation, library ERP India, smart library software">
-    <meta name="author" content="LiberPX">
+    <meta name="keywords" content="Softlix, library management software, digital library ERP, library management system, student attendance system, reading room management, library seat booking, library automation, library ERP India, smart library software">
+    <meta name="author" content="Softlix">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#667eea">
     <link rel="canonical" href="{{ $seoUrl }}">
@@ -22,13 +22,13 @@
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ $seoUrl }}">
-    <meta property="og:site_name" content="LiberPX">
+    <meta property="og:site_name" content="Softlix">
     <meta property="og:title" content="{{ $seoTitle }}">
     <meta property="og:description" content="{{ $seoDesc }}">
     <meta property="og:image" content="{{ $seoImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="LiberPX — Smart Library Management Software">
+    <meta property="og:image:alt" content="Softlix — Smart Library Management Software">
     <meta property="og:locale" content="en_IN">
 
     <!-- Twitter Card -->
@@ -44,14 +44,14 @@
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="LiberPX">
+    <meta name="apple-mobile-web-app-title" content="Softlix">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "LiberPX",
+        "name": "Softlix",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web, Android, iOS",
         "description": {!! json_encode($seoDesc) !!},
@@ -69,9 +69,9 @@
     {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "LiberPX",
+        "name": "Softlix",
         "url": {!! json_encode($seoUrl) !!},
-        "logo": {!! json_encode('https://liberpx.in/images/icon-512.png') !!},
+        "logo": {!! json_encode('https://softlix.in/images/icon-512.png') !!},
         "sameAs": []
     }
     </script>
@@ -79,7 +79,7 @@
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "LiberPX",
+        "name": "Softlix",
         "url": {!! json_encode($seoUrl) !!}
     }
     </script>
@@ -145,7 +145,7 @@
 <div id="page-loader">
     <div>
         <div class="loader-ring"></div>
-        <div class="loader-text">LiberPX</div>
+        <div class="loader-text">Softlix</div>
     </div>
 </div>
 
@@ -162,7 +162,7 @@
 
         <a class="navbar-brand" href="/">
             <span class="brand-icon"><i class="bi bi-book-fill text-white"></i></span>
-            LiberPX
+            Softlix
         </a>
 
         <button class="navbar-toggler nav-burger" type="button" id="navBurger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
@@ -250,7 +250,7 @@
                         <div class="dot bg-danger"></div>
                         <div class="dot bg-warning"></div>
                         <div class="dot bg-success"></div>
-                        <span>LiberPX Dashboard</span>
+                        <span>Softlix Dashboard</span>
                     </div>
 
                     <div class="hero-card-body">
@@ -566,7 +566,7 @@
             <div class="col-lg-6 reveal">
                 <div class="section-tag">For Students</div>
                 <h2 class="section-title mt-2 mb-3">Your Attendance,<br>Right on Your Phone</h2>
-                <p class="section-sub mb-4">No paper registers, no queues. Students install LiberPX like an app on their phone and mark attendance in two taps.</p>
+                <p class="section-sub mb-4">No paper registers, no queues. Students install Softlix like an app on their phone and mark attendance in two taps.</p>
 
                 <div class="step-item">
                     <div class="step-num">1</div>
@@ -818,7 +818,7 @@
 
             <div class="col-md-4">
                 <div class="footer-brand">
-                    <i class="bi bi-book-fill me-2" style="color:#667eea"></i>LiberPX
+                    <i class="bi bi-book-fill me-2" style="color:#667eea"></i>Softlix
                 </div>
                 <p class="footer-desc mt-2">Smart management software built for India's study libraries.</p>
             </div>
@@ -850,7 +850,7 @@
         <hr class="footer-divider">
 
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <p class="footer-copy mb-0">© {{ date('Y') }} LiberPX. All rights reserved.</p>
+            <p class="footer-copy mb-0">© {{ date('Y') }} Softlix. All rights reserved.</p>
             <p class="footer-copy mb-0">Made with ❤️ for Bihar's Libraries</p>
         </div>
     </div>

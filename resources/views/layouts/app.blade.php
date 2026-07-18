@@ -6,7 +6,7 @@
     <meta name="theme-color" content="{{ $library->theme_color ?? '#0d6efd' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
-    <title>@yield('title', 'LiberPX') | {{ $library->name ?? 'LiberPX' }}</title>
+    <title>@yield('title', 'Softlix') | {{ $library->name ?? 'Softlix' }}</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -74,7 +74,7 @@
                 </div>
             @endif
             <div>
-                <h6>{{ $library->name ?? 'LiberPX' }}</h6>
+                <h6>{{ $library->name ?? 'Softlix' }}</h6>
                 <small>{{ auth()->user()->role ?? '' }}</small>
             </div>
         </div>

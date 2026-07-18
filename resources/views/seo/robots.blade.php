@@ -7,4 +7,4 @@ Disallow: /checkin/
 Disallow: /login
 Disallow: /register
 
-Sitemap: https://liberpx.in/sitemap.xml
+Sitemap: https://softlix.in/sitemap.xml

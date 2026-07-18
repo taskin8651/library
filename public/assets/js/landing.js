@@ -1,5 +1,5 @@
 /* ============================================================
-   LiberPX - Landing Page JavaScript
+   Softlix - Landing Page JavaScript
    File: public/assets/js/landing.js
    ============================================================ */
 

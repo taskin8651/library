@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#667eea">
-    <title>Start Free Trial - LiberPX | Library Management Software</title>
-    <meta name="description" content="Create your LiberPX library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
+    <title>Start Free Trial - Softlix | Library Management Software</title>
+    <meta name="description" content="Create your Softlix library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
     <meta name="robots" content="noindex, follow">
-    <link rel="canonical" href="https://liberpx.in/register">
+    <link rel="canonical" href="https://softlix.in/register">
 
     <!-- Open Graph / Twitter -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://liberpx.in/register">
-    <meta property="og:site_name" content="LiberPX">
-    <meta property="og:title" content="Start Free Trial - LiberPX | Library Management Software">
-    <meta property="og:description" content="Create your LiberPX library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
-    <meta property="og:image" content="https://liberpx.in/images/og-image.png">
+    <meta property="og:url" content="https://softlix.in/register">
+    <meta property="og:site_name" content="Softlix">
+    <meta property="og:title" content="Start Free Trial - Softlix | Library Management Software">
+    <meta property="og:description" content="Create your Softlix library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
+    <meta property="og:image" content="https://softlix.in/images/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="en_IN">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Start Free Trial - LiberPX | Library Management Software">
-    <meta name="twitter:description" content="Create your LiberPX library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
-    <meta name="twitter:image" content="https://liberpx.in/images/og-image.png">
+    <meta name="twitter:title" content="Start Free Trial - Softlix | Library Management Software">
+    <meta name="twitter:description" content="Create your Softlix library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
+    <meta name="twitter:image" content="https://softlix.in/images/og-image.png">
 
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
@@ -110,7 +110,7 @@
                         <span class="input-group-text bg-white"><i class="bi bi-link-45deg text-muted"></i></span>
                         <input type="text" name="slug" id="slugInput" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug') }}"
                             placeholder="yourname" pattern="[a-z0-9-]+" required>
-                        <span class="input-group-text small text-muted">.liberpx.in</span>
+                        <span class="input-group-text small text-muted">.softlix.in</span>
                     </div>
                     <div class="form-text">Lowercase letters, numbers, hyphens only</div>
                 </div>

@@ -23,7 +23,7 @@ function startRazorpayPayment(planId) {
             order_id: data.order_id,
             amount: Math.round(data.amount * 100),
             currency: 'INR',
-            name: 'LiberPX',
+            name: 'Softlix',
             description: data.plan_name + ' Plan Subscription',
             prefill: {
                 name: data.name || '',
