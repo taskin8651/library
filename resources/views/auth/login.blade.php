@@ -8,7 +8,24 @@
     <meta name="description" content="Sign in to your LiberPX library management dashboard to manage members, fees, seats and attendance.">
     <meta name="robots" content="noindex, follow">
     <link rel="canonical" href="https://liberpx.in/login">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://liberpx.in/login">
+    <meta property="og:site_name" content="LiberPX">
+    <meta property="og:title" content="Login - LiberPX | Library Management Software">
+    <meta property="og:description" content="Sign in to your LiberPX library management dashboard to manage members, fees, seats and attendance.">
+    <meta property="og:image" content="https://liberpx.in/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_IN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Login - LiberPX | Library Management Software">
+    <meta name="twitter:description" content="Sign in to your LiberPX library management dashboard to manage members, fees, seats and attendance.">
+    <meta name="twitter:image" content="https://liberpx.in/images/og-image.png">
+
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     @include('partials.page-loader-styles')

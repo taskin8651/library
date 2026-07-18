@@ -93,6 +93,15 @@
         @endif
 
         <!-- Topbar -->
+        @php
+            // Members still checked in past their shift's end time —
+            // surfaced as a topbar alert so an owner/staff sees it on
+            // whichever page they're on, no matter where they navigate.
+            $overstayedAttendances = collect();
+            if (isset($library) && in_array(optional(auth()->user())->role, ['owner', 'staff'])) {
+                $overstayedAttendances = \App\Models\Attendance::overstayedToday($library->id);
+            }
+        @endphp
         <div class="topbar">
             <div class="d-flex align-items-center gap-3">
                 <button class="btn-icon-soft nav-burger d-md-none" id="drawerBurger" onclick="toggleDrawer()" aria-label="Toggle menu" aria-expanded="false" aria-controls="sidebar">
@@ -103,6 +112,45 @@
             </div>
             <div class="d-flex align-items-center gap-3">
                 <span class="text-muted small d-none d-md-block">{{ now()->format('d M Y') }}</span>
+
+                @if(isset($library) && in_array(optional(auth()->user())->role, ['owner', 'staff']))
+                <div class="dropdown">
+                    <button class="btn-icon-soft position-relative" data-bs-toggle="dropdown" aria-label="Overstay alerts" title="Overstay alerts">
+                        <i class="bi {{ $overstayedAttendances->count() ? 'bi-bell-fill text-danger notif-ring' : 'bi-bell' }}"></i>
+                        @if($overstayedAttendances->count())
+                        <span class="notif-badge">{{ $overstayedAttendances->count() }}</span>
+                        @endif
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 notif-dropdown" style="border-radius:14px;">
+                        <li class="px-3 py-2 border-bottom">
+                            <span class="fw-700 small"><i class="bi bi-exclamation-triangle-fill text-danger me-1"></i>Overstay Alerts</span>
+                        </li>
+                        @forelse($overstayedAttendances as $a)
+                        <li>
+                            <div class="notif-item">
+                                <div class="notif-item-icon"><i class="bi bi-person-fill"></i></div>
+                                <div class="flex-grow-1 min-w-0">
+                                    <div class="fw-600 small text-truncate">{{ $a->member->user->name ?? 'Member' }}</div>
+                                    <div class="text-muted notif-item-meta">
+                                        Seat {{ $a->seat?->seat_number ?? '—' }} &middot; {{ $a->member->shift->name }} ended {{ \Carbon\Carbon::parse($a->member->shift->end_time)->format('h:i A') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        @empty
+                        <li class="px-3 py-4 text-center text-muted small">
+                            <i class="bi bi-check-circle text-success d-block mb-1" style="font-size:20px"></i>
+                            No overstay alerts right now
+                        </li>
+                        @endforelse
+                        @if($overstayedAttendances->count())
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li><a class="dropdown-item small fw-600 rounded-3 mx-1" style="width:auto;color:var(--accent-1)" href="/owner/attendance">View Attendance <i class="bi bi-arrow-right ms-1"></i></a></li>
+                        @endif
+                    </ul>
+                </div>
+                @endif
+
                 <div class="dropdown">
                     <button class="user-chip border-0" data-bs-toggle="dropdown">
                         <span class="user-avatar-sm">{{ substr(auth()->user()->name ?? '?', 0, 1) }}</span>

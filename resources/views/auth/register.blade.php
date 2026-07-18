@@ -8,7 +8,24 @@
     <meta name="description" content="Create your LiberPX library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
     <meta name="robots" content="noindex, follow">
     <link rel="canonical" href="https://liberpx.in/register">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://liberpx.in/register">
+    <meta property="og:site_name" content="LiberPX">
+    <meta property="og:title" content="Start Free Trial - LiberPX | Library Management Software">
+    <meta property="og:description" content="Create your LiberPX library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
+    <meta property="og:image" content="https://liberpx.in/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_IN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Start Free Trial - LiberPX | Library Management Software">
+    <meta name="twitter:description" content="Create your LiberPX library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
+    <meta name="twitter:image" content="https://liberpx.in/images/og-image.png">
+
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">

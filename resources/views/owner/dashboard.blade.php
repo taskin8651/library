@@ -83,6 +83,36 @@
     };
 @endphp
 
+@php
+    // Same shared query the topbar bell uses — kept here too so the
+    // alert is impossible to miss even before a staff member opens the dropdown.
+    $overstayedToday = \App\Models\Attendance::overstayedToday($library->id);
+@endphp
+
+@if($overstayedToday->count())
+<div class="overstay-banner mb-4">
+    <div class="ob-head">
+        <div class="ob-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        <div class="flex-grow-1">
+            <h6>{{ $overstayedToday->count() }} student{{ $overstayedToday->count() > 1 ? 's are' : ' is' }} still checked in past their shift time</h6>
+            <p>These members haven't checked out even though their shift has ended. Please verify and check them out.</p>
+        </div>
+        <a href="/owner/attendance" class="btn btn-sm ob-btn">View Attendance <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+    <div class="ob-list">
+        @foreach($overstayedToday as $a)
+        <div class="ob-item">
+            <span class="ob-avatar">{{ substr($a->member->user->name ?? '?', 0, 1) }}</span>
+            <div class="flex-grow-1 min-w-0">
+                <div class="ob-name">{{ $a->member->user->name ?? 'Member' }}</div>
+                <div class="ob-meta">Seat {{ $a->seat?->seat_number ?? '—' }} &middot; {{ $a->member->shift->name }} ended {{ \Carbon\Carbon::parse($a->member->shift->end_time)->format('h:i A') }}</div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+@endif
+
 <!-- Welcome Hero -->
 <div class="welcome-hero">
     <div class="row align-items-center g-3">
