@@ -105,8 +105,11 @@
             @if($isCurrent)
                 <button class="btn btn-outline-primary w-100" disabled>Current Plan</button>
             @else
-                <button class="btn btn-primary w-100" onclick="startUpiPayment({{ $plan->id }})">
-                    <i class="bi bi-qr-code me-2"></i>{{ $onTrial ? 'Subscribe' : 'Renew / Switch' }} - ₹{{ number_format($plan->price) }}/mo
+                <button class="btn btn-primary w-100 mb-2" onclick="startRazorpayPayment({{ $plan->id }})">
+                    <i class="bi bi-credit-card-2-front me-2"></i>Pay Online - ₹{{ number_format($plan->price) }}/mo
+                </button>
+                <button class="btn btn-outline-secondary w-100 btn-sm" onclick="startUpiPayment({{ $plan->id }})">
+                    <i class="bi bi-qr-code me-2"></i>Pay via UPI QR instead
                 </button>
             @endif
         </div>
@@ -190,5 +193,6 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/owner-subscription-plans.js') }}"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="{{ asset('assets/js/owner-subscription-plans.js') }}?v={{ @filemtime(public_path('assets/js/owner-subscription-plans.js')) }}"></script>
 @endpush

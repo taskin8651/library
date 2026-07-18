@@ -1,5 +1,84 @@
 let currentSubscriptionId = null;
 
+function startRazorpayPayment(planId) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    fetch('/owner/subscription/razorpay/order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ plan_id: planId })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.error || !data.order_id) {
+            alert(data.error || 'Could not start payment. Please try again.');
+            return;
+        }
+
+        const rzp = new Razorpay({
+            key: data.razorpay_key,
+            order_id: data.order_id,
+            amount: Math.round(data.amount * 100),
+            currency: 'INR',
+            name: 'LiberPX',
+            description: data.plan_name + ' Plan Subscription',
+            prefill: {
+                name: data.name || '',
+                email: data.email || '',
+                contact: data.phone || ''
+            },
+            theme: { color: '#667eea' },
+            handler: function (response) {
+                verifyRazorpayPayment(data.subscription_id, response);
+            },
+            modal: {
+                ondismiss: function () {
+                    // Payment window closed without paying — subscription
+                    // stays "pending" in the DB, owner can just retry.
+                }
+            }
+        });
+
+        rzp.on('payment.failed', function () {
+            alert('Payment failed. Please try again or use UPI instead.');
+        });
+
+        rzp.open();
+    })
+    .catch(() => alert('Error creating order. Try again.'));
+}
+
+function verifyRazorpayPayment(subscriptionId, response) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    fetch('/owner/subscription/razorpay/verify', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({
+            subscription_id: subscriptionId,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            window.location.reload();
+        } else {
+            alert(data.message || 'Payment verification failed. Please contact support.');
+        }
+    })
+    .catch(() => alert('Network error while verifying payment. If money was deducted, contact support.'));
+}
+
 function startUpiPayment(planId) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 

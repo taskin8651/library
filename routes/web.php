@@ -91,6 +91,8 @@ Route::prefix('owner')->middleware(['auth', 'role:owner,staff'])->group(function
     Route::get('/subscription/plans', [SubscriptionController::class, 'plans'])->name('owner.subscription.plans');
     Route::post('/subscription/order', [SubscriptionController::class, 'createOrder'])->name('owner.subscription.order');
     Route::post('/subscription/submit-utr', [SubscriptionController::class, 'submitUtr'])->name('owner.subscription.submit-utr');
+    Route::post('/subscription/razorpay/order', [SubscriptionController::class, 'createRazorpayOrder'])->name('owner.subscription.razorpay.order');
+    Route::post('/subscription/razorpay/verify', [SubscriptionController::class, 'verifyRazorpayPayment'])->name('owner.subscription.razorpay.verify');
 
     // Announcements
     Route::get('/announcements', [AnnouncementController::class, 'index'])->name('owner.announcements.index');
