@@ -14,37 +14,15 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create Plans
+        // Single all-inclusive plan — everything except white-label branding.
         $starter = Plan::create([
-            'name' => 'Starter',
-            'description' => 'Perfect for small study libraries',
-            'price' => 399,
-            'trial_days' => 3,
-            'max_branches' => 1,
-            'staff_accounts' => false,
-            'white_label' => false,
-            'is_active' => true,
-        ]);
-
-        $pro = Plan::create([
             'name' => 'Pro',
-            'description' => 'For growing libraries with multiple branches',
-            'price' => 699,
-            'trial_days' => 3,
-            'max_branches' => 3,
-            'staff_accounts' => true,
-            'white_label' => false,
-            'is_active' => true,
-        ]);
-
-        $premium = Plan::create([
-            'name' => 'Premium',
-            'description' => 'Unlimited branches with white-label branding',
-            'price' => 999,
+            'description' => 'Everything you need to run your library — one simple plan.',
+            'price' => 599,
             'trial_days' => 3,
             'max_branches' => -1,
             'staff_accounts' => true,
-            'white_label' => true,
+            'white_label' => false,
             'is_active' => true,
         ]);
 

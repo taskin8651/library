@@ -59,9 +59,9 @@
         "image": {!! json_encode($seoImage) !!},
         "offers": {
             "@type": "Offer",
-            "price": "399",
+            "price": "599",
             "priceCurrency": "INR",
-            "description": "Starter plan, 3-day free trial"
+            "description": "Pro plan, 3-day free trial"
         }
     }
     </script>
@@ -101,7 +101,7 @@
             {
                 "@type": "Question",
                 "name": "Can I add my own logo and branding?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Yes! On every plan you can add your logo, name, tagline, and receipt stamp. The Premium plan gets full white-label branding." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes! You can add your logo, name, tagline, and receipt stamp throughout the dashboard and receipts." }
             },
             {
                 "@type": "Question",
@@ -111,7 +111,7 @@
             {
                 "@type": "Question",
                 "name": "Can I manage multiple branches?",
-                "acceptedAnswer": { "@type": "Answer", "text": "The Pro plan supports 3 branches, and Premium supports unlimited branches. Each branch's data stays completely separate." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes — the Pro plan supports unlimited branches. Each branch's data stays completely separate." }
             },
             {
                 "@type": "Question",
@@ -659,28 +659,24 @@
 
         <div class="row justify-content-center g-4 align-items-stretch">
 
-            <!-- Starter -->
+            <!-- Pro (single all-inclusive plan) -->
             <div class="col-md-5 reveal delay-1">
                 <div class="pricing-card popular">
                     <div class="popular-chip">⚡ Available Now</div>
-                    <div class="plan-name" style="color:#667eea">Starter</div>
-                    <div class="plan-price mb-2"><sup>₹</sup>399<span class="per">/mo</span></div>
-                    <p style="color:#6b7280;font-size:13px;margin-bottom:24px">Perfect for small libraries</p>
-                    <div class="plan-feature"><span class="fi fi-yes"><i class="bi bi-check"></i></span>1 Library Branch</div>
+                    <div class="plan-name" style="color:#667eea">Pro</div>
+                    <div class="plan-price mb-2"><sup>₹</sup>599<span class="per">/mo</span></div>
+                    <p style="color:#6b7280;font-size:13px;margin-bottom:24px">Everything you need, one simple plan</p>
+                    <div class="plan-feature"><span class="fi fi-yes"><i class="bi bi-check"></i></span>Unlimited Branches</div>
                     <div class="plan-feature"><span class="fi fi-yes"><i class="bi bi-check"></i></span>Unlimited Members</div>
                     <div class="plan-feature"><span class="fi fi-yes"><i class="bi bi-check"></i></span>QR Check-in</div>
                     <div class="plan-feature"><span class="fi fi-yes"><i class="bi bi-check"></i></span>Fee Receipts (PDF)</div>
-                    <div class="plan-feature"><span class="fi fi-no"><i class="bi bi-x"></i></span><span style="color:#9ca3af">Staff Accounts</span></div>
+                    <div class="plan-feature"><span class="fi fi-yes"><i class="bi bi-check"></i></span>Staff Accounts</div>
                     <div class="plan-feature"><span class="fi fi-no"><i class="bi bi-x"></i></span><span style="color:#9ca3af">White Label</span></div>
                     <a href="/register?plan=1" class="btn-plan btn-plan-fill">Start Free Trial</a>
                 </div>
             </div>
 
         </div>
-
-        <p class="text-center mt-5" style="color:#9ca3af;font-size:13px">
-            More plans (Pro &amp; Premium) coming soon.
-        </p>
     </div>
 </section>
 
@@ -769,7 +765,7 @@
 
                 <div class="faq-item">
                     <div class="faq-q">Can I add my own logo and branding? <span class="faq-icon"><i class="bi bi-plus"></i></span></div>
-                    <div class="faq-a">Yes! On every plan you can add your logo, name, tagline, and receipt stamp. The Premium plan gets full white-label branding.</div>
+                    <div class="faq-a">Yes! You can add your logo, name, tagline, and receipt stamp throughout the dashboard and receipts.</div>
                 </div>
 
                 <div class="faq-item">
@@ -779,7 +775,7 @@
 
                 <div class="faq-item">
                     <div class="faq-q">Can I manage multiple branches? <span class="faq-icon"><i class="bi bi-plus"></i></span></div>
-                    <div class="faq-a">The Pro plan supports 3 branches, and Premium supports unlimited branches. Each branch's data stays completely separate.</div>
+                    <div class="faq-a">Yes — the Pro plan supports unlimited branches. Each branch's data stays completely separate.</div>
                 </div>
 
                 <div class="faq-item">
