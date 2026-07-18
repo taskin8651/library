@@ -48,10 +48,6 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
     from { opacity: 0; }
     to   { opacity: 1; }
 }
-@keyframes floatY {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-16px); }
-}
 @keyframes floatBlob {
     0%, 100% { transform: translate(0, 0) scale(1); }
     50%      { transform: translate(22px, -26px) scale(1.07); }
@@ -376,7 +372,6 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
     border-radius: 24px;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    animation: floatY 7s ease-in-out infinite;
     box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.07);
 }
 .hero-card-bar {
@@ -714,7 +709,6 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
     padding: 16px;
     width: 320px;
     box-shadow: 0 30px 60px rgba(0,0,0,.35), 0 0 0 2px rgba(255,255,255,.08);
-    animation: floatY 6s ease-in-out infinite;
     margin: auto;
     position: relative;
     z-index: 1;
@@ -755,7 +749,6 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
     align-items: center;
     gap: 6px;
     z-index: 2;
-    animation: floatY 5s ease-in-out infinite .3s;
 }
 .phone-float-chip i { color: #4ade80; }
 .phone-screen {
@@ -1277,10 +1270,6 @@ footer {
     .feature-card, .pricing-card, .testi-card { padding: 24px; }
     .section-sub { max-width: 100%; }
     .phone-mockup-wrap { width: 200px; }
-    /* Stop the constant floating bob + 3D tilt on mobile — there's no hover
-       to ever settle it flat like on desktop, so it just looks like it's
-       stuck wobbling up and down. A calm, static mockup reads as premium. */
-    .phone-mockup, .phone-float-chip { animation: none; }
     .phone-mockup { width: 200px; padding: 12px; transform: none; }
     .qr-icon-wrap { width: 64px; height: 64px; }
     .qr-icon-wrap i { font-size: 44px; }
