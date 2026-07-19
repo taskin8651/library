@@ -114,7 +114,7 @@
 @endif
 
 <!-- Welcome Hero -->
-<div class="welcome-hero">
+<div class="welcome-hero {{ $library->banner ? 'has-banner' : '' }}" @if($library->banner) style="--hero-banner-url: url('{{ asset('storage/'.$library->banner) }}')" @endif>
     <div class="row align-items-center g-3">
         <div class="col-lg-7">
             <h4>{{ $greeting }}, {{ explode(' ', auth()->user()->name)[0] }} 👋</h4>

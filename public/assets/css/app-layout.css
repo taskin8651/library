@@ -497,6 +497,16 @@ body {
 .welcome-hero p { color: rgba(255,255,255,.55); font-size: 13px; margin: 0; position: relative; z-index: 1; }
 .welcome-hero .whero-right { position: relative; z-index: 1; }
 
+/* Owner's uploaded library banner, shown behind the greeting with a dark
+   overlay (same gradient tones as the plain hero) so text stays legible. */
+.welcome-hero.has-banner {
+    background-image:
+        linear-gradient(120deg, rgba(20,22,28,.88) 0%, rgba(35,38,58,.85) 55%, rgba(43,33,64,.88) 130%),
+        var(--hero-banner-url);
+    background-size: cover;
+    background-position: center;
+}
+
 /* ============ Empty State ============ */
 .empty-state {
     text-align: center;

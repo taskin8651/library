@@ -60,6 +60,12 @@
             $profilePhotoUrl = $member->profile_photo ? asset('storage/' . $member->profile_photo) : null;
         @endphp
 
+        @if($library->banner)
+        <div class="dash-banner-wrap mb-3 reveal reveal-1">
+            <img src="{{ asset('storage/'.$library->banner) }}" class="dash-banner" alt="{{ $library->name }} banner">
+        </div>
+        @endif
+
         <p class="text-muted mb-3 reveal reveal-1">{{ $greeting }}, <strong>{{ explode(' ', auth()->user()->name)[0] }}</strong> 👋</p>
 
         <!-- Quick Actions -->
