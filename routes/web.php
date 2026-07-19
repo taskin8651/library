@@ -13,6 +13,8 @@ use App\Http\Controllers\Owner\ShiftController;
 use App\Http\Controllers\Owner\SubscriptionController;
 use App\Http\Controllers\Owner\AnnouncementController;
 use App\Http\Controllers\Owner\ReportController;
+use App\Http\Controllers\Owner\ProfileController;
+use App\Http\Controllers\Owner\SettingsController;
 use App\Http\Controllers\Student\DashboardController as StudentDash;
 use App\Http\Controllers\Student\ScanController;
 
@@ -93,6 +95,15 @@ Route::prefix('owner')->middleware(['auth', 'role:owner,staff'])->group(function
     Route::post('/subscription/submit-utr', [SubscriptionController::class, 'submitUtr'])->name('owner.subscription.submit-utr');
     Route::post('/subscription/razorpay/order', [SubscriptionController::class, 'createRazorpayOrder'])->name('owner.subscription.razorpay.order');
     Route::post('/subscription/razorpay/verify', [SubscriptionController::class, 'verifyRazorpayPayment'])->name('owner.subscription.razorpay.verify');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('owner.profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('owner.profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('owner.profile.password');
+
+    // Library Settings
+    Route::get('/settings', [SettingsController::class, 'edit'])->name('owner.settings.edit');
+    Route::put('/settings', [SettingsController::class, 'update'])->name('owner.settings.update');
 
     // Announcements
     Route::get('/announcements', [AnnouncementController::class, 'index'])->name('owner.announcements.index');

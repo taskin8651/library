@@ -22,5 +22,7 @@
     <li><a href="/owner/reports" class="nav-link {{ request()->is('owner/reports*') ? 'active' : '' }}"><i class="bi bi-file-earmark-bar-graph-fill"></i> Reports & Export</a></li>
 
     <li class="sidebar-section mt-2">Account</li>
+    <li><a href="/owner/settings" class="nav-link {{ request()->is('owner/settings') ? 'active' : '' }}"><i class="bi bi-gear-fill"></i> Library Settings</a></li>
+    <li><a href="/owner/profile" class="nav-link {{ request()->is('owner/profile') ? 'active' : '' }}"><i class="bi bi-person-circle"></i> My Profile</a></li>
     <li><a href="/owner/subscription/plans" class="nav-link {{ request()->is('owner/subscription*') ? 'active' : '' }}"><i class="bi bi-star-fill"></i> Subscription</a></li>
 </ul>

@@ -3,7 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="{{ $library->theme_color ?? '#0d6efd' }}">
+    @php
+        // Every "premium" component built across this app (sidebar gradient,
+        // active nav state, buttons, stat icons, etc.) reads --accent-1/-2,
+        // not --primary directly — so the owner's theme_color has to drive
+        // those two variables too, or picking a color in Settings does nothing.
+        // A darker second stop is computed here so the two-tone gradient look
+        // is preserved instead of flattening everything to one flat color.
+        $themeColor = $library->theme_color ?? '#667eea';
+        $darken = function ($hex, $percent) {
+            $hex = ltrim($hex, '#');
+            if (strlen($hex) === 3) { $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2]; }
+            if (strlen($hex) !== 6 || !ctype_xdigit($hex)) { return '#764ba2'; }
+            $rgb = array_map('hexdec', str_split($hex, 2));
+            $rgb = array_map(fn ($c) => max(0, min(255, (int) round($c * (1 - $percent)))), $rgb);
+            return sprintf('#%02x%02x%02x', ...$rgb);
+        };
+        $themeColorDark = $darken($themeColor, 0.22);
+    @endphp
+    <meta name="theme-color" content="{{ $themeColor }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Softlix') | {{ $library->name ?? 'Softlix' }}</title>
@@ -17,9 +35,9 @@
 
     <style>
         :root {
-            --primary: {{ $library->theme_color ?? '#0d6efd' }};
-            --accent-1: #667eea;
-            --accent-2: #764ba2;
+            --primary: {{ $themeColor }};
+            --accent-1: {{ $themeColor }};
+            --accent-2: {{ $themeColorDark }};
             --accent-teal: #14b8a6;
             --ink: #12141a;
             --sidebar-width: 264px;
@@ -84,13 +102,21 @@
         </div>
 
         <div class="sidebar-footer">
+            @if(in_array(optional(auth()->user())->role, ['owner', 'staff']))
+            <a href="/owner/profile" class="sidebar-user" style="text-decoration:none">
+            @else
             <div class="sidebar-user">
+            @endif
                 <span class="sidebar-user-avatar">{{ substr(auth()->user()->name ?? '?', 0, 1) }}</span>
                 <div class="min-w-0">
                     <div class="sidebar-user-name">{{ auth()->user()->name }}</div>
                     <div class="sidebar-user-role">{{ ucfirst(auth()->user()->role ?? '') }}</div>
                 </div>
+            @if(in_array(optional(auth()->user())->role, ['owner', 'staff']))
+            </a>
+            @else
             </div>
+            @endif
         </div>
     </nav>
 
@@ -170,6 +196,12 @@
                         <i class="bi bi-chevron-down small text-muted"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" style="border-radius:14px;">
+                        @if(in_array(optional(auth()->user())->role, ['owner', 'staff']))
+                        <li><a class="dropdown-item rounded-3 mx-1" style="width:auto" href="/owner/profile">
+                            <i class="bi bi-person-circle me-2"></i>My Profile
+                        </a></li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        @endif
                         <li><a class="dropdown-item text-danger rounded-3 mx-1" style="width:auto" href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
                             <i class="bi bi-box-arrow-right me-2"></i>Logout

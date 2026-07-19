@@ -1,0 +1,47 @@
+/* ============================================================
+   Softlix - Owner Profile Page CSS
+   File: public/assets/css/owner-profile.css
+   ============================================================ */
+
+.profile-hero {
+    background: linear-gradient(120deg, #14161c 0%, #23263a 55%, #2b2140 130%);
+    border-radius: 20px;
+    padding: 24px 28px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+.profile-hero::before {
+    content: '';
+    position: absolute; top: -50px; right: -30px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(102,126,234,.35), transparent 70%);
+    pointer-events: none;
+}
+.profile-hero > div { position: relative; z-index: 1; }
+.profile-hero h5 { color: #fff; }
+
+.profile-avatar {
+    width: 64px; height: 64px; flex-shrink: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 26px;
+    box-shadow: 0 8px 20px rgba(102,126,234,.4);
+}
+
+.pwd-wrap { position: relative; }
+.pwd-wrap .form-control { padding-right: 42px; }
+.pwd-toggle {
+    position: absolute; top: 50%; right: 10px; transform: translateY(-50%);
+    background: none; border: none; padding: 4px;
+    color: #9ca3af; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+}
+.pwd-toggle:hover { color: #6b7280; }
+
+@media (max-width: 767.98px) {
+    .profile-hero { padding: 20px; border-radius: 16px; }
+    .profile-avatar { width: 52px; height: 52px; font-size: 20px; border-radius: 14px; }
+}
