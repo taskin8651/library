@@ -22,6 +22,18 @@ class RoleMiddleware
         // Check if library is active (for owners/staff/students)
         if (in_array($user->role, ['owner','staff','student'])) {
             $library = $user->library;
+
+            // A suspended library is blocked outright — this is independent of
+            // trial/expiry state, since isOnTrial() only looks at trial_ends_at
+            // and would otherwise let a suspended-but-still-in-trial account
+            // keep working as if nothing happened.
+            if ($library && $library->status === 'suspended') {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                abort(403, 'This library account has been suspended. Please contact support.');
+            }
+
             if ($library && !$library->isActive() && !$library->isOnTrial()) {
                 if ($user->role === 'owner' && !$request->is('owner/subscription/*')) {
                     return redirect('/owner/subscription/plans')

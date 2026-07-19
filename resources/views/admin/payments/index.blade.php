@@ -3,18 +3,50 @@
 @section('page-title', 'UPI Payment Verification')
 
 @section('sidebar-menu')
-<ul class="nav flex-column py-3">
-    <li><a href="/admin/dashboard" class="nav-link"><i class="bi bi-grid-fill"></i> Dashboard</a></li>
-    <li class="sidebar-section mt-2">Management</li>
-    <li><a href="/admin/libraries" class="nav-link"><i class="bi bi-building"></i> Libraries</a></li>
-    <li><a href="/admin/plans" class="nav-link"><i class="bi bi-star-fill"></i> Plans</a></li>
-    <li><a href="/admin/payments" class="nav-link active"><i class="bi bi-cash-coin"></i> Payments
-        @if($awaitingVerification->count())<span class="badge bg-danger ms-1">{{ $awaitingVerification->count() }}</span>@endif
-    </a></li>
-</ul>
+@include('admin.partials.sidebar')
 @endsection
 
+@push('styles')
+<link href="{{ asset('assets/css/admin-panel.css') }}?v={{ @filemtime(public_path('assets/css/admin-panel.css')) }}" rel="stylesheet">
+@endpush
+
 @section('content')
+
+@php
+    // Full counts across ALL subscriptions — $history below is capped to the
+    // last 30 rows for display, so these summary tiles are queried fresh.
+    $approvedCount = \App\Models\Subscription::where('status', 'active')->count();
+    $failedCount = \App\Models\Subscription::whereIn('status', ['failed', 'cancelled'])->count();
+    $totalCollected = \App\Models\Subscription::where('status', 'active')->sum('amount');
+@endphp
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="summary-card">
+            <div class="sc-icon" style="background:#fef3c7;color:#92400e"><i class="bi bi-hourglass-split"></i></div>
+            <div><div class="sc-num">{{ $awaitingVerification->count() }}</div><div class="sc-label">Pending</div></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="summary-card">
+            <div class="sc-icon" style="background:#dcfce7;color:#166534"><i class="bi bi-check-circle-fill"></i></div>
+            <div><div class="sc-num">{{ $approvedCount }}</div><div class="sc-label">Approved</div></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="summary-card">
+            <div class="sc-icon" style="background:#fee2e2;color:#991b1b"><i class="bi bi-x-circle-fill"></i></div>
+            <div><div class="sc-num">{{ $failedCount }}</div><div class="sc-label">Failed</div></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="summary-card">
+            <div class="sc-icon" style="background:#ede9fe;color:#6d28d9"><i class="bi bi-currency-rupee"></i></div>
+            <div><div class="sc-num">₹{{ number_format($totalCollected) }}</div><div class="sc-label">Collected</div></div>
+        </div>
+    </div>
+</div>
 
 <div class="table-card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
@@ -30,12 +62,17 @@
                 @forelse($awaitingVerification as $sub)
                 <tr>
                     <td data-label="Library">
-                        <div class="fw-500">{{ $sub->library->name }}</div>
-                        <small class="text-muted">{{ $sub->library->email }} &middot; {{ $sub->library->phone }}</small>
+                        <div class="entity-row">
+                            <span class="entity-avatar">{{ substr($sub->library->name ?? '?', 0, 1) }}</span>
+                            <div class="min-w-0">
+                                <div class="fw-600 text-truncate">{{ $sub->library->name }}</div>
+                                <small class="text-muted text-truncate d-block">{{ $sub->library->email }} &middot; {{ $sub->library->phone }}</small>
+                            </div>
+                        </div>
                     </td>
                     <td data-label="Plan"><span class="badge bg-light text-dark">{{ $sub->plan->name ?? '-' }}</span></td>
                     <td data-label="Amount" class="fw-600">₹{{ number_format($sub->amount) }}</td>
-                    <td data-label="UTR"><code>{{ $sub->utr }}</code></td>
+                    <td data-label="UTR"><span class="utr-chip">{{ $sub->utr }}</span></td>
                     <td data-label="Submitted">{{ $sub->updated_at->format('d M Y, h:i A') }}</td>
                     <td data-label="Action">
                         <div class="d-flex gap-1">
@@ -51,7 +88,13 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="6" class="text-center text-muted py-4">No payments waiting for verification</td></tr>
+                <tr><td colspan="6">
+                    <div class="empty-state">
+                        <div class="es-icon"><i class="bi bi-check2-circle"></i></div>
+                        <h6>All caught up!</h6>
+                        <p>No payments are waiting for verification right now.</p>
+                    </div>
+                </td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -68,7 +111,12 @@
             <tbody>
                 @forelse($history as $sub)
                 <tr>
-                    <td data-label="Library">{{ $sub->library->name ?? '-' }}</td>
+                    <td data-label="Library">
+                        <div class="entity-row">
+                            <span class="entity-avatar" style="width:32px;height:32px;font-size:12px;border-radius:9px">{{ substr($sub->library->name ?? '?', 0, 1) }}</span>
+                            <span class="text-truncate">{{ $sub->library->name ?? '-' }}</span>
+                        </div>
+                    </td>
                     <td data-label="Plan">{{ $sub->plan->name ?? '-' }}</td>
                     <td data-label="Amount" class="fw-600">₹{{ number_format($sub->amount) }}</td>
                     <td data-label="Status">
@@ -76,11 +124,17 @@
                             {{ ucfirst($sub->status) }}
                         </span>
                     </td>
-                    <td data-label="UTR"><code>{{ $sub->utr ?? '-' }}</code></td>
+                    <td data-label="UTR">@if($sub->utr)<span class="utr-chip">{{ $sub->utr }}</span>@else-@endif</td>
                     <td data-label="Date">{{ $sub->updated_at->format('d M Y') }}</td>
                 </tr>
                 @empty
-                <tr><td colspan="6" class="text-center text-muted py-4">No processed payments yet</td></tr>
+                <tr><td colspan="6">
+                    <div class="empty-state">
+                        <div class="es-icon"><i class="bi bi-receipt"></i></div>
+                        <h6>No processed payments yet</h6>
+                        <p>Approved and rejected payments will show up here.</p>
+                    </div>
+                </td></tr>
                 @endforelse
             </tbody>
         </table>

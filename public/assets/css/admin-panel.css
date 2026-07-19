@@ -1,0 +1,147 @@
+/* ============================================================
+   Softlix - Admin Panel CSS
+   File: public/assets/css/admin-panel.css
+   Builds on shared app-layout.css (.stat-card, .table-card, .badge-*,
+   .quick-action, .empty-state, .welcome-hero already exist there).
+   ============================================================ */
+
+/* ── Chart containers (fixed height avoids Chart.js CLS/resize loop) ── */
+.chart-wrap { position: relative; height: 260px; width: 100%; }
+.chart-wrap-donut { height: 220px; }
+@media (max-width: 991.98px) { .chart-wrap { height: 240px; } }
+@media (max-width: 767.98px) { .chart-wrap { height: 220px; } .chart-wrap-donut { height: 200px; } }
+
+/* ── Entity avatar (initials circle for library rows) ───────── */
+.entity-avatar {
+    width: 38px; height: 38px; flex-shrink: 0;
+    border-radius: 11px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    box-shadow: 0 4px 12px rgba(102,126,234,.25);
+}
+.entity-row { display: flex; align-items: center; gap: 12px; }
+
+/* ── Summary card row (Total / Active / Inactive / Today) ───── */
+.summary-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all .25s cubic-bezier(.22,1,.36,1);
+    border: 1px solid rgba(17,24,39,.04);
+}
+.summary-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.summary-card .sc-icon {
+    width: 46px; height: 46px; flex-shrink: 0;
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+}
+.summary-card .sc-num { font-size: 24px; font-weight: 800; color: var(--ink); line-height: 1.1; }
+.summary-card .sc-label { font-size: 12px; color: #9199a3; font-weight: 600; margin-top: 2px; }
+
+/* ── Search / filter toolbar ─────────────────────────────────── */
+.admin-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.admin-toolbar .form-control,
+.admin-toolbar .form-select {
+    border-radius: 10px;
+    border-color: rgba(17,24,39,.1);
+}
+.admin-toolbar .form-control:focus,
+.admin-toolbar .form-select:focus {
+    border-color: var(--accent-1);
+    box-shadow: 0 0 0 3px rgba(102,126,234,.12);
+}
+
+/* ── Toggle switch (plan active/inactive) ────────────────────── */
+.toggle-switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+.toggle-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.toggle-switch .ts-track {
+    width: 42px; height: 24px; border-radius: 20px;
+    background: #e5e7eb;
+    position: relative;
+    transition: background .25s ease;
+    flex-shrink: 0;
+}
+.toggle-switch .ts-track::after {
+    content: '';
+    position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    transition: transform .25s cubic-bezier(.22,1,.36,1);
+}
+.toggle-switch input:checked ~ .ts-track { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); }
+.toggle-switch input:checked ~ .ts-track::after { transform: translateX(18px); }
+.toggle-switch .ts-label { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+
+/* ── Premium plan card (admin plan management) ───────────────── */
+.admin-plan-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(17,24,39,.05);
+    transition: all .3s cubic-bezier(.22,1,.36,1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.admin-plan-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.admin-plan-card.is-inactive { opacity: .68; }
+.admin-plan-card .apc-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.admin-plan-card .apc-price { font-size: 30px; font-weight: 800; color: var(--ink); }
+.admin-plan-card .apc-price span { font-size: 13px; font-weight: 500; color: #9199a3; }
+.admin-plan-card .apc-feature-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px; color: #4b5563;
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(17,24,39,.06);
+}
+.admin-plan-card .apc-feature-row:last-of-type { border-bottom: none; }
+.admin-plan-card .apc-feature-row i.yes { color: #16a34a; }
+.admin-plan-card .apc-feature-row i.no { color: #d1d5db; }
+.admin-plan-card .apc-count-pill {
+    background: #f4f6fb;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 14px 0;
+}
+.admin-plan-card .apc-count-pill strong { color: var(--ink); font-size: 14px; }
+.admin-plan-card form { margin-top: auto; }
+
+/* ── Payments UTR chip ────────────────────────────────────────── */
+.utr-chip {
+    background: #f4f6fb;
+    border-radius: 8px;
+    padding: 3px 9px;
+    font-size: 12px;
+    color: #4b5563;
+    font-family: 'Courier New', monospace;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+    .summary-card { padding: 14px 16px; }
+    .summary-card .sc-num { font-size: 20px; }
+    .summary-card .sc-icon { width: 40px; height: 40px; font-size: 16px; }
+    .admin-toolbar { flex-direction: column; align-items: stretch; }
+    .admin-toolbar .form-control,
+    .admin-toolbar .form-select,
+    .admin-toolbar button { width: 100% !important; }
+}

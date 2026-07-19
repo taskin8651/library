@@ -67,7 +67,12 @@
 
 <div class="row justify-content-center g-4 mb-4">
     @foreach($plans as $plan)
-    @php $isCurrent = $library->plan_id == $plan->id; @endphp
+    @php
+        // Matching plan_id alone isn't enough — if the trial/subscription has
+        // actually expired, the owner must still see a working Pay button to
+        // renew, even though they're technically still "on" this plan by ID.
+        $isCurrent = $library->plan_id == $plan->id && ($library->isActive() || $onTrial);
+    @endphp
     <div class="col-md-4">
         <div class="table-card p-4 h-100 sub-plan-card {{ $isCurrent ? 'sub-plan-current' : '' }}">
             @if($isCurrent)

@@ -30,13 +30,14 @@ body {
 /* ============ Sidebar ============ */
 .sidebar {
     width: var(--sidebar-width);
-    min-height: 100vh;
+    height: 100vh;
     background: linear-gradient(180deg, #14161c 0%, #1a1d23 55%, #171a20 100%);
     position: fixed;
     top: 0; left: 0;
     z-index: 1000;
-    overflow-y: auto;
-    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     transition: transform 0.3s cubic-bezier(.22,1,.36,1);
 }
 .sidebar::before {
@@ -49,6 +50,7 @@ body {
     pointer-events: none;
 }
 .sidebar-brand {
+    flex-shrink: 0;
     padding: 22px 20px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
     position: relative; z-index: 1;
@@ -58,9 +60,26 @@ body {
 .sidebar-brand h6 { color: #fff; margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
 .sidebar-brand small { color: rgba(255,255,255,0.45); font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; }
 
+/* Nav area scrolls independently — brand header and user footer stay put */
+.sidebar-nav {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,.18) transparent;
+}
+.sidebar-nav::-webkit-scrollbar { width: 6px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,.16); border-radius: 20px; }
+.sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.28); }
+
 .sidebar .nav-link {
     color: rgba(255,255,255,0.62);
-    padding: 10px 16px;
+    padding: 9px 14px;
     border-radius: 10px;
     margin: 2px 12px;
     font-size: 13.5px;
@@ -72,18 +91,27 @@ body {
     position: relative;
     z-index: 1;
 }
-.sidebar .nav-link i { font-size: 15px; width: 20px; text-align: center; transition: transform .2s ease; }
+.sidebar .nav-link i {
+    font-size: 13.5px;
+    width: 28px; height: 28px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    transition: all .2s cubic-bezier(.22,1,.36,1);
+}
 .sidebar .nav-link:hover {
     color: #fff;
     background: rgba(255,255,255,0.06);
     transform: translateX(3px);
 }
-.sidebar .nav-link:hover i { transform: scale(1.12); }
+.sidebar .nav-link:hover i { background: rgba(255,255,255,0.1); transform: scale(1.08); }
 .sidebar .nav-link.active {
     color: #fff;
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
     box-shadow: 0 8px 20px rgba(102,126,234,0.35);
 }
+.sidebar .nav-link.active i { background: rgba(255,255,255,0.18); }
 .sidebar .nav-link.active::before {
     content: '';
     position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
@@ -91,13 +119,46 @@ body {
     background: #fff;
 }
 .sidebar-section {
-    padding: 16px 20px 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 20px 8px;
     color: rgba(255,255,255,0.28);
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.4px;
 }
+.sidebar-section::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+}
+
+/* User mini-card pinned at the bottom, mirrors the topbar user chip so the
+   signed-in identity stays visible even while the nav list above scrolls */
+.sidebar-footer {
+    flex-shrink: 0;
+    padding: 14px 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    position: relative; z-index: 1;
+}
+.sidebar-user { display: flex; align-items: center; gap: 10px; }
+.sidebar-user-avatar {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    box-shadow: 0 6px 16px rgba(102,126,234,.35);
+}
+.sidebar-user-name {
+    color: #fff; font-size: 12.5px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar-user-role { color: rgba(255,255,255,0.4); font-size: 10.5px; text-transform: capitalize; }
 
 /* Drawer backdrop (mobile only — see .sidebar-backdrop.show below) */
 .sidebar-backdrop {
@@ -600,7 +661,6 @@ body {
         width: min(var(--sidebar-width), 84vw);
         padding-top: env(safe-area-inset-top);
         padding-left: env(safe-area-inset-left);
-        -webkit-overflow-scrolling: touch;
     }
     .sidebar.show { transform: translateX(0); box-shadow: 0 0 60px rgba(0,0,0,.35); }
     .sidebar-backdrop.show { display: block; opacity: 1; }

@@ -79,7 +79,19 @@
             </div>
         </div>
 
-        @yield('sidebar-menu')
+        <div class="sidebar-nav">
+            @yield('sidebar-menu')
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <span class="sidebar-user-avatar">{{ substr(auth()->user()->name ?? '?', 0, 1) }}</span>
+                <div class="min-w-0">
+                    <div class="sidebar-user-name">{{ auth()->user()->name }}</div>
+                    <div class="sidebar-user-role">{{ ucfirst(auth()->user()->role ?? '') }}</div>
+                </div>
+            </div>
+        </div>
     </nav>
 
     <!-- Main Content -->
@@ -174,6 +186,25 @@
     </div>
 
     <!-- Mobile Bottom Navigation -->
+    @if(optional(auth()->user())->role === 'superadmin')
+    <nav class="bottom-nav d-md-none">
+        <a href="/admin/dashboard" class="bn-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+            <i class="bi bi-grid-fill"></i><span>Home</span>
+        </a>
+        <a href="/admin/libraries" class="bn-item {{ request()->is('admin/libraries*') ? 'active' : '' }}">
+            <i class="bi bi-building"></i><span>Libraries</span>
+        </a>
+        <a href="/admin/plans" class="bn-item bn-item-fab">
+            <i class="bi bi-star-fill"></i>
+        </a>
+        <a href="/admin/payments" class="bn-item {{ request()->is('admin/payments*') ? 'active' : '' }}">
+            <i class="bi bi-cash-coin"></i><span>Payments</span>
+        </a>
+        <button type="button" class="bn-item" onclick="toggleDrawer()">
+            <i class="bi bi-list"></i><span>More</span>
+        </button>
+    </nav>
+    @else
     <nav class="bottom-nav d-md-none">
         <a href="/owner/dashboard" class="bn-item {{ request()->is('owner/dashboard') ? 'active' : '' }}">
             <i class="bi bi-grid-fill"></i><span>Home</span>
@@ -191,6 +222,7 @@
             <i class="bi bi-list"></i><span>More</span>
         </button>
     </nav>
+    @endif
 
     <form id="logout-form" action="/logout" method="POST" class="d-none">@csrf</form>
 
