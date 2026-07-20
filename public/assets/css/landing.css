@@ -101,6 +101,13 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
     margin-right: 8px;
     vertical-align: middle;
 }
+.navbar-logo-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 12px;
+    vertical-align: middle;
+}
 .nav-link {
     color: rgba(255,255,255,.72) !important;
     font-size: 14px;
@@ -1044,6 +1051,14 @@ footer {
     font-size: 20px;
     letter-spacing: -.5px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+.footer-logo-img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 .footer-desc {
     color: rgba(255,255,255,.4);
@@ -1051,6 +1066,17 @@ footer {
     line-height: 1.6;
     max-width: 240px;
 }
+.footer-social { display: flex; gap: 10px; }
+.footer-social-link {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.6);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: all .2s ease;
+}
+.footer-social-link:hover { background: rgba(102,126,234,.25); color: #fff; transform: translateY(-2px); }
 .footer-heading {
     color: rgba(255,255,255,.7);
     font-size: 11px;

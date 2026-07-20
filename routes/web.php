@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController as AdminDash;
 use App\Http\Controllers\Admin\PaymentController as AdminPayment;
+use App\Http\Controllers\Admin\SettingsController as AdminSettings;
 use App\Http\Controllers\Owner\DashboardController as OwnerDash;
 use App\Http\Controllers\Owner\MemberController;
 use App\Http\Controllers\Owner\FeeController;
@@ -47,6 +48,8 @@ Route::prefix('admin')->middleware(['auth', 'role:superadmin'])->group(function 
     Route::get('/payments', [AdminPayment::class, 'index'])->name('admin.payments.index');
     Route::post('/payments/{subscription}/approve', [AdminPayment::class, 'approve'])->name('admin.payments.approve');
     Route::post('/payments/{subscription}/reject', [AdminPayment::class, 'reject'])->name('admin.payments.reject');
+    Route::get('/settings', [AdminSettings::class, 'edit'])->name('admin.settings.edit');
+    Route::put('/settings', [AdminSettings::class, 'update'])->name('admin.settings.update');
 });
 
 // ─── Library Owner Routes ─────────────────────────────────────

@@ -18,4 +18,7 @@
             @endif
         </a>
     </li>
+
+    <li class="sidebar-section mt-2">Website</li>
+    <li><a href="/admin/settings" class="nav-link {{ request()->is('admin/settings') ? 'active' : '' }}"><i class="bi bi-gear-fill"></i> Website Settings</a></li>
 </ul>

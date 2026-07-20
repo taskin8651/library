@@ -5,16 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     @php
-        $seoTitle = 'Softlix – Smart Library Management Software & Digital Library ERP for India';
-        $seoDesc  = 'Softlix is a smart library management system for study libraries and reading rooms — manage members, fees, seat booking and QR-based student attendance from one dashboard. 3-day free trial, no credit card needed.';
+        // Admin-configurable site settings (Admin > Website Settings) override
+        // these hardcoded defaults wherever they've actually been filled in —
+        // an empty field just falls back to the original copy, never blank.
+        $settings = \App\Models\Setting::current();
+        $seoTitle = $settings->meta_title ?: 'Softlix – Smart Library Management Software & Digital Library ERP for India';
+        $seoDesc  = $settings->meta_description ?: 'Softlix is a smart library management system for study libraries and reading rooms — manage members, fees, seat booking and QR-based student attendance from one dashboard. 3-day free trial, no credit card needed.';
         $seoUrl   = 'https://softlix.in';
-        $seoImage = 'https://softlix.in/images/og-image.png';
+        $seoImage = $settings->og_image_url ?: 'https://softlix.in/images/og-image.png';
+        $siteName = $settings->site_name ?: 'Softlix';
+        $socialLinks = collect([
+            'facebook'  => ['url' => $settings->facebook_url, 'icon' => 'bi-facebook'],
+            'twitter'   => ['url' => $settings->twitter_url, 'icon' => 'bi-twitter-x'],
+            'instagram' => ['url' => $settings->instagram_url, 'icon' => 'bi-instagram'],
+            'linkedin'  => ['url' => $settings->linkedin_url, 'icon' => 'bi-linkedin'],
+            'youtube'   => ['url' => $settings->youtube_url, 'icon' => 'bi-youtube'],
+        ])->filter(fn ($s) => !empty($s['url']));
     @endphp
 
     <title>{{ $seoTitle }}</title>
     <meta name="description" content="{{ $seoDesc }}">
-    <meta name="keywords" content="Softlix, library management software, digital library ERP, library management system, student attendance system, reading room management, library seat booking, library automation, library ERP India, smart library software">
-    <meta name="author" content="Softlix">
+    <meta name="keywords" content="{{ $settings->meta_keywords ?: 'Softlix, library management software, digital library ERP, library management system, student attendance system, reading room management, library seat booking, library automation, library ERP India, smart library software' }}">
+    <meta name="author" content="{{ $siteName }}">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#667eea">
     <link rel="canonical" href="{{ $seoUrl }}">
@@ -22,13 +34,13 @@
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ $seoUrl }}">
-    <meta property="og:site_name" content="Softlix">
+    <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:title" content="{{ $seoTitle }}">
     <meta property="og:description" content="{{ $seoDesc }}">
     <meta property="og:image" content="{{ $seoImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Softlix — Smart Library Management Software">
+    <meta property="og:image:alt" content="{{ $siteName }} — Smart Library Management Software">
     <meta property="og:locale" content="en_IN">
 
     <!-- Twitter Card -->
@@ -38,20 +50,24 @@
     <meta name="twitter:image" content="{{ $seoImage }}">
 
     <!-- Favicons / App Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
+    @if($settings->favicon_url)
+        <link rel="icon" type="image/png" href="{{ $settings->favicon_url }}">
+    @else
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
+    @endif
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ $settings->favicon_url ?: asset('images/apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Softlix">
+    <meta name="apple-mobile-web-app-title" content="{{ $siteName }}">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "Softlix",
+        "name": {!! json_encode($siteName) !!},
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web, Android, iOS",
         "description": {!! json_encode($seoDesc) !!},
@@ -69,17 +85,17 @@
     {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "Softlix",
+        "name": {!! json_encode($siteName) !!},
         "url": {!! json_encode($seoUrl) !!},
-        "logo": {!! json_encode('https://softlix.in/images/icon-512.png') !!},
-        "sameAs": []
+        "logo": {!! json_encode($settings->logo_url ?: 'https://softlix.in/images/icon-512.png') !!},
+        "sameAs": {!! json_encode($socialLinks->pluck('url')->values()) !!}
     }
     </script>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "Softlix",
+        "name": {!! json_encode($siteName) !!},
         "url": {!! json_encode($seoUrl) !!}
     }
     </script>
@@ -145,7 +161,7 @@
 <div id="page-loader">
     <div>
         <div class="loader-ring"></div>
-        <div class="loader-text">Softlix</div>
+        <div class="loader-text">{{ $siteName }}</div>
     </div>
 </div>
 
@@ -161,8 +177,12 @@
     <div class="container">
 
         <a class="navbar-brand" href="/">
-            <span class="brand-icon"><i class="bi bi-book-fill text-white"></i></span>
-            Softlix
+            @if($settings->logo_url)
+                <img src="{{ $settings->logo_url }}" alt="{{ $siteName }}" class="navbar-logo-img">
+            @else
+                <span class="brand-icon"><i class="bi bi-book-fill text-white"></i></span>
+                {{ $siteName }}
+            @endif
         </a>
 
         <button class="navbar-toggler nav-burger" type="button" id="navBurger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
@@ -250,7 +270,7 @@
                         <div class="dot bg-danger"></div>
                         <div class="dot bg-warning"></div>
                         <div class="dot bg-success"></div>
-                        <span>Softlix Dashboard</span>
+                        <span>{{ $siteName }} Dashboard</span>
                     </div>
 
                     <div class="hero-card-body">
@@ -566,7 +586,7 @@
             <div class="col-lg-6 reveal">
                 <div class="section-tag">For Students</div>
                 <h2 class="section-title mt-2 mb-3">Your Attendance,<br>Right on Your Phone</h2>
-                <p class="section-sub mb-4">No paper registers, no queues. Students install Softlix like an app on their phone and mark attendance in two taps.</p>
+                <p class="section-sub mb-4">No paper registers, no queues. Students install {{ $siteName }} like an app on their phone and mark attendance in two taps.</p>
 
                 <div class="step-item">
                     <div class="step-num">1</div>
@@ -814,9 +834,21 @@
 
             <div class="col-md-4">
                 <div class="footer-brand">
-                    <i class="bi bi-book-fill me-2" style="color:#667eea"></i>Softlix
+                    @if($settings->logo_url)
+                        <img src="{{ $settings->logo_url }}" alt="{{ $siteName }}" class="footer-logo-img">
+                    @else
+                        <i class="bi bi-book-fill me-2" style="color:#667eea"></i>
+                        {{ $siteName }}
+                    @endif
                 </div>
                 <p class="footer-desc mt-2">Smart management software built for India's study libraries.</p>
+                @if($socialLinks->isNotEmpty())
+                <div class="footer-social mt-3">
+                    @foreach($socialLinks as $social)
+                    <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" class="footer-social-link"><i class="bi {{ $social['icon'] }}"></i></a>
+                    @endforeach
+                </div>
+                @endif
             </div>
 
             <div class="col-6 col-md-2 offset-md-2">
@@ -846,7 +878,7 @@
         <hr class="footer-divider">
 
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <p class="footer-copy mb-0">© {{ date('Y') }} Softlix. All rights reserved.</p>
+            <p class="footer-copy mb-0">© {{ date('Y') }} {{ $siteName }}. All rights reserved.</p>
             <p class="footer-copy mb-0">Made with ❤️ for Bihar's Libraries</p>
         </div>
     </div>
