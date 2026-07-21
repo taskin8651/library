@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>You're Offline - Softlix</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, 'Segoe UI', Inter, sans-serif; }
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: radial-gradient(circle at 20% 20%, rgba(102,126,234,.08), transparent 40%), #f4f6fb;
+    }
+    .card {
+        background: #fff;
+        border-radius: 22px;
+        padding: 44px 36px;
+        width: 100%;
+        max-width: 380px;
+        text-align: center;
+        box-shadow: 0 25px 70px rgba(17,24,39,.1);
+    }
+    .icon-ring {
+        width: 68px; height: 68px; border-radius: 50%; margin: 0 auto 18px;
+        background: #eef1fb; display: flex; align-items: center; justify-content: center;
+        color: #667eea; font-size: 28px;
+    }
+    h4 { font-size: 19px; font-weight: 700; color: #12141a; margin-bottom: 8px; }
+    p { color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+    button {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff; border: none; border-radius: 11px;
+        font-weight: 600; font-size: 14px; padding: 11px 24px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon-ring">&#128246;</div>
+        <h4>You're Offline</h4>
+        <p>Looks like you've lost your internet connection. Check your network and try again.</p>
+        <button onclick="window.location.reload()">Retry</button>
+    </div>
+</body>
+</html>

@@ -246,10 +246,6 @@
                         <i class="bi bi-play-circle"></i>
                         View Demo
                     </a>
-                    <button type="button" id="installAppBtn" data-pwa-install-btn class="btn-hero-secondary d-none">
-                        <i class="bi bi-download"></i>
-                        Install Student App
-                    </button>
                 </div>
 
                 <div class="hero-trust">
@@ -623,10 +619,6 @@
                     </div>
                 </div>
 
-                <button type="button" id="installAppBtnSecondary" data-pwa-install-btn class="btn-hero-primary mt-4 d-none">
-                    <i class="bi bi-download"></i>
-                    Install Student App
-                </button>
             </div>
 
             <div class="col-lg-6 reveal">
@@ -887,8 +879,6 @@
 <!-- Landing JS (no Bootstrap JS needed — this page only uses Bootstrap's CSS grid/utilities) -->
 <script src="{{ asset('assets/js/landing.js') }}?v={{ @filemtime(public_path('assets/js/landing.js')) }}"></script>
 <script src="{{ asset('assets/js/ripple.js') }}"></script>
-<!-- PWA install (Student App) -->
-<script src="{{ asset('assets/js/pwa-install.js') }}"></script>
 
 </body>
 </html>

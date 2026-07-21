@@ -1,10 +1,10 @@
-const CACHE_NAME = 'softlix-shell-v1';
+const CACHE_NAME = 'softlix-shell-v2';
 const SHELL_ASSETS = [
     '/manifest.json',
+    '/offline.html',
     '/images/icon-192.png',
     '/images/icon-512.png',
     '/assets/css/student-dashboard.css',
-    '/assets/css/auth-login.css',
 ];
 
 self.addEventListener('install', (event) => {
@@ -33,7 +33,7 @@ self.addEventListener('fetch', (event) => {
     // Only fall back to a cached shell asset when fully offline.
     if (req.mode === 'navigate') {
         event.respondWith(
-            fetch(req).catch(() => caches.match(req).then((r) => r || caches.match('/manifest.json')))
+            fetch(req).catch(() => caches.match(req).then((r) => r || caches.match('/offline.html')))
         );
         return;
     }

@@ -103,9 +103,6 @@
 
                 <div class="text-center mt-4">
                     <p class="small text-muted">New library? <a href="/register" class="text-decoration-none fw-600" style="color:#667eea">Start Free Trial</a></p>
-                    <button type="button" id="installAppBtn" data-pwa-install-btn class="btn btn-sm btn-outline-secondary d-none mt-2">
-                        <i class="bi bi-download me-1"></i>Install App
-                    </button>
                 </div>
 
                 <hr class="my-4">
@@ -134,7 +131,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/js/auth-login.js') }}?v={{ @filemtime(public_path('assets/js/auth-login.js')) }}"></script>
-    <script src="{{ asset('assets/js/pwa-install.js') }}"></script>
     <script src="{{ asset('assets/js/ripple.js') }}"></script>
     <script src="{{ asset('assets/js/page-loader.js') }}"></script>
 </body>
