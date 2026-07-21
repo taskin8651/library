@@ -26,6 +26,16 @@ class LoginController extends Controller
                 Auth::logout();
                 return back()->withErrors(['email' => 'Your account has been deactivated.']);
             }
+
+            // The installed PWA is the student-only app (see auth-login.js) —
+            // a valid owner/staff/admin login is still rejected from that
+            // context so the installed app never opens anything but a
+            // student's own dashboard.
+            if ($request->boolean('pwa') && $user->role !== 'student') {
+                Auth::logout();
+                return back()->withErrors(['email' => 'This app is for students only. Please sign in from a browser instead.'])->withInput();
+            }
+
             return $this->redirectByRole();
         }
 

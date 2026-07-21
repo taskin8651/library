@@ -69,8 +69,13 @@
                     </div>
                 @endif
 
+                <div id="pwaOnlyNotice" class="alert alert-info small d-flex align-items-center gap-2 d-none" style="border-radius:11px;">
+                    <i class="bi bi-phone"></i><span>You're using the Student App — sign in with your student account.</span>
+                </div>
+
                 <form method="POST" action="/login" id="loginForm">
                     @csrf
+                    <input type="hidden" name="pwa" id="pwaFlag" value="0">
                     <div class="field">
                         <label class="form-label fw-500 small" for="emailInput">Email Address</label>
                         <div class="input-icon-wrap">
