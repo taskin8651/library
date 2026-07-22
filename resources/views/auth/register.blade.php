@@ -104,17 +104,6 @@
                     </div>
                 </div>
 
-                <div class="mb-3 step-field" style="animation-delay:.13s">
-                    <label class="form-label fw-500 small" for="slugInput">Library URL *</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-link-45deg text-muted"></i></span>
-                        <input type="text" name="slug" id="slugInput" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug') }}"
-                            placeholder="yourname" pattern="[a-z0-9-]+" required>
-                        <span class="input-group-text small text-muted">.softlix.in</span>
-                    </div>
-                    <div class="form-text">Lowercase letters, numbers, hyphens only</div>
-                </div>
-
                 <div class="row g-3 mb-3 step-field" style="animation-delay:.16s">
                     <div class="col-md-6">
                         <label class="form-label fw-500 small" for="emailInput">Email *</label>

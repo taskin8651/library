@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class RegisterController extends Controller
@@ -22,7 +23,6 @@ class RegisterController extends Controller
     {
         $request->validate([
             'library_name' => 'required|string|max:100',
-            'slug'         => 'required|string|max:50|unique:libraries,slug|alpha_dash',
             'email'        => 'required|email|unique:users,email',
             'phone'        => 'required|digits:10',
             'password'     => 'required|min:8|confirmed',
@@ -31,10 +31,21 @@ class RegisterController extends Controller
 
         $plan = Plan::findOrFail($request->plan_id);
 
+        // The library's QR check-in URL (/checkin/{slug}) just needs a unique,
+        // URL-safe value — there's no reason to make the owner type one at
+        // sign-up, so it's derived from the library name instead.
+        $baseSlug = Str::slug($request->library_name) ?: 'library';
+        $slug = $baseSlug;
+        $suffix = 1;
+        while (Library::where('slug', $slug)->exists()) {
+            $suffix++;
+            $slug = $baseSlug . '-' . $suffix;
+        }
+
         // Create library
         $library = Library::create([
             'name'           => $request->library_name,
-            'slug'           => strtolower($request->slug),
+            'slug'           => $slug,
             'email'          => $request->email,
             'phone'          => $request->phone,
             'plan_id'        => $plan->id,

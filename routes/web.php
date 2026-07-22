@@ -25,6 +25,7 @@ Route::get('/', fn() => view('landing'))->name('home');
 // SEO
 Route::get('/robots.txt', fn() => response()->view('seo.robots')->header('Content-Type', 'text/plain'));
 Route::get('/sitemap.xml', fn() => response()->view('seo.sitemap')->header('Content-Type', 'application/xml'));
+Route::get('/manifest.json', fn() => response()->view('seo.manifest')->header('Content-Type', 'application/manifest+json'));
 
 // Auth
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
