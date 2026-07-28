@@ -23,6 +23,25 @@
 }
 .entity-row { display: flex; align-items: center; gap: 12px; }
 
+/* Small quick-contact icons (email/call/WhatsApp) under a library name —
+   theme-tinted chips instead of plain Bootstrap text-primary/text-success
+   links, matching the accent gradient used everywhere else. */
+.contact-icons { display: flex; align-items: center; gap: 6px; }
+.contact-icon-link {
+    width: 24px; height: 24px; flex-shrink: 0;
+    border-radius: 7px;
+    background: rgba(102,126,234,.1);
+    color: var(--accent-1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11.5px;
+    transition: all .2s cubic-bezier(.22,1,.36,1);
+}
+.contact-icon-link:hover {
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    color: #fff;
+    transform: translateY(-2px);
+}
+
 /* ── Summary card row (Total / Active / Inactive / Today) ───── */
 .summary-card {
     background: #fff;

@@ -81,6 +81,11 @@
                             <div class="min-w-0">
                                 <div class="fw-600 text-truncate">{{ $lib->name }}</div>
                                 <small class="text-muted text-truncate d-block">{{ $lib->email }}</small>
+                                <div class="contact-icons mt-1">
+                                    <a href="mailto:{{ $lib->email }}" class="contact-icon-link" title="Email"><i class="bi bi-envelope-fill"></i></a>
+                                    <a href="tel:{{ $lib->phone }}" class="contact-icon-link" title="Call"><i class="bi bi-telephone-fill"></i></a>
+                                    <a href="https://wa.me/91{{ preg_replace('/[^0-9]/', '', $lib->phone) }}" target="_blank" rel="noopener noreferrer" class="contact-icon-link" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                                </div>
                             </div>
                         </div>
                     </td>
