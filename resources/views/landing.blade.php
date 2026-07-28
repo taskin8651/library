@@ -229,12 +229,11 @@
                 </div>
 
                 <h1 class="mb-4">
-                    Manage Your<br>Library <span class="grad-text">Smarter</span>
+                    Manage Your<br>Library <span class="grad-text">Smarter</span> with Softlix
                 </h1>
 
                 <p class="hero-sub mb-5">
-                    Say goodbye to paper registers. Track students, collect fees, and
-                    manage seats — all from one place, right from your phone.
+                    All-in-one Library Management Software for Private Libraries, Reading Rooms, and NEET/JEE Study Centers. Manage memberships, fees, attendance, seat allocation, WhatsApp reminders, and reports from a single dashboard.
                 </p>
 
                 <div class="hero-ctas d-flex gap-3 flex-wrap mb-4">
