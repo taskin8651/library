@@ -7,6 +7,13 @@
     <meta name="theme-color" content="#0f1117">
     <title>Scan to Check In - {{ $library->name }}</title>
     <meta name="robots" content="noindex, nofollow">
+    @php $siteSettings = \App\Models\Setting::current(); @endphp
+    @if($siteSettings->favicon_url)
+        <link rel="icon" type="image/png" href="{{ $siteSettings->favicon_url }}">
+    @else
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
+    @endif
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">

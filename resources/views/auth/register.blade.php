@@ -24,9 +24,14 @@
     <meta name="twitter:description" content="Create your Softlix library account and start managing members, fees, seats and attendance in minutes. 3-day free trial, no credit card needed.">
     <meta name="twitter:image" content="https://softlix.in/images/og-image.png">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
+    @php $siteSettings = \App\Models\Setting::current(); @endphp
+    @if($siteSettings->favicon_url)
+        <link rel="icon" type="image/png" href="{{ $siteSettings->favicon_url }}">
+    @else
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
+    @endif
+    <link rel="apple-touch-icon" href="{{ $siteSettings->favicon_url ?: asset('images/apple-touch-icon.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">

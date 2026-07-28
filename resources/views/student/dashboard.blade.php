@@ -6,12 +6,17 @@
     <meta name="theme-color" content="#667eea">
     <title>My Dashboard - {{ $library->name }}</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
+    @php $siteSettings = \App\Models\Setting::current(); @endphp
+    @if($siteSettings->favicon_url)
+        <link rel="icon" type="image/png" href="{{ $siteSettings->favicon_url }}">
+    @else
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+    @endif
+    <link rel="apple-touch-icon" href="{{ $siteSettings->favicon_url ?: asset('images/apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Softlix">
+    <meta name="apple-mobile-web-app-title" content="{{ $siteSettings->site_name ?: 'Softlix' }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">

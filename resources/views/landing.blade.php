@@ -388,6 +388,42 @@
     </div>
 </section>
 
+@php
+    // Libraries that have uploaded their own logo (Owner > Library Settings)
+    // are shown here as social-proof "partners" — suspended accounts are
+    // excluded so a problem account never gets showcased as trusted.
+    $partnerLibraries = \App\Models\Library::whereNotNull('logo')->where('status', 'active')->get();
+@endphp
+@if($partnerLibraries->count())
+<!-- ============================================================
+     OUR PARTNERS
+     ============================================================ -->
+<section class="partners-section">
+    <div class="container">
+        <div class="text-center mb-4 reveal">
+            <div class="section-tag">Our Partners</div>
+            <h2 class="section-title mt-2">Trusted by Libraries Across India</h2>
+        </div>
+    </div>
+
+    <div class="partners-marquee">
+        <div class="partners-track">
+            @foreach($partnerLibraries as $partner)
+                <div class="partner-logo-wrap" title="{{ $partner->name }}">
+                    <img src="{{ $partner->logo_url }}" alt="{{ $partner->name }}">
+                </div>
+            @endforeach
+            {{-- Duplicate the strip so the CSS scroll loop is seamless --}}
+            @foreach($partnerLibraries as $partner)
+                <div class="partner-logo-wrap" aria-hidden="true" title="{{ $partner->name }}">
+                    <img src="{{ $partner->logo_url }}" alt="">
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
 <!-- ============================================================
      FEATURES
      ============================================================ -->

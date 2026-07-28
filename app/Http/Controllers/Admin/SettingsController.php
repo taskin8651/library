@@ -19,9 +19,9 @@ class SettingsController extends Controller
 
         $request->validate([
             'site_name'         => 'required|string|max:100',
-            'meta_title'        => 'nullable|string|max:255',
-            'meta_description'  => 'nullable|string|max:500',
-            'meta_keywords'     => 'nullable|string|max:255',
+            'meta_title'        => 'nullable|string',
+            'meta_description'  => 'nullable|string',
+            'meta_keywords'     => 'nullable|string',
             'contact_email'     => 'nullable|email|max:150',
             'contact_phone'     => 'nullable|string|max:20',
             'facebook_url'      => 'nullable|url|max:255',

@@ -26,6 +26,15 @@
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Softlix') | {{ $library->name ?? 'Softlix' }}</title>
 
+    @php $siteSettings = \App\Models\Setting::current(); @endphp
+    @if($siteSettings->favicon_url)
+        <link rel="icon" type="image/png" href="{{ $siteSettings->favicon_url }}">
+    @else
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
+    @endif
+    <link rel="apple-touch-icon" href="{{ $siteSettings->favicon_url ?: asset('images/apple-touch-icon.png') }}">
+
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
