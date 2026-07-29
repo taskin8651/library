@@ -160,7 +160,7 @@
                             <span class="badge info-chip text-dark px-3 py-2">
                                 <i class="bi bi-clock me-1"></i>{{ $member->shift?->name ?? 'No Shift' }}
                                 @if($member->shift)
-                                    ({{ \Carbon\Carbon::parse($member->shift->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($member->shift->end_time)->format('h:i A') }})
+                                    ({{ $member->shift->time_label }})
                                 @endif
                             </span>
                         </div>

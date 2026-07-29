@@ -51,17 +51,22 @@ function openSeatModal(seatId) {
         window.SHIFT_LIST.forEach(shift => {
             const occ = d.shifts[shift.id];
             const row = document.createElement('div');
-            row.className = 'seat-slot-row ' + (occ ? 'is-booked' : 'is-free');
+            row.className = 'seat-slot-row ' + (occ ? (occ.direct ? 'is-booked' : 'is-blocked') : 'is-free');
             row.innerHTML =
                 '<div class="ss-info">' +
                     '<div class="ss-name">' + esc(shift.name) + '</div>' +
                     '<div class="ss-time"><i class="bi bi-clock me-1"></i>' + esc(shift.time) + '<span class="ss-price">₹' + esc(shift.price) + '/mo</span></div>' +
                 '</div>' +
                 '<div class="ss-action">' + (occ
-                    ? ('<div class="ss-occupant"><span class="ss-pill ss-pill-booked">Sold</span>' +
-                       '<div class="ss-occ-name">' + esc(occ.name) + '</div>' +
-                       '<div class="ss-occ-until">until ' + esc(occ.until || '—') + '</div>' +
-                       '<a class="ss-link" href="' + memberUrl(occ.member_id) + '">View Member</a></div>')
+                    ? (occ.direct
+                        ? ('<div class="ss-occupant"><span class="ss-pill ss-pill-booked">Sold</span>' +
+                           '<div class="ss-occ-name">' + esc(occ.name) + '</div>' +
+                           '<div class="ss-occ-until">until ' + esc(occ.until || '—') + '</div>' +
+                           '<a class="ss-link" href="' + memberUrl(occ.member_id) + '">View Member</a></div>')
+                        : ('<div class="ss-occupant"><span class="ss-pill ss-pill-blocked">Unavailable</span>' +
+                           '<div class="ss-occ-name">' + esc(occ.name) + '</div>' +
+                           '<div class="ss-occ-until">' + (occ.full_day ? 'Full-day booking' : 'Conflicts with ' + esc(occ.via_shift) + ' booking') + '</div>' +
+                           '<a class="ss-link" href="' + memberUrl(occ.member_id) + '">View Member</a></div>'))
                     : ('<span class="ss-pill ss-pill-free">Available</span>' +
                        '<a class="btn btn-sm btn-primary" href="' + sellUrl(shift.id) + '"><i class="bi bi-cart-plus me-1"></i>Sell</a>')
                 ) + '</div>';

@@ -18,7 +18,7 @@
     --glass-b:   1px solid rgba(255,255,255,0.12);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
 
 /* ── CUSTOM SCROLLBAR ────────────────────────────────────── */
@@ -663,6 +663,7 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; }
     perspective: 1400px;
     margin: auto;
     width: 240px;
+    max-width: 100%;
 }
 .phone-glow {
     position: absolute;
@@ -1266,7 +1267,7 @@ footer {
     .plan-price { font-size: 42px; }
     .step-item { gap: 14px; }
     .step-num { width: 44px; height: 44px; font-size: 17px; }
-    .phone-mockup-wrap, .phone-mockup { width: 300px; }
+    .phone-mockup-wrap, .phone-mockup { width: 170px; }
     .phone-mockup { padding: 10px; }
     .phone-notch { width: 56px; height: 18px; }
     .qr-icon-wrap { width: 54px; height: 54px; border-radius: 10px; }

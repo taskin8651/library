@@ -81,6 +81,13 @@ class Seat extends Model
                 'name'      => $occupant->user->name,
                 'until'     => optional($occupant->plan_end_date)->format('d M Y'),
                 'full_day'  => is_null($occupant->shift_id),
+                // Did this member actually buy *this* shift, or is the slot
+                // merely blocked because a different shift they hold overlaps
+                // it (e.g. a Morning booking also blocks the 24-Hours slot)?
+                // The UI must not label the latter "Sold" — that reads as if
+                // this exact shift was purchased twice.
+                'direct'    => !is_null($occupant->shift_id) && $occupant->shift_id === $shift->id,
+                'via_shift' => (!is_null($occupant->shift_id) && $occupant->shift_id !== $shift->id) ? optional($occupant->shift)->name : null,
             ] : null;
         }
 

@@ -44,7 +44,7 @@
                         <select id="f_shift" name="shift_id" class="form-select">
                             <option value="">-- No Shift (Full Day) --</option>
                             @foreach($shifts as $shift)
-                            <option value="{{ $shift->id }}" {{ old('shift_id', $member->shift_id) == $shift->id ? 'selected' : '' }}>{{ $shift->name }} ({{ $shift->start_time }} - {{ $shift->end_time }})</option>
+                            <option value="{{ $shift->id }}" {{ old('shift_id', $member->shift_id) == $shift->id ? 'selected' : '' }}>{{ $shift->name }} ({{ $shift->time_label }})</option>
                             @endforeach
                         </select>
                         <label for="f_shift">Shift</label>

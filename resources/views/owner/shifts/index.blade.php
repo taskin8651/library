@@ -152,7 +152,7 @@
                                 <td data-label="Time Window">
                                     <span class="shift-time-badge">
                                         <i class="bi bi-clock"></i>
-                                        {{ \Carbon\Carbon::parse($shift->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($shift->end_time)->format('h:i A') }}
+                                        {{ $shift->time_label }}
                                     </span>
                                 </td>
                                 <td data-label="Price">

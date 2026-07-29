@@ -27,16 +27,16 @@ class Attendance extends Model
      */
     public static function overstayedToday(int $libraryId)
     {
-        $nowTimeStr = now()->format('H:i:s');
+        $today = today();
 
         return static::with(['member.user', 'member.shift', 'seat'])
             ->where('library_id', $libraryId)
-            ->whereDate('date', today())
+            ->whereDate('date', $today)
             ->whereNull('check_out')
             ->get()
-            ->filter(function ($attendance) use ($nowTimeStr) {
+            ->filter(function ($attendance) use ($today) {
                 $shift = $attendance->member->shift ?? null;
-                return $shift && $nowTimeStr > $shift->end_time;
+                return $shift && now()->gt($shift->endBoundaryFor($today));
             })
             ->values();
     }

@@ -81,7 +81,7 @@
                                 <option value="">-- No Shift (Full Day) --</option>
                                 @foreach($shifts as $shift)
                                 <option value="{{ $shift->id }}" {{ old('shift_id', $prefillShiftId)==$shift->id?'selected':'' }}>
-                                    {{ $shift->name }} ({{ $shift->start_time }} - {{ $shift->end_time }}) - ₹{{ $shift->price }}/mo
+                                    {{ $shift->name }} ({{ $shift->time_label }}) - ₹{{ $shift->price }}/mo
                                 </option>
                                 @endforeach
                             </select>

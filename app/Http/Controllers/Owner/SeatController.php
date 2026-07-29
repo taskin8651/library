@@ -70,7 +70,7 @@ class SeatController extends Controller
         $shiftList = $shifts->map(fn($s) => [
             'id'    => $s->id,
             'name'  => $s->name,
-            'time'  => Carbon::parse($s->start_time)->format('h:i A') . ' - ' . Carbon::parse($s->end_time)->format('h:i A'),
+            'time'  => $s->time_label,
             'price' => $s->price,
         ]);
 
