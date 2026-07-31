@@ -245,6 +245,10 @@
                         <i class="bi bi-play-circle"></i>
                         View Demo
                     </a>
+                    <a href="{{ asset('assets/app/softlix.apk') }}" download class="btn-hero-secondary">
+                        <i class="bi bi-download"></i>
+                        Download Student App
+                    </a>
                 </div>
 
                 <div class="hero-trust">
@@ -619,6 +623,17 @@
                 <h2 class="section-title mt-2 mb-3">Your Attendance,<br>Right on Your Phone</h2>
                 <p class="section-sub mb-4">No paper registers, no queues. Students install {{ $siteName }} like an app on their phone and mark attendance in two taps.</p>
 
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <a href="{{ asset('assets/app/softlix.apk') }}" download class="btn-plan btn-plan-fill">
+                        <i class="bi bi-download"></i>
+                        Install Student App
+                    </a>
+                    <a href="{{ asset('assets/app/softlix.apk') }}" download class="btn-plan btn-plan-outline">
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                        Download APK
+                    </a>
+                </div>
+
                 <div class="step-item">
                     <div class="step-num">1</div>
                     <div>
@@ -807,7 +822,7 @@
 
                 <div class="faq-item">
                     <div class="faq-q">Do students need to install an app? <span class="faq-icon"><i class="bi bi-plus"></i></span></div>
-                    <div class="faq-a">Not at all! Students just scan the QR code. The check-in page opens right in their phone's browser — no app download needed.</div>
+                    <div class="faq-a">No, students can scan the QR code and check in through their browser. If they want a native-like experience, they can also install the Student App APK from this page.</div>
                 </div>
 
                 <div class="faq-item">
@@ -884,6 +899,8 @@
                 <a href="#pricing"  class="footer-link">Pricing</a>
                 <a href="#how"      class="footer-link">How it Works</a>
                 <a href="#faq"      class="footer-link">FAQ</a>
+                <a href="#student-app" class="footer-link">Student App</a>
+                <a href="{{ asset('assets/app/softlix.apk') }}" download class="footer-link">Download APK</a>
             </div>
 
             <div class="col-6 col-md-2">
